@@ -128,7 +128,40 @@ class _HomeState extends State<Home> {
             ListTile(
               title: const Text('Logout'),
               leading: const Icon(Icons.logout_rounded),
-              onTap: () {},
+              onTap: () {
+                // // Removing Navigation Drawer
+                // Navigator.pop(context);
+                // QuickAlert.show(
+                //     context: context,
+                //     type: QuickAlertType.confirm,
+                //     text: 'Do you want to logout',
+                //     confirmBtnText: 'Yes',
+                //     cancelBtnText: 'No',
+                //     confirmBtnColor: Colors.redAccent,
+                //     onCancelBtnTap: () {
+                //       Navigator.pop(context);
+                //     },
+                //     onConfirmBtnTap: () {
+                //       // signOut();
+                //       // Navigator.pop(context);
+                //       // Passing Intent to home screen
+                //       // signOut();
+                //
+                //       Navigator.pushReplacement(context,
+                //           MaterialPageRoute(builder: (context) {
+                //         return const SignIn();
+                //         // Navigator.pop(context);
+                //       }));
+                //       // Navigator.pop(context);
+                //     });
+                // // Handle item 1 tap
+                // // Intent passing
+                // // signOut();
+                // // Navigator.pushReplacement(context,
+                // //     MaterialPageRoute(builder: (context) {
+                // //   return SignInScreen();
+                // // }));
+              },
             ),
           ],
         ),
