@@ -41,7 +41,12 @@ class _AlertsState extends State<Alerts> {
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      //TODO: ADD UPDATE REMARK FUNCTIONALITY ON TAP
+                      // When user clicks on alert from alerts list he can add remark
+                      //api: Update Issue Remark
+                      // https://pcmc.bioenabletech.com/api/service.php?q=update_issue_remark&auth_key=PCMCS56ADDGPIL&id=140&staff_id=40861&remark_update=Bin Repaired&status=Closed
+                    },
                     child: Card(
                       margin: const EdgeInsets.all(10.0),
                       elevation: 5,

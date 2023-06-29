@@ -50,6 +50,8 @@ class _TaskListState extends State<TaskList> {
                         child: Wrap(
                           children: [
                             Column(
+                              //TODO: ADD FOLLOW UP DAILOG BOX
+                              // When user clicks on task from tasks list he can add follow up on that particular tasks
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
