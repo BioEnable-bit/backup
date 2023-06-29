@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pcmc_staff/screens/alerts.dart';
 import 'package:pcmc_staff/screens/attendance_dashboard.dart';
 import 'package:pcmc_staff/screens/attendance_logs.dart';
+import 'package:pcmc_staff/screens/follow_up_list.dart';
 import 'package:pcmc_staff/screens/forgot_password.dart';
 import 'package:pcmc_staff/screens/home.dart';
 import 'package:pcmc_staff/screens/monthly_timecard.dart';
@@ -16,7 +17,9 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+  //Colors
+  // App Bar Background - B8B8FF Alternative - 3CBBB1
+  // Buttons background - 0C1411
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -33,13 +36,14 @@ class MyApp extends StatelessWidget {
         '/profile': (context) =>
             const Profile(), // from profile when user clicks on edit/update - he/she can update profile with profileUpdate Alert Dialog
         '/tasks_list': (context) => const TaskList(),
+        '/follow_up': (context) => const FollowUpList(),
         '/alerts': (context) => const Alerts(),
       },
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
       ),
-      home: const SignIn(),
+      home: const Home(),
     );
   }
 }
