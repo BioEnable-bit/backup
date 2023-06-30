@@ -9,10 +9,12 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   late String staffID;
+  late String designation;
 
   @override
   void initState() {
     staffID = '';
+    designation = '';
     super.initState();
   }
 
@@ -24,6 +26,8 @@ class HomeState extends State<Home> {
     // Assign value to staffID
     //NOTE: staffID from login and empNo from profile api are same
     staffID = arguments['staffID'];
+    designation = arguments['designation'];
+    print(designation);
 
     return Scaffold(
       appBar: AppBar(

@@ -280,6 +280,8 @@ class _SignInScreenState extends State<SignIn> {
                                           arguments: {
                                             'staffID': data[0]['staffID'],
                                             'WardID': data[0]['WardID'],
+                                            'designation': data[0]
+                                                ['designation'],
                                           });
                                       // Navigator.push(context,
                                       //     MaterialPageRoute(builder: (context) {

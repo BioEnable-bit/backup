@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'home.dart';
 
@@ -22,7 +23,18 @@ class _LiveDashBoardState extends State<LiveDashBoard> {
             // Navigator.pop(context);
           })),
         ),
-        title: const Text("Monthly Time Card"),
+        title: const Text("Live Dashboard"),
+      ),
+      body: SizedBox(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: const WebView(
+            initialUrl:
+                "https://pcmc.geodirect.in/gps/maps/tracking-vehicle1.php",
+            javascriptMode: JavascriptMode.unrestricted,
+          ),
+        ),
       ),
     );
   }

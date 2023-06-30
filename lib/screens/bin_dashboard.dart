@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'home.dart';
 
@@ -23,6 +24,16 @@ class _BinDashboardState extends State<BinDashboard> {
           })),
         ),
         title: const Text("Bin Dashboard"),
+      ),
+      body: SizedBox(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: const WebView(
+            initialUrl: "https://pcmc.geodirect.in/gps/cctv/bin-status-map.php",
+            javascriptMode: JavascriptMode.unrestricted,
+          ),
+        ),
       ),
     );
   }
