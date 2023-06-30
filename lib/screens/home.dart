@@ -4,30 +4,31 @@ class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => HomeState();
+  State<Home> createState() => _HomeState();
 }
 
-class HomeState extends State<Home> {
-  late String staffID;
-  late String designation;
+class _HomeState extends State<Home> {
+  // late String? staffID;
+  // late String? designation;
 
   @override
   void initState() {
-    staffID = '';
-    designation = '';
+    // staffID = '';
+    // designation = '';
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     // Get data shared with Navigator.pushNamed
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
+    // final arguments = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
     // Assign value to staffID
     //NOTE: staffID from login and empNo from profile api are same
-    staffID = arguments['staffID'];
-    designation = arguments['designation'];
-    print(designation);
+    // staffID = arguments['staffID'];
+    // designation = arguments['designation'];
+    // print(designation);
+    // print(staffID);
 
     return Scaffold(
       appBar: AppBar(
@@ -110,8 +111,7 @@ class HomeState extends State<Home> {
                 // Remove Navigation Drawer
                 Navigator.pop(context);
                 // Intent passing
-                Navigator.pushNamed(context, '/profile',
-                    arguments: {'staffID': staffID});
+                Navigator.pushNamed(context, '/profile', arguments: {});
               },
             ),
             ListTile(

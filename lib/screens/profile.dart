@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:pcmc_staff/models/ProfileDataModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
 
@@ -15,9 +16,10 @@ class Profile extends StatefulWidget {
 
 // Update profile will be an alert box
 class _ProfileState extends State<Profile> {
-  late String staffID;
-
   Future<List<ProfileDataModel>> getUserDataFromAPI() async {
+    final prefs = await SharedPreferences.getInstance();
+    var staffID = prefs.getString('staffID');
+    print(staffID);
     // final prefs = await SharedPreferences.getInstance();
     // var customerID = prefs.getString('customerID');
 
@@ -31,18 +33,17 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    staffID = '';
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     // Get data shared with Navigator.pushNamed
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    // Assign value to staffID
-    //NOTE: staffID from login and empNo from profile api are same
-    staffID = arguments['staffID'];
+    // final arguments = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
+    // // Assign value to staffID
+    // //NOTE: staffID from login and empNo from profile api are same
+    // staffID = arguments['staffID'];
     return Container(
       // decoration not working
       decoration: const BoxDecoration(
@@ -107,7 +108,6 @@ class _ProfileState extends State<Profile> {
                                 IconButton(
                                   // alignment: Alignment(200, 0),
                                   onPressed: () {
-                                    print('clicked');
                                     //TODO: OPEN EDIT PROFILE SCREEN ON ICON TAP
                                   },
                                   icon: const Icon(
