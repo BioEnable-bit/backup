@@ -8,8 +8,28 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // late String? staffID;
+  // late String? designation;
+
+  @override
+  void initState() {
+    // staffID = '';
+    // designation = '';
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Get data shared with Navigator.pushNamed
+    // final arguments = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
+    // Assign value to staffID
+    //NOTE: staffID from login and empNo from profile api are same
+    // staffID = arguments['staffID'];
+    // designation = arguments['designation'];
+    // print(designation);
+    // print(staffID);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),

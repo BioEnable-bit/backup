@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pcmc_staff/screens/alerts.dart';
 import 'package:pcmc_staff/screens/attendance_dashboard.dart';
 import 'package:pcmc_staff/screens/attendance_logs.dart';
+import 'package:pcmc_staff/screens/bin_dashboard.dart';
 import 'package:pcmc_staff/screens/follow_up_list.dart';
 import 'package:pcmc_staff/screens/forgot_password.dart';
 import 'package:pcmc_staff/screens/home.dart';
+import 'package:pcmc_staff/screens/live_dashboard.dart';
 import 'package:pcmc_staff/screens/monthly_timecard.dart';
 import 'package:pcmc_staff/screens/profile.dart';
 import 'package:pcmc_staff/screens/route_map.dart';
@@ -39,16 +41,18 @@ class MyApp extends StatelessWidget {
         '/tasks_list': (context) => const TaskList(),
         '/follow_up': (context) => const FollowUpList(),
         '/alerts': (context) => const Alerts(),
+        '/live_dashboard': (context) => const LiveDashBoard(),
+        '/bin_dashboard': (context) => const BinDashboard(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
-
       ),
-
       debugShowCheckedModeBanner: false,
-   
-      home: const ForgotPassword(),
+
+
+
+      home: const Splash(),
 
     );
   }

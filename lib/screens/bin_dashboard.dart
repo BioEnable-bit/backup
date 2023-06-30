@@ -3,14 +3,14 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'home.dart';
 
-class RouteMap extends StatefulWidget {
-  const RouteMap({super.key});
+class BinDashboard extends StatefulWidget {
+  const BinDashboard({super.key});
 
   @override
-  State<RouteMap> createState() => _RouteMapState();
+  State<BinDashboard> createState() => _BinDashboardState();
 }
 
-class _RouteMapState extends State<RouteMap> {
+class _BinDashboardState extends State<BinDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,15 +23,14 @@ class _RouteMapState extends State<RouteMap> {
             // Navigator.pop(context);
           })),
         ),
-        title: const Text("Route Map"),
+        title: const Text("Bin Dashboard"),
       ),
       body: SizedBox(
-        child: SizedBox(
+        child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: const WebView(
-            initialUrl:
-                "https://pcmc.geodirect.in/gps/route-pcmc1.php?date=2023-06-30&carrier=866330053191635&orgid=922677&vtype=1",
+            initialUrl: "https://pcmc.geodirect.in/gps/cctv/bin-status-map.php",
             javascriptMode: JavascriptMode.unrestricted,
           ),
         ),

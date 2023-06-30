@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:pcmc_staff/models/AlertsListModel.dart';
+import 'package:pcmc_staff/screens/home.dart';
 
 class Alerts extends StatefulWidget {
   const Alerts({super.key});
@@ -29,6 +30,14 @@ class _AlertsState extends State<Alerts> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Alerts"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) {
+            return const Home();
+            // Navigator.pop(context);
+          })),
+        ),
       ),
       body: FutureBuilder(
         future: getTasksListDataFromAPI(),

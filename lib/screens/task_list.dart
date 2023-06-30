@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:pcmc_staff/models/TasksListModel.dart';
 
+import 'home.dart';
+
 class TaskList extends StatefulWidget {
   const TaskList({super.key});
 
@@ -28,6 +30,14 @@ class _TaskListState extends State<TaskList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) {
+            return const Home();
+            // Navigator.pop(context);
+          })),
+        ),
         title: const Text("Task List"),
       ),
       body: FutureBuilder(
