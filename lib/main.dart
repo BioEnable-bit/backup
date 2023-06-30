@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
    
-      home: const Splash(),
+      home: const ForgotPassword(),
 
     );
   }
