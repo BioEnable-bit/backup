@@ -43,13 +43,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
-
       ),
-
       debugShowCheckedModeBanner: false,
-   
       home: const Splash(),
-
     );
   }
 }
