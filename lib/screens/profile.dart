@@ -159,7 +159,7 @@ class _ProfileState extends State<Profile> {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                Text(items[0].empid.toString()),
+                                Text(items[0].email.toString()),
                               ],
                             ),
                             const SizedBox(
