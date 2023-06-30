@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/ProfileDataModel.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -8,11 +14,36 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late String profileImage;
+  late String userName;
+  Future<List<ProfileDataModel>> getUserDataFromAPI() async {
+    final prefs = await SharedPreferences.getInstance();
+    var staffID = prefs.getString('staffID');
+    print(staffID);
+
+    // final prefs = await SharedPreferences.getInstance();
+    // var customerID = prefs.getString('customerID');
+
+    Response response = await get(
+      Uri.parse(
+          'https://pcmc.bioenabletech.com/api/service.php?q=show_profile&auth_key=PCMCS56ADDGPIL&staff_id=$staffID'),
+    );
+    final data = jsonDecode(response.body.toString()) as List<dynamic>;
+    print(data);
+    setState(() {
+      profileImage = data[0]['photo'];
+      userName = data[0]['staffname'];
+    });
+    return data.map((e) => ProfileDataModel.fromJson(e)).toList();
+  }
   // late String? staffID;
   // late String? designation;
 
   @override
   void initState() {
+    profileImage = '';
+    userName = '';
+    getUserDataFromAPI();
     // staffID = '';
     // designation = '';
     super.initState();
@@ -42,15 +73,17 @@ class _HomeState extends State<Home> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const DrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                //TODO: ADD USER PROFILE IMAGE HERE
-                // image: NetworkImage(url)
-              ),
+                  color: Colors.blueGrey,
+                  image: DecorationImage(
+                      image: NetworkImage(profileImage), fit: BoxFit.cover)
+                  //TODO: ADD USER PROFILE IMAGE HERE
+                  // image: NetworkImage(url)
+                  ),
               child: Text(
-                'Menu',
-                style: TextStyle(
+                'Welcome \n$userName',
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

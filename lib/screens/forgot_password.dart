@@ -70,6 +70,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             const SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: () {
+                print(_mobileNumberController.text.toString());
                 print('clicked');
                 userMobile = _mobileNumberController.text.toString();
                 if (_mobileNumberController.text.toString() == '') {
