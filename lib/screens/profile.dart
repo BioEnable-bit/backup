@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:pcmc_staff/models/ProfileDataModel.dart';
 
+import 'home.dart';
+
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
@@ -51,6 +53,14 @@ class _ProfileState extends State<Profile> {
       ),
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) {
+              return const Home();
+              // Navigator.pop(context);
+            })),
+          ),
           title: const Text("Profile"),
         ),
         body: SingleChildScrollView(
