@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'home.dart';
 
@@ -23,6 +24,17 @@ class _RouteMapState extends State<RouteMap> {
           })),
         ),
         title: const Text("Route Map"),
+      ),
+      body: SizedBox(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: const WebView(
+            initialUrl:
+                "https://pcmc.geodirect.in/gps/route-pcmc1.php?date=2023-06-30&carrier=866330053191635&orgid=922677&vtype=1",
+            javascriptMode: JavascriptMode.unrestricted,
+          ),
+        ),
       ),
     );
   }
