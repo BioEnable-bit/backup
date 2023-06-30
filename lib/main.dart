@@ -9,6 +9,7 @@ import 'package:pcmc_staff/screens/monthly_timecard.dart';
 import 'package:pcmc_staff/screens/profile.dart';
 import 'package:pcmc_staff/screens/route_map.dart';
 import 'package:pcmc_staff/screens/sign_in.dart';
+import 'package:pcmc_staff/screens/splash.dart';
 import 'package:pcmc_staff/screens/task_list.dart';
 
 void main() {
@@ -44,8 +45,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
 
       ),
+
       debugShowCheckedModeBanner: false,
-      home: const SignIn(),
+   
+      home: const Splash(),
+
     );
   }
 }

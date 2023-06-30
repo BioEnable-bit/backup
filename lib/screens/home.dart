@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
         iconTheme: const IconThemeData(color: Colors.white),
         titleTextStyle: const TextStyle(
             color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),
-        backgroundColor: Colors.blue, //Colors.blueGrey[900]
+        backgroundColor: Colors.blueGrey, //Colors.blueGrey[900]
         title: const Text('PCMC Staff'),
       ),
       drawer: Drawer(
@@ -24,7 +24,9 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.blueGrey,
+                //TODO: ADD USER PROFILE IMAGE HERE
+                // image: NetworkImage(url)
               ),
               child: Text(
                 'Menu',
