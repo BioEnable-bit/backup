@@ -1,10 +1,11 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:pcmc_staff/models/Designation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'forgot_password.dart';
-import 'home.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -27,8 +28,8 @@ class _SignInScreenState extends State<SignIn> {
     // final jsonData = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       var jsonDataZones = json.decode(response.body);
-       // print(jsonDataZones.toString());
-       // print(jsonDataZones[0]['designation']);
+      // print(jsonDataZones.toString());
+      // print(jsonDataZones[0]['designation']);
       setState(() {
         for (int i = 0; i < jsonDataZones.length; i++) {
           // ZoneModel(ward_id: jsonDataZones[i]['ward_id'].toString(), ward_name: jsonDataZones[i]['ward_name'].toString());
@@ -48,24 +49,20 @@ class _SignInScreenState extends State<SignIn> {
     getAlldesigNames();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(colors: [
-          Colors.white,
-          Color(0xffe6f9ff)
-        ],
-            begin: Alignment.topRight,end: Alignment.bottomLeft),
+        gradient: LinearGradient(
+            colors: [Colors.white, Color(0xffe6f9ff)],
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft),
       ),
       // image: DecorationImage(
       //     image: AssetImage('assets/whitebg.jpg'), fit: BoxFit.cover)),
       child: Scaffold(
-
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
-
           child: Stack(
             children: [
               Column(
@@ -73,9 +70,7 @@ class _SignInScreenState extends State<SignIn> {
                 children: [
                   Form(
                     key: _formKey,
-
                     child: Container(
-
                       // decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 2),shape: BoxShape.circle),
                       //
                       // child: const Icon(Icons.person,color: Colors.white,size: 90,),
@@ -83,7 +78,10 @@ class _SignInScreenState extends State<SignIn> {
                       padding: const EdgeInsets.only(left: 35, top: 120),
                       child: const Text(
                         'Welcome To \n PCMC Staff',
-                        style: TextStyle(color: Colors.black, fontSize: 32,fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -98,7 +96,7 @@ class _SignInScreenState extends State<SignIn> {
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
-                        //icon: Icon(Icons.mobile_friendly_rounded),
+                          //icon: Icon(Icons.mobile_friendly_rounded),
                           fillColor: Colors.white,
                           filled: true,
                           hintText: 'Enter Mobile Number',
@@ -145,27 +143,23 @@ class _SignInScreenState extends State<SignIn> {
                     ),
                     DecoratedBox(
                       decoration: BoxDecoration(
-                          color:Colors.white,
-
+                          color: Colors.white,
 
                           // border: OutlineInputBorder(
                           //     borderRadius: BorderRadius.circular(10))),//background color of dropdown button
                           // border: Border.all(color: Colors.black, width:0), //border of dropdown button
-                          borderRadius: BorderRadius.circular(10), //border raiuds of dropdown button
-                          boxShadow: <BoxShadow>[ //apply shadow on Dropdown button
+                          borderRadius: BorderRadius.circular(
+                              10), //border raiuds of dropdown button
+                          boxShadow: <BoxShadow>[
+                            //apply shadow on Dropdown button
                             BoxShadow(
-                                color: Color.fromRGBO(0, 0, 0, 0.57), //shadow for button
+                                color: Color.fromRGBO(
+                                    0, 0, 0, 0.57), //shadow for button
                                 blurRadius: 6) //blur radius of shadow
-                          ]
-                      ),
-
-
-
-
+                          ]),
                       child: Padding(
-                        padding: EdgeInsets.only(left:30, right:30),
-                        child:
-                        DropdownButton<Designation>(
+                        padding: EdgeInsets.only(left: 30, right: 30),
+                        child: DropdownButton<Designation>(
                           hint: const Text("Select a Designation"),
                           value: selectedDesignation,
                           onChanged: (Designation? newValue) {
@@ -212,9 +206,13 @@ class _SignInScreenState extends State<SignIn> {
 
                               String mobile = _mobileNumberController.text;
                               String password = _passwordController.text;
-                              String? designation=selectedDesignation?.desig_id.toString();
+                              String? designation =
+                                  selectedDesignation?.desig_id.toString();
                               print('###################');
+                              print(password);
+                              print(mobile);
                               print(designation);
+                              print(selectedDesignation?.desig_id.toString());
                               // userAuth(mobile, password);
                               print('OutPPUT');
                               print(designation);
@@ -222,20 +220,20 @@ class _SignInScreenState extends State<SignIn> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content:
-                                        Text('Enter Your Mobile Number')));
+                                            Text('Enter Your Mobile Number')));
                                 return;
                               } else if (password.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content: Text('Enter Your PassWord')));
                                 return;
-                              }
-                              else if (selectedDesignation==null) {
+                              } else if (selectedDesignation == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                        content: Text('Select Your Designation')));
+                                        content:
+                                            Text('Select Your Designation')));
                                 return;
-                              }else if (mobile != "" && password != "") {
+                              } else if (mobile != "" && password != "") {
                                 showDialog(
                                     context: context,
                                     builder: (context) {
@@ -250,9 +248,9 @@ class _SignInScreenState extends State<SignIn> {
                                           'https://pcmc.bioenabletech.com/api/service.php?q=staff_login&auth_key=PCMCS56ADDGPIL'),
                                       body: {
                                         'mobile': mobile,
-                                        'password': password, //category is complaint selected by user
+                                        'password':
+                                            password, //category is complaint selected by user
                                         'designation': designation,
-
                                       });
                                   // stop progress bar
                                   Navigator.of(context).pop();
@@ -260,10 +258,11 @@ class _SignInScreenState extends State<SignIn> {
                                   //check
                                   if (response.statusCode == 200) {
                                     var data =
-                                    jsonDecode(response.body.toString());
+                                        jsonDecode(response.body.toString());
                                     if (data[0]['msg'] == 'success') {
-                                      _saveLogindata(data[0]['staffid'],
-                                          data[0]['wardId'],
+                                      _saveLogindata(
+                                          data[0]['staffID'],
+                                          data[0]['WardID'],
                                           data[0]['designation']);
                                       // Passing Intent to home screen
                                       // save customer ID and Ward ID to Shared Preference
@@ -276,10 +275,14 @@ class _SignInScreenState extends State<SignIn> {
                                       );
                                       // intent pass
                                       // Navigator.pop(context);
-                                      Navigator.pushReplacementNamed(context, '/home', arguments: {
-
-
-                                      });
+                                      Navigator.pushReplacementNamed(
+                                          context, '/home',
+                                          arguments: {
+                                            'staffID': data[0]['staffID'],
+                                            'WardID': data[0]['WardID'],
+                                            'designation': data[0]
+                                                ['designation'],
+                                          });
                                       // Navigator.push(context,
                                       //     MaterialPageRoute(builder: (context) {
                                       //       return const Home();
@@ -314,7 +317,7 @@ class _SignInScreenState extends State<SignIn> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content:
-                                        Text('Enter details to login')));
+                                            Text('Enter details to login')));
                                 return;
                               }
                             },
@@ -350,9 +353,9 @@ class _SignInScreenState extends State<SignIn> {
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return const ForgotPassword();
-                                  // Navigator.pop(context);
-                                }));
+                              return const ForgotPassword();
+                              // Navigator.pop(context);
+                            }));
                           },
                           child: const Text(
                             'Forgot Password',
@@ -376,9 +379,7 @@ class _SignInScreenState extends State<SignIn> {
   }
 }
 
-
-
-Future<void> _saveDataToPrefs(mobile, password,designation) async {
+Future<void> _saveDataToPrefs(mobile, password, designation) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('mobile', mobile);
   await prefs.setString('password', password);
@@ -386,6 +387,7 @@ Future<void> _saveDataToPrefs(mobile, password,designation) async {
 
   // await prefs.setString('isSignedIn', 'true');
 }
+
 // void registerUser(fname, lname, email, mobile, password, zoneid, wardsid,
 //     address, context) async {
 //   try {
@@ -449,7 +451,7 @@ Future<void> _saveDataToPrefs(mobile, password,designation) async {
 //     //     .showSnackBar(SnackBar(content: Text('Authentication failed')));
 //   }
 // }
-Future<void> _saveLogindata(staffid, wardId,designation) async {
+Future<void> _saveLogindata(staffid, wardId, designation) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('staffID', staffid);
   await prefs.setString('WardID', wardId);
@@ -457,4 +459,3 @@ Future<void> _saveLogindata(staffid, wardId,designation) async {
 
   // await prefs.setString('isSignedIn', 'true');
 }
-

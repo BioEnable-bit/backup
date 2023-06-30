@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:pcmc_staff/models/FollowUpListModel.dart';
 
+import 'home.dart';
+
 class FollowUpList extends StatefulWidget {
   const FollowUpList({super.key});
 
@@ -29,6 +31,14 @@ class _FollowUpListState extends State<FollowUpList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) {
+            return const Home();
+            // Navigator.pop(context);
+          })),
+        ),
         title: const Text("Follow Up List"),
       ),
       body: FutureBuilder(

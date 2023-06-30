@@ -2,9 +2,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
 import 'package:http/http.dart';
-import 'package:pcmc_staff/screens/sign_in.dart';
+
 //import 'package:pcmc_citizen_app_flutter/screens/sign_in_screen.dart';
+
+import 'package:pcmc_staff/screens/sign_in.dart';
+
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -35,6 +39,7 @@ class _ForgotPasswordScreenState extends State<ForgotPassword> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
+
                 return const SignIn();
                 // Navigator.pop(context);
               })),
@@ -133,6 +138,13 @@ class _ForgotPasswordScreenState extends State<ForgotPassword> {
             ),
           ],
         ),
+
+            return const SignIn();
+            // Navigator.pop(context);
+          })),
+        ),
+        title: const Text("Forgot Password"),
+
       ),
     );
   }

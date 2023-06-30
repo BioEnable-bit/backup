@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pcmc_staff/screens/home.dart';
+import 'package:pcmc_staff/screens/sign_in.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -15,10 +15,10 @@ class _SplashState extends State<Splash> {
 
   @override
   void initState() {
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 1), () {
       // Intent Passing
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Home()));
+          context, MaterialPageRoute(builder: (context) => const SignIn()));
     });
     super.initState();
   }
@@ -28,7 +28,7 @@ class _SplashState extends State<Splash> {
     return const Scaffold(
       body: Center(
         child: Image(
-          image: AssetImage('assets/splash_screen.jpeg'),
+          image: AssetImage('assets/splash_screen_n.jpeg'),
         ),
       ),
     );
