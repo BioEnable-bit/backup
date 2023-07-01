@@ -16,6 +16,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late String profileImage;
   late String userName;
+  late String userDesignation;
+  late String userMobile;
   Future<List<ProfileDataModel>> getUserDataFromAPI() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
@@ -33,6 +35,11 @@ class _HomeState extends State<Home> {
     setState(() {
       profileImage = data[0]['photo'];
       userName = data[0]['staffname'];
+      userDesignation = data[0]['designation'];
+      print(data[0]['mobile']);
+      userMobile = data[0]['mobile'];
+      print(userDesignation);
+      print(userMobile);
     });
     return data.map((e) => ProfileDataModel.fromJson(e)).toList();
   }
@@ -41,8 +48,11 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
+    userMobile = '';
     profileImage = '';
     userName = '';
+    userDesignation = '';
+
     getUserDataFromAPI();
     // staffID = '';
     // designation = '';
@@ -71,23 +81,60 @@ class _HomeState extends State<Home> {
       ),
       drawer: Drawer(
         child: ListView(
-          padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(
-                  color: Colors.blueGrey,
-                  image: DecorationImage(
-                      image: NetworkImage(profileImage), fit: BoxFit.cover)
-                  //TODO: ADD USER PROFILE IMAGE HERE
-                  // image: NetworkImage(url)
+              decoration: const BoxDecoration(
+                color: Colors.blueGrey,
+              ),
+              child: Stack(
+                children: <Widget>[
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: CircleAvatar(
+                      //TODO: INSERT profileImage Here
+                      backgroundImage: NetworkImage(
+                          'http://www.bbk.ac.uk/mce/wp-content/uploads/2015/03/8327142885_9b447935ff.jpg'),
+                      radius: 50.0,
+                    ),
                   ),
-              child: Text(
-                'Welcome \n$userName',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      userName,
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 20.0),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight + const Alignment(0, .4),
+                    child: Text(
+                      userMobile,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight + Alignment(0, 1.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        gradient: const LinearGradient(
+                            colors: [Colors.green, Colors.lightGreen],
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Text(
+                          userDesignation,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             ListTile(
