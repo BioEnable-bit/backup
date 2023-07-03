@@ -165,28 +165,28 @@ class _HomeState extends State<Home> {
                     arguments: {});
               },
             ),
-            ListTile(
-              title: const Text('Attendance Logs'),
-              leading: const Icon(Icons.add_alert),
-              onTap: () {
-                // Handle item 1 tap
-                // Removing Navigation Drawer
-                Navigator.pop(context);
-                // Intent passing
-                Navigator.pushNamed(context, '/attendance_logs', arguments: {});
-              },
-            ),
-            ListTile(
-              title: const Text('Monthly Time Card'),
-              leading: const Icon(Icons.home),
-              onTap: () {
-                // Handle item 1 tap Intent Passing
-                // Remove Navigation Drawer
-                Navigator.pop(context);
-                // Intent passing
-                Navigator.pushNamed(context, '/time_card', arguments: {});
-              },
-            ),
+            // ListTile(
+            //   title: const Text('Attendance Logs'),
+            //   leading: const Icon(Icons.add_alert),
+            //   onTap: () {
+            //     // Handle item 1 tap
+            //     // Removing Navigation Drawer
+            //     Navigator.pop(context);
+            //     // Intent passing
+            //     Navigator.pushNamed(context, '/attendance_logs', arguments: {});
+            //   },
+            // ),
+            // ListTile(
+            //   title: const Text('Monthly Time Card'),
+            //   leading: const Icon(Icons.home),
+            //   onTap: () {
+            //     // Handle item 1 tap Intent Passing
+            //     // Remove Navigation Drawer
+            //     Navigator.pop(context);
+            //     // Intent passing
+            //     Navigator.pushNamed(context, '/time_card', arguments: {});
+            //   },
+            // ),
             ListTile(
               title: const Text('Fixed Route Map'),
               leading: const Icon(Icons.home),
