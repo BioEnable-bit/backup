@@ -109,6 +109,9 @@ class _ProfileState extends State<Profile> {
                                   // alignment: Alignment(200, 0),
                                   onPressed: () {
                                     //TODO: OPEN EDIT PROFILE SCREEN ON ICON TAP
+                                    Navigator.pushNamed(
+                                        context, '/edit_profile',
+                                        arguments: {});
                                   },
                                   icon: const Icon(
                                     // creating the first icon.

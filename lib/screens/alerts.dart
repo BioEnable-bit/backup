@@ -38,6 +38,15 @@ class _AlertsState extends State<Alerts> {
             // Navigator.pop(context);
           })),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add_box, color: Colors.blueGrey),
+            onPressed: () {
+              // TODO: Add Alerts popup functionality
+              print('clicked');
+            },
+          )
+        ],
       ),
       body: FutureBuilder(
         future: getTasksListDataFromAPI(),

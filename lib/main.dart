@@ -3,6 +3,7 @@ import 'package:pcmc_staff/screens/alerts.dart';
 import 'package:pcmc_staff/screens/attendance_dashboard.dart';
 import 'package:pcmc_staff/screens/attendance_logs.dart';
 import 'package:pcmc_staff/screens/bin_dashboard.dart';
+import 'package:pcmc_staff/screens/edit_profile.dart';
 import 'package:pcmc_staff/screens/follow_up_list.dart';
 import 'package:pcmc_staff/screens/forgot_password.dart';
 import 'package:pcmc_staff/screens/home.dart';
@@ -43,17 +44,14 @@ class MyApp extends StatelessWidget {
         '/alerts': (context) => const Alerts(),
         '/live_dashboard': (context) => const LiveDashBoard(),
         '/bin_dashboard': (context) => const BinDashboard(),
+        '/edit_profile': (context) => const EditProfile(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-
-
-
       home: const Splash(),
-
     );
   }
 }

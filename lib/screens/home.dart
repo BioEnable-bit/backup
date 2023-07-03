@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,6 +62,20 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    List imageList = [
+      //TODO: Change Image Path to add new images
+      {"id": 0, "image_path": 'assets/home_image_one.png'},
+      {"id": 1, "image_path": 'assets/home_image_one.png'},
+      // {"id": 2, "image_path": 'assets/take_survey_home.png'},
+      // {"id": 3, "image_path": 'assets/garbage_status_home.png'},
+      // {"id": 4, "image_path": 'assets/guidelines_home.png'},
+      // {"id": 5, "image_path": 'assets/helpline_home.png'}
+    ];
+    final CarouselController carouselController =
+        CarouselController(); //carousal step 3
+
+    int currentIndex = 0;
+
     // Get data shared with Navigator.pushNamed
     // final arguments = (ModalRoute.of(context)?.settings.arguments ??
     //     <String, dynamic>{}) as Map;
@@ -268,6 +283,588 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
+      body: SingleChildScrollView(
+          child: userDesignation == 'Driver'
+              ? Stack(
+                  children: [
+                    Column(
+                      //carousal step 5
+                      children: [
+                        // for image slider
+                        Stack(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                // This is a function to handle image tap
+                                // migrateToSelectedImageScreen(currentIndex); -> if need to add this feature function code from citizen app
+                                // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                //     content: Text('image clicked at $currentIndex')));
+                                return;
+                              },
+                              child: CarouselSlider(
+                                  //carousal step 6 -> sliding effect
+                                  items: imageList
+                                      .map(
+                                        (item) => Image.asset(
+                                          item['image_path'],
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                        ),
+                                      )
+                                      .toList(),
+                                  options: CarouselOptions(
+                                      scrollPhysics:
+                                          const BouncingScrollPhysics(),
+                                      autoPlay: true,
+                                      aspectRatio: 2,
+                                      viewportFraction: 1,
+                                      onPageChanged: (index, reason) {
+                                        setState(() {
+                                          currentIndex = index;
+                                        });
+                                      })),
+                            ),
+                            // Positioned(
+                            //   bottom: 10,
+                            //   left: 0,
+                            //   right: 0,
+                            //   child: Row(
+                            //     //carousal step 7 sliding dots
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children:
+                            //         imageList.asMap().entries.map((entry) {
+                            //       // Moving Dot
+                            //       return GestureDetector(
+                            //         onTap: () => carouselController
+                            //             .animateToPage(entry.key),
+                            //         child: Container(
+                            //           width: currentIndex == entry.key ? 17 : 7,
+                            //           height: 7.0,
+                            //           margin: const EdgeInsets.symmetric(
+                            //             horizontal: 3.0,
+                            //           ),
+                            //           decoration: BoxDecoration(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(10),
+                            //               color: currentIndex == entry.key
+                            //                   ? Colors
+                            //                       .red // current image dot color
+                            //                   : Colors
+                            //                       .teal), //other image dot color
+                            //         ),
+                            //       );
+                            //     }).toList(),
+                            //     //
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        //Boxes with menu code
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Card(
+                                  elevation: 8.0,
+                                  child: Ink(
+                                    width: 150,
+                                    height: 100,
+                                    // color: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.blueGrey,
+                                            Colors.lightBlue
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/attendance_dashboard',
+                                            arguments: {});
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                            ),
+                                            Text('Attendance\nDashboard',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20.00,
+                                ),
+                                Card(
+                                  elevation: 8.0,
+                                  child: Ink(
+                                    width: 150,
+                                    height: 100,
+                                    // color: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.blueGrey,
+                                            Colors.lightBlue
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/tasks_list',
+                                            arguments: {});
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.list,
+                                                color: Colors.white),
+                                            Text('Tasks List',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Card(
+                                  elevation: 8.0,
+                                  child: Ink(
+                                    width: 150,
+                                    height: 100,
+                                    // color: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.blueGrey,
+                                            Colors.lightBlue
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        // Function to be called when container is tapped
+                                        // Navigator.push(context,
+                                        //     MaterialPageRoute(builder: (context) {
+                                        //   return const GarbageCollectionStatusScreen();
+                                        // }));
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.pin_drop_rounded,
+                                                color: Colors.white),
+                                            Text('Garbage Collection Status',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20.00,
+                                ),
+                                Card(
+                                  elevation: 8.0,
+                                  child: Ink(
+                                    width: 150,
+                                    height: 100,
+                                    // color: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.lightBlue,
+                                            Colors.blueGrey
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        // Function to be called when container is tapped
+                                        // Navigator.push(context,
+                                        //     MaterialPageRoute(builder: (context) {
+                                        //   return const HelplineScreen();
+                                        // }));
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.call,
+                                                color: Colors.white),
+                                            Text('Helpline',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        // code for bottom nav screen
+                      ],
+                    ),
+                  ],
+                )
+              : Stack(
+                  children: [
+                    Column(
+                      //carousal step 5
+                      children: [
+                        // for image slider
+                        Stack(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                // This is a function to handle image tap
+                                // migrateToSelectedImageScreen(currentIndex); -> if need to add this feature function code from citizen app
+                                // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                //     content: Text('image clicked at $currentIndex')));
+                                return;
+                              },
+                              child: CarouselSlider(
+                                  //carousal step 6 -> sliding effect
+                                  items: imageList
+                                      .map(
+                                        (item) => Image.asset(
+                                          item['image_path'],
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                        ),
+                                      )
+                                      .toList(),
+                                  options: CarouselOptions(
+                                      scrollPhysics:
+                                          const BouncingScrollPhysics(),
+                                      autoPlay: true,
+                                      aspectRatio: 2,
+                                      viewportFraction: 1,
+                                      onPageChanged: (index, reason) {
+                                        setState(() {
+                                          currentIndex = index;
+                                        });
+                                      })),
+                            ),
+                            // Positioned(
+                            //   bottom: 10,
+                            //   left: 0,
+                            //   right: 0,
+                            //   child: Row(
+                            //     //carousal step 7 sliding dots
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children:
+                            //         imageList.asMap().entries.map((entry) {
+                            //       // Moving Dot
+                            //       return GestureDetector(
+                            //         onTap: () => carouselController
+                            //             .animateToPage(entry.key),
+                            //         child: Container(
+                            //           width: currentIndex == entry.key ? 17 : 7,
+                            //           height: 7.0,
+                            //           margin: const EdgeInsets.symmetric(
+                            //             horizontal: 3.0,
+                            //           ),
+                            //           decoration: BoxDecoration(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(10),
+                            //               color: currentIndex == entry.key
+                            //                   ? Colors
+                            //                       .red // current image dot color
+                            //                   : Colors
+                            //                       .teal), //other image dot color
+                            //         ),
+                            //       );
+                            //     }).toList(),
+                            //     //
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        //Boxes with menu code
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Card(
+                                  elevation: 8.0,
+                                  child: Ink(
+                                    width: 150,
+                                    height: 100,
+                                    // color: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.blueGrey,
+                                            Colors.lightBlue
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        // Function to be called when container is tapped
+                                        Navigator.pushNamed(
+                                            context, '/attendance_dashboard',
+                                            arguments: {});
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                            ),
+                                            //HERE
+                                            Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: Text(
+                                                  'Attendance\nDashboard',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20.00,
+                                ),
+                                Card(
+                                  elevation: 8.0,
+                                  child: Ink(
+                                    width: 150,
+                                    height: 100,
+                                    // color: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.blueGrey,
+                                            Colors.lightBlue
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/bin_dashboard',
+                                            arguments: {});
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.list,
+                                                color: Colors.white),
+                                            Text('Bin Dashboard',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Card(
+                                  elevation: 8.0,
+                                  child: Ink(
+                                    width: 150,
+                                    height: 100,
+                                    // color: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.blueGrey,
+                                            Colors.lightBlue
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/live_dashboard',
+                                            arguments: {});
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.pin_drop_rounded,
+                                                color: Colors.white),
+                                            Text('Live Dashboard',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20.00,
+                                ),
+                                Card(
+                                  elevation: 8.0,
+                                  child: Ink(
+                                    width: 150,
+                                    height: 100,
+                                    // color: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.lightBlue,
+                                            Colors.blueGrey
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.call,
+                                                color: Colors.white),
+                                            Text('Add Task',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        // code for bottom nav screen
+                      ],
+                    ),
+                  ],
+                )),
     );
   }
 }
