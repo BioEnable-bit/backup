@@ -256,7 +256,6 @@ class _TaskListState extends State<TaskList> {
                               size: 30,
                             ),
                             onTap: () async {
-                              print('clicked');
                               var status = await Permission.camera.status;
                               if (!status.isGranted) {
                                 await Permission.camera.request();
@@ -282,11 +281,13 @@ class _TaskListState extends State<TaskList> {
                                     child: CircularProgressIndicator(),
                                   );
                                 });
+
                             addFollowUpAPICall(
-                                _remarkController.text.toString(),
-                                _urlController.text.toString(),
-                                selectedStatus.toString(),
-                                '');
+                              _remarkController.text.toString(),
+                              '',
+                              _urlController.text.toString(),
+                              selectedStatus.toString(),
+                            );
                           } catch (e) {
                             String err = e.toString();
                             ScaffoldMessenger.of(context).showSnackBar(
