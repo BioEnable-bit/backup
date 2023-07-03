@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:pcmc_staff/models/FollowUpListModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
 
@@ -16,11 +17,12 @@ class FollowUpList extends StatefulWidget {
 // raise alert will be an alert dialog
 class _FollowUpListState extends State<FollowUpList> {
   Future<List<FollowUpListModel>> getTasksListDataFromAPI() async {
-    // final prefs = await SharedPreferences.getInstance();
-    // var customerID = prefs.getString('customerID');
+    final prefs = await SharedPreferences.getInstance();
+    var staffID = prefs.getString('staffID');
+    print(staffID);
     Response response = await get(
       Uri.parse(
-          'https://pcmc.bioenabletech.com/api/service.php?q=followup_list&auth_key=PCMCS56ADDGPIL&staff_id=40861'),
+          'https://pcmc.bioenabletech.com/api/service.php?q=followup_list&auth_key=PCMCS56ADDGPIL&staff_id=$staffID'),
     );
     final data = jsonDecode(response.body.toString()) as List<dynamic>;
 

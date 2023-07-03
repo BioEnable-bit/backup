@@ -76,22 +76,16 @@ class _AlertsState extends State<Alerts> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Alert/Issue ID: ' +
-                                    items[index].issue_id.toString()),
-                                Text('Description: ' +
-                                    items[index].description.toString()),
-                                Text('Raised By: ' +
-                                    items[index].raised_By.toString()),
-                                Text('Employee ID: ' +
-                                    items[index].emp_id.toString()),
-                                Text('Ward ID: ' +
-                                    items[index].ward_id.toString()),
-                                Text('Remark: ' +
-                                    items[index].remark.toString()),
-                                Text('Status: ' +
-                                    items[index].status.toString()),
-                                Text('Created On: ' +
-                                    items[index].created_on.toString()),
+                                Text(
+                                    'Alert/Issue ID: ${items[index].issue_id}'),
+                                Text(
+                                    'Description: ${items[index].description}'),
+                                Text('Raised By: ${items[index].raised_By}'),
+                                Text('Employee ID: ${items[index].emp_id}'),
+                                Text('Ward ID: ${items[index].ward_id}'),
+                                Text('Remark: ${items[index].remark}'),
+                                Text('Status: ${items[index].status}'),
+                                Text('Created On: ${items[index].created_on}'),
 
                                 // Text('Task: ' +
                                 //     items[index].description.toString()),
