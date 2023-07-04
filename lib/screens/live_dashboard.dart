@@ -1,39 +1,52 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'home.dart';
-
 class LiveDashBoard extends StatefulWidget {
-  const LiveDashBoard({super.key});
-
+  // final String _appTitle='Bin DashBoard';
+  // final String _connectionString='https://pcmc.geodirect.in/gps/cctv/bin-status-map.php';
+  //
   @override
-  State<LiveDashBoard> createState() => _LiveDashBoardState();
+  _LiveDashBoard createState() =>
+      _LiveDashBoard();
 }
 
-class _LiveDashBoardState extends State<LiveDashBoard> {
+class _LiveDashBoard extends State<LiveDashBoard> {
+  final String _appTitle='Bin DashBoard';
+  final String _connectionString='https://pcmc.geodirect.in/gps/maps/tracking-vehicle1.php';
+
+  int _stackToView = 1;
+  final _key = GlobalKey();
+  _LiveDashBoard();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return const Home();
-            // Navigator.pop(context);
-          })),
-        ),
-        title: const Text("Live Dashboard"),
-      ),
-      body: SizedBox(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: const WebView(
-            initialUrl:
-                "https://pcmc.geodirect.in/gps/maps/tracking-vehicle1.php",
-            javascriptMode: JavascriptMode.unrestricted,
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(middle: Text('Live Dashboard',style: TextStyle(fontSize: 30),)),
+      child: Container(
+        child: SafeArea(
+          child: IndexedStack(
+            index: _stackToView,
+            children: <Widget>[
+              WebView(
+                key: _key,
+                javascriptMode: JavascriptMode.unrestricted,
+                initialUrl: this._connectionString,
+                onPageStarted: (value) => setState(() {
+                  _stackToView = 1;
+                }),
+                onPageFinished: (value) => setState(() {
+                  _stackToView = 0;
+                }),
+              ),
+              Container(
+                color: Color.fromRGBO(250, 250, 250, 1),
+                child: Center(
+                  child: CircularProgressIndicator(color: Colors.deepPurple),
+                ),
+              )
+            ],
           ),
+          top: true,
         ),
       ),
     );
