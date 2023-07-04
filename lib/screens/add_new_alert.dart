@@ -54,6 +54,7 @@ class _AddNewAlertState extends State<AddNewAlert> {
   void initState() {
     super.initState();
     staffID = '';
+
     getAllZoneNames();
     getStaffID();
   }
@@ -224,6 +225,7 @@ class _AddNewAlertState extends State<AddNewAlert> {
                       size: 50,
                     ),
                     onTap: () async {
+                      //permission handler package
                       var status = await Permission.camera.status;
                       if (!status.isGranted) {
                         await Permission.camera.request();

@@ -54,7 +54,9 @@ class _FollowUpListState extends State<FollowUpList> {
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      // updateAlert();
+                    },
                     child: Card(
                       margin: const EdgeInsets.all(10.0),
                       elevation: 5,
@@ -108,4 +110,108 @@ class _FollowUpListState extends State<FollowUpList> {
       ),
     );
   }
+
+  // updateAlert() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           shape: const RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.all(
+  //               Radius.circular(
+  //                 20.0,
+  //               ),
+  //             ),
+  //           ),
+  //           contentPadding: const EdgeInsets.only(
+  //             top: 10.0,
+  //           ),
+  //           title: const Text(
+  //             "Update Remark",
+  //             style: TextStyle(fontSize: 24.0),
+  //           ),
+  //           content: SizedBox(
+  //             height: 550,
+  //             child: SingleChildScrollView(
+  //               padding: const EdgeInsets.all(8.0),
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 children: <Widget>[
+  //                   const Padding(
+  //                     padding: EdgeInsets.all(8.0),
+  //                     child: Text(
+  //                       "Update Remark",
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     padding: const EdgeInsets.all(8.0),
+  //                     child: TextField(
+  //                       controller: _remarkUpdateController,
+  //                       decoration: const InputDecoration(
+  //                           border: OutlineInputBorder(),
+  //                           hintText: 'Update Remark',
+  //                           labelText: 'Update Remark'),
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     padding: const EdgeInsets.all(8.0),
+  //                     child: DropdownButtonFormField<String>(
+  //                       value: selectedStatus,
+  //                       items: statusList.map((String complaint) {
+  //                         return DropdownMenuItem<String>(
+  //                           value: complaint,
+  //                           child: Text(complaint),
+  //                         );
+  //                       }).toList(),
+  //                       onChanged: (String? value) {
+  //                         setState(() {
+  //                           selectedStatus = value;
+  //                         });
+  //                       },
+  //                       decoration: const InputDecoration(
+  //                         labelText: 'Status',
+  //                         hintText: 'Select from drop down',
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     width: double.infinity,
+  //                     height: 60,
+  //                     padding: const EdgeInsets.all(8.0),
+  //                     child: ElevatedButton(
+  //                       onPressed: () {
+  //                         try {
+  //                           //start progress bar
+  //                           showDialog(
+  //                               context: context,
+  //                               builder: (context) {
+  //                                 return const Center(
+  //                                   child: CircularProgressIndicator(),
+  //                                 );
+  //                               });
+  //                           //call method
+  //                           //Passing dummy image foe now TODO: change with image selected from camera/gallery
+  //
+  //                           //stop progress bar
+  //                           // stop progress bar
+  //                           Navigator.of(context).pop();
+  //                         } catch (e) {
+  //                           // stop progress bar
+  //                           Navigator.of(context).pop();
+  //                         }
+  //                       },
+  //                       child: const Text(
+  //                         "Update",
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       });
+  // }
 }

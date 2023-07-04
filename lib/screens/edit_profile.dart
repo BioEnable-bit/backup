@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pcmc_staff/screens/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,49 +15,6 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  // File? _image; // image from camera function
-
-  final imagePicker = ImagePicker();
-
-  // Future getImage() async {
-  //   final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
-  //   // converting images to base64
-  //   // ImagetoBase64(File(pickedFile!.path));
-  //
-  //   setState(() {
-  //     if (pickedFile != null) {
-  //       _image = File(pickedFile);
-  //     }
-  //   });
-  // }
-
-  var compressedBase64Image = '';
-  compressBase64Image(String base64Image, int targetSizeInBytes) async {
-    // Decode the Base64 image to bytes
-    var imageBytes = base64Decode(base64Image);
-
-    // Compress the image bytes
-    var compressedBytes = await FlutterImageCompress.compressWithList(
-      imageBytes,
-      minHeight:
-          1920, // Set the desired height and width of the compressed image
-      minWidth: 1080,
-      quality: 80, // Set the quality of the compressed image (0-100)
-    );
-
-    // Check if the compressed image size is already within the target size
-    if (compressedBytes.lengthInBytes <= targetSizeInBytes) {
-      // If the compressed image is smaller than or equal to the target size, return the Base64 representation
-      setState(() {
-        compressedBase64Image = base64Encode(compressedBytes);
-      });
-      // return base64Encode(compressedBytes);
-    } else {
-      // If the compressed image is larger than the target size, recursively compress it further
-      compressBase64Image(base64Encode(compressedBytes), targetSizeInBytes);
-    }
-  }
-
   Future<List<ProfileDataModel>> getUserDataFromAPI() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');

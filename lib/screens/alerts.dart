@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:pcmc_staff/models/AlertsListModel.dart';
 import 'package:pcmc_staff/screens/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/WardModel.dart';
 import '../models/ZoneModel.dart';
@@ -16,6 +17,10 @@ class Alerts extends StatefulWidget {
 }
 
 class _AlertsState extends State<Alerts> {
+  late String alertID;
+  final TextEditingController _remarkUpdateController = TextEditingController();
+  List<String> statusList = <String>['New', 'Open', 'Close'];
+  String? selectedStatus = 'New';
   final TextEditingController _descriptionController = TextEditingController();
 
   ZoneModel? selectedZone;
@@ -50,6 +55,7 @@ class _AlertsState extends State<Alerts> {
   void initState() {
     super.initState();
     getAllZoneNames();
+    alertID = '';
   }
 
   Future getAllWardNames(zoneid) async {
@@ -74,25 +80,7 @@ class _AlertsState extends State<Alerts> {
     }
   }
 
-  List<String> issueList = <String>[
-    'Parking',
-    'Traffic',
-    'Weather',
-    'Water Clogging',
-    'Missing/Broken Lid',
-    'Leaking Container',
-    'Breakdown',
-    'Mixed Hazardous Waste',
-    'Vehicle Downtime',
-    'Blocked Bins / Illegal Parking',
-    'Bin Repair',
-    'Staff Absent',
-    'Non-Availability Of Premise Owner',
-    'Premise Owner Not Available'
-  ];
-  String? selectedIssue = 'Parking';
-
-  Future<List<AlertsListModel>> getTasksListDataFromAPI() async {
+  Future<List<AlertsListModel>> getAlertsListDataFromAPI() async {
     // final prefs = await SharedPreferences.getInstance();
     // var customerID = prefs.getString('customerID');
     Response response = await get(
@@ -129,7 +117,7 @@ class _AlertsState extends State<Alerts> {
         ],
       ),
       body: FutureBuilder(
-        future: getTasksListDataFromAPI(),
+        future: getAlertsListDataFromAPI(),
         builder: (context, data) {
           if (data.hasError) {
             return Text('${data.error}');
@@ -140,8 +128,13 @@ class _AlertsState extends State<Alerts> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
+                      setState(() {
+                        alertID = items[index].issue_id.toString();
+                        print(alertID);
+                      });
                       //TODO: ADD UPDATE REMARK FUNCTIONALITY ON TAP
-                      // addAlertUpAlert();
+                      updateAlert();
+
                       // When user clicks on alert from alerts list he can add remark
                       //api: Update Issue Remark
                       // https://pcmc.bioenabletech.com/api/service.php?q=update_issue_remark&auth_key=PCMCS56ADDGPIL&id=140&staff_id=40861&remark_update=Bin Repaired&status=Closed
@@ -185,8 +178,45 @@ class _AlertsState extends State<Alerts> {
     );
   }
 
-  addAlertUpAlert() {
-    getAllZoneNames();
+  void updateRemark(alertId, updatedRemark, updatedStatus) async {
+    final prefs = await SharedPreferences.getInstance();
+    var staffID = prefs.getString('staffID');
+    Response response = await post(
+        Uri.parse(
+            'https://pcmc.bioenabletech.com/api/service.php?q=update_issue_remark&auth_key=PCMCS56ADDGPIL'),
+        body: {
+          'id': alertId,
+          'staff_id': staffID,
+          'remark_update': updatedRemark,
+          'status': updatedStatus,
+        });
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+
+      if (data[0]['msg'] == 'success') {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Update successful')));
+        // print('success');
+        // stop progress bar
+        Navigator.of(context).pop();
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) {
+          return const Alerts();
+          // Navigator.pop(context);
+        }));
+      } else {
+        // String resp = data[0]['msg'];
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Something went wrong')));
+        // print('Update failed');
+        Navigator.of(context).pop();
+        return;
+      }
+    }
+  }
+
+  updateAlert() {
     showDialog(
         context: context,
         builder: (context) {
@@ -202,154 +232,54 @@ class _AlertsState extends State<Alerts> {
               top: 10.0,
             ),
             title: const Text(
-              "Add Alert",
+              "Update Remark",
               style: TextStyle(fontSize: 24.0),
             ),
             content: SizedBox(
-              height: 600,
-              width: 400,
+              height: 550,
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text('Select an zone'),
-                    DropdownButton<ZoneModel>(
-                      hint: const Text("Select a zone"),
-                      value: selectedZone,
-                      onChanged: (ZoneModel? newValue) {
-                        setState(() {
-                          selectedZone = newValue;
-                          getAllWardNames(selectedZone?.ward_id.toString());
-                        });
-                        // print(zones.indexOf(newValue!));
-                      },
-                      items: zones.map((ZoneModel zoneModel) {
-                        return DropdownMenuItem<ZoneModel>(
-                          value: zoneModel,
-                          child: Text(
-                            zoneModel.ward_name.toString(),
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(1.0),
-                      child: DropdownButton<ZoneModel>(
-                        hint: const Text("Select a zone"),
-                        value: selectedZone,
-                        onChanged: (ZoneModel? newValue) {
-                          setState(() {
-                            selectedZone = newValue;
-                            getAllWardNames(selectedZone?.ward_id.toString());
-                          });
-                          // print(zones.indexOf(newValue!));
-                        },
-                        items: zones.map((ZoneModel zoneModel) {
-                          return DropdownMenuItem<ZoneModel>(
-                            value: zoneModel,
-                            child: Text(
-                              zoneModel.ward_name.toString(),
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(1.0),
-                      child: DropdownButton<WardModel>(
-                        hint: const Text("Select a ward"),
-                        value: selectedWard,
-                        onChanged: (WardModel? newValue) {
-                          setState(() {
-                            selectedWard = newValue;
-                          });
-                          // print('selected ward index: ' +
-                          //     wards.indexOf(newValue!).toString());
-                        },
-                        items: wards.map((WardModel wardModel) {
-                          return DropdownMenuItem<WardModel>(
-                            value: wardModel,
-                            child: Text(
-                              wardModel.wards_name.toString(),
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    Container(
-                      width: 200,
-                      padding: const EdgeInsets.all(1.0),
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        hint: const Text("Select a issue"),
-                        value: selectedIssue,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedIssue = newValue;
-                          });
-                          // print('selected ward index: ' +
-                          //     wards.indexOf(newValue!).toString());
-                        },
-                        items: issueList.map((String newValue) {
-                          return DropdownMenuItem<String>(
-                            value: newValue,
-                            child: Text(
-                              newValue,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          );
-                        }).toList(),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "Update Remark",
                       ),
                     ),
                     Container(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        controller: _descriptionController,
+                        controller: _remarkUpdateController,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'Add Remark',
-                            labelText: 'Add Remark'),
+                            hintText: 'Update Remark',
+                            labelText: 'Update Remark'),
                       ),
                     ),
                     Container(
                       padding: const EdgeInsets.all(8.0),
-                      // child: Row(
-                      //   children: [
-                      //     _image == null
-                      //         ? Image.asset(
-                      //             'assets/image_placeholder.png',
-                      //             height: 100,
-                      //             width: 150,
-                      //           )
-                      //         : Image.file(
-                      //             _image!,
-                      //             height: 100,
-                      //             width: 150,
-                      //           ),
-                      //     // Image.asset('assets/pick_image.png',
-                      //     //     height: 150, width: 200),
-                      //     const SizedBox(width: 5),
-                      //     InkWell(
-                      //       child: const Icon(
-                      //         Icons.camera_alt,
-                      //         size: 30,
-                      //       ),
-                      //       onTap: () async {
-                      //         var status = await Permission.camera.status;
-                      //         if (!status.isGranted) {
-                      //           await Permission.camera.request();
-                      //         }
-                      //         //TODO: SELECT IMAGE FROM CAMERA
-                      //         // getImage();
-                      //       },
-                      //     )
-                      //   ],
-                      // ),
+                      child: DropdownButtonFormField<String>(
+                        value: selectedStatus,
+                        items: statusList.map((String complaint) {
+                          return DropdownMenuItem<String>(
+                            value: complaint,
+                            child: Text(complaint),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            selectedStatus = value;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Status',
+                          hintText: 'Select from drop down',
+                        ),
+                      ),
                     ),
                     Container(
                       width: double.infinity,
@@ -357,7 +287,21 @@ class _AlertsState extends State<Alerts> {
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                         onPressed: () {
+                          if (_remarkUpdateController.text.toString().isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text('please enter issue remark')));
+                            return;
+                          }
+                          if (selectedStatus!.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('please select status')));
+                            return;
+                          }
                           try {
+                            //start progress bar
                             showDialog(
                                 context: context,
                                 builder: (context) {
@@ -365,20 +309,30 @@ class _AlertsState extends State<Alerts> {
                                     child: CircularProgressIndicator(),
                                   );
                                 });
-                            // TODO: ADD ALERT/Issue API CALL
+                            //call method
+                            print(alertID);
+                            print(_remarkUpdateController.text.toString());
+                            print(selectedStatus.toString());
+
+                            updateRemark(
+                                alertID,
+                                _remarkUpdateController.text.toString(),
+                                selectedStatus.toString());
+                            //Passing dummy image foe now TODO: change with image selected from camera/gallery
+
+                            //stop progress bar
+                            // stop progress bar
+                            Navigator.of(context).pop();
                           } catch (e) {
-                            String err = e.toString();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('error: $err')));
+                            // stop progress bar
+                            Navigator.of(context).pop();
                           }
                         },
                         child: const Text(
-                          "Add Follow Up",
+                          "Update",
                         ),
                       ),
                     ),
-
-                    //Issue Type
                   ],
                 ),
               ),
