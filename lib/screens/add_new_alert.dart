@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:pcmc_staff/screens/alerts.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/WardModel.dart';
 import '../models/ZoneModel.dart';
@@ -23,6 +25,8 @@ class _AddNewAlertState extends State<AddNewAlert> {
   // for ward dropdown
   WardModel? selectedWard;
   List<WardModel> wards = <WardModel>[];
+
+  late String? staffID;
 
   var _image;
   var _image1;
@@ -49,7 +53,9 @@ class _AddNewAlertState extends State<AddNewAlert> {
   @override
   void initState() {
     super.initState();
+    staffID = '';
     getAllZoneNames();
+    getStaffID();
   }
 
   Future getAllWardNames(zoneid) async {
@@ -263,14 +269,63 @@ class _AddNewAlertState extends State<AddNewAlert> {
                   ElevatedButton(
                       onPressed: () {
                         //
+                        Navigator.pushNamed(context, '/alerts', arguments: {});
                       },
-                      child: const Text('Clear')),
+                      child: const Text('Cancel')),
                   const SizedBox(
                     width: 20,
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        //TODO: ADD FUNCTIONALITY
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            });
+                        if (selectedZone == null ||
+                            selectedWard == null ||
+                            selectedIssue.toString().isEmpty ||
+                            _descriptionController.text.toString().isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Invalid or empty input')));
+                          // stop progress bar
+                          Navigator.of(context).pop();
+
+                          return;
+                        }
+                        // print all value
+                        print('Zone id: ${selectedZone!.ward_id.toString()}');
+                        print('Ward id: ${selectedWard!.wards_id.toString()}');
+                        print('Issue: ${selectedIssue.toString()}');
+                        print(
+                            'description: ${_descriptionController.text.toString()}');
+                        // print('image1: ${}');
+                        // print('image2: ${}');
+                        try {
+                          // show progress bar
+
+                          // call api method
+                          addIssue(
+                              staffID,
+                              _descriptionController.text.toString(),
+                              selectedZone!.ward_id.toString(),
+                              selectedIssue,
+                              '18.51410791',
+                              '73.92358895',
+                              '',
+                              '',
+                              selectedWard!.wards_id
+                                  .toString()); //Issue and Alerts are same
+                          // stop progress bar
+                          Navigator.of(context).pop();
+                        } catch (e) {
+                          print('error: ${e.toString()}');
+                          // stop progress bar
+                          Navigator.of(context).pop();
+                        }
                       },
                       child: const Text('Save'))
                 ],
@@ -280,5 +335,56 @@ class _AddNewAlertState extends State<AddNewAlert> {
         ),
       ),
     );
+  }
+
+  void addIssue(staff_id, description, ward_id, issue_type, latitude, longitude,
+      image1, image2, wardid) async {
+    Response response = await post(
+        Uri.parse(
+            'https://pcmc.bioenabletech.com/api/service.php?q=add_issue&auth_key=PCMCS56ADDGPIL'),
+        body: {
+          'staff_id': staff_id,
+          'description': description,
+          'ward_id': ward_id,
+          'issue_type': issue_type,
+          'latitude': latitude,
+          'longitude': longitude,
+          'image1': image1,
+          'image2': image2,
+          'longitude': longitude,
+          'wardid': wardid,
+        });
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+
+      if (data[0]['msg'] == 'success') {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Issue added successfully')));
+        // print('success');
+        // stop progress bar
+        Navigator.of(context).pop();
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) {
+          return const Alerts();
+          // Navigator.pop(context);
+        }));
+      } else {
+        // String resp = data[0]['msg'];
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Something went wrong')));
+        // print('Update failed');
+        Navigator.of(context).pop();
+        return;
+      }
+    }
+  }
+
+  void getStaffID() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      staffID = prefs.getString('staffID');
+      print('staffID: $staffID');
+    });
   }
 }

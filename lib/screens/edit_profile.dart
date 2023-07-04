@@ -318,7 +318,6 @@ class _EditProfileState extends State<EditProfile> {
                           content: Text('please enter proper address')));
                       return;
                     }
-                    //TODO: call update profile api
                     try {
                       //start progress bar
                       showDialog(
@@ -374,9 +373,6 @@ class _EditProfileState extends State<EditProfile> {
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
 
-      // var data = jsonDecode(response.body.toString());
-      // print(data);
-      //TODO: API NOT SHOWING RESPONSE MESSAGE (Once api starts showing response add appropriate response in if else)
       if (data[0]['msg'] == 'success') {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Update successful')));
