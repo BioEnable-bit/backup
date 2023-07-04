@@ -273,6 +273,11 @@ class _TaskListState extends State<TaskList> {
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                         onPressed: () {
+                          if (_remarkController.text.toString().isEmpty ||
+                              _urlController.text.toString().isEmpty ||
+                              selectedStatus.toString().isEmpty) {
+                            return;
+                          }
                           try {
                             showDialog(
                                 context: context,
@@ -281,7 +286,7 @@ class _TaskListState extends State<TaskList> {
                                     child: CircularProgressIndicator(),
                                   );
                                 });
-
+                            //TODO: ADD IMAGE FILE UPLOAD FEATURE
                             addFollowUpAPICall(
                               _remarkController.text.toString(),
                               '',

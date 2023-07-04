@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pcmc_staff/screens/add_new_alert.dart';
 import 'package:pcmc_staff/screens/alerts.dart';
 import 'package:pcmc_staff/screens/attendance_dashboard.dart';
 import 'package:pcmc_staff/screens/attendance_logs.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/live_dashboard': (context) => const LiveDashBoard(),
         '/bin_dashboard': (context) => const BinDashboard(),
         '/edit_profile': (context) => const EditProfile(),
+        '/new_alert': (context) => const AddNewAlert(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),

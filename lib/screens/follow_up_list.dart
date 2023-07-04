@@ -66,15 +66,14 @@ class _FollowUpListState extends State<FollowUpList> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Task: ' + items[index].task.toString()),
-                                Text('Description: ' +
-                                    items[index].description.toString()),
-                                Text('Followup: ' +
-                                    items[index].followup.toString()),
-                                Text('Task Status: ' +
-                                    items[index].task_status.toString()),
-                                Text('Followup Date: ' +
-                                    items[index].followup_date.toString()),
+                                Text('Task: ${items[index].task}'),
+                                Text(
+                                    'Description: ${items[index].description}'),
+                                Text('Followup: ${items[index].followup}'),
+                                Text(
+                                    'Task Status: ${items[index].task_status}'),
+                                Text(
+                                    'Followup Date: ${items[index].followup_date}'),
 
                                 // Text('Task: ' +
                                 //     items[index].description.toString()),
