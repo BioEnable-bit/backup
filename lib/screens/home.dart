@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:pcmc_staff/screens/sign_in.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/ProfileDataModel.dart';
@@ -93,6 +96,35 @@ class _HomeState extends State<Home> {
             color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),
         backgroundColor: Colors.blueGrey, //Colors.blueGrey[900]
         title: const Text('PCMC Staff'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout_rounded, color: Colors.white),
+            onPressed: () {
+              QuickAlert.show(
+                  context: context,
+                  type: QuickAlertType.confirm,
+                  text: 'Do you want to logout',
+                  confirmBtnText: 'Yes',
+                  cancelBtnText: 'No',
+                  confirmBtnColor: Colors.redAccent,
+                  onCancelBtnTap: () {
+                    Navigator.pop(context);
+                  },
+                  onConfirmBtnTap: () {
+                    // signOut();
+                    // Navigator.pop(context);
+                    // Passing Intent to home screen
+                    // signOut();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const SignIn();
+                      // Navigator.pop(context);
+                    }));
+                    // Navigator.pop(context);
+                  });
+            },
+          )
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -154,7 +186,8 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Attendance Dashboard'),
-              leading: const Icon(Icons.perm_identity_rounded,color: Color(0xff0D0F2F)),
+              leading: const Icon(Icons.perm_identity_rounded,
+                  color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -189,7 +222,7 @@ class _HomeState extends State<Home> {
             // ),
             ListTile(
               title: const Text('Fixed Route Map'),
-              leading: const Icon(Icons.location_on,color: Color(0xff0D0F2F)),
+              leading: const Icon(Icons.location_on, color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -200,7 +233,8 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Profile'),
-              leading: const Icon(Icons.account_circle,color: Color(0xff0D0F2F)),
+              leading:
+                  const Icon(Icons.account_circle, color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -211,7 +245,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Tasks List'),
-              leading: const Icon(Icons.task_rounded,color: Color(0xff0D0F2F)),
+              leading: const Icon(Icons.task_rounded, color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -222,7 +256,8 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Follow Up'),
-              leading: const Icon(Icons.follow_the_signs_rounded,color: Color(0xff0D0F2F)),
+              leading: const Icon(Icons.follow_the_signs_rounded,
+                  color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -233,7 +268,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Alerts'),
-              leading: const Icon(Icons.add_alert,color: Color(0xff0D0F2F)),
+              leading: const Icon(Icons.add_alert, color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -244,40 +279,33 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Logout'),
-              leading: const Icon(Icons.logout_rounded,color: Color(0xff0D0F2F)),
+              leading:
+                  const Icon(Icons.logout_rounded, color: Color(0xff0D0F2F)),
               onTap: () {
-                // // Removing Navigation Drawer
-                // Navigator.pop(context);
-                // QuickAlert.show(
-                //     context: context,
-                //     type: QuickAlertType.confirm,
-                //     text: 'Do you want to logout',
-                //     confirmBtnText: 'Yes',
-                //     cancelBtnText: 'No',
-                //     confirmBtnColor: Colors.redAccent,
-                //     onCancelBtnTap: () {
-                //       Navigator.pop(context);
-                //     },
-                //     onConfirmBtnTap: () {
-                //       // signOut();
-                //       // Navigator.pop(context);
-                //       // Passing Intent to home screen
-                //       // signOut();
-                //
-                //       Navigator.pushReplacement(context,
-                //           MaterialPageRoute(builder: (context) {
-                //         return const SignIn();
-                //         // Navigator.pop(context);
-                //       }));
-                //       // Navigator.pop(context);
-                //     });
-                // // Handle item 1 tap
-                // // Intent passing
-                // // signOut();
-                // // Navigator.pushReplacement(context,
-                // //     MaterialPageRoute(builder: (context) {
-                // //   return SignInScreen();
-                // // }));
+                // Removing Navigation Drawer
+                Navigator.pop(context);
+                QuickAlert.show(
+                    context: context,
+                    type: QuickAlertType.confirm,
+                    text: 'Do you want to logout',
+                    confirmBtnText: 'Yes',
+                    cancelBtnText: 'No',
+                    confirmBtnColor: Colors.redAccent,
+                    onCancelBtnTap: () {
+                      Navigator.pop(context);
+                    },
+                    onConfirmBtnTap: () {
+                      // signOut();
+                      // Navigator.pop(context);
+                      // Passing Intent to home screen
+                      // signOut();
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const SignIn();
+                        // Navigator.pop(context);
+                      }));
+                      // Navigator.pop(context);
+                    });
               },
             ),
           ],
