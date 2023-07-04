@@ -154,7 +154,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Attendance Dashboard'),
-              leading: const Icon(Icons.perm_identity_rounded),
+              leading: const Icon(Icons.perm_identity_rounded,color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -189,7 +189,7 @@ class _HomeState extends State<Home> {
             // ),
             ListTile(
               title: const Text('Fixed Route Map'),
-              leading: const Icon(Icons.home),
+              leading: const Icon(Icons.location_on,color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -200,7 +200,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Profile'),
-              leading: const Icon(Icons.home),
+              leading: const Icon(Icons.account_circle,color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -211,7 +211,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Tasks List'),
-              leading: const Icon(Icons.home),
+              leading: const Icon(Icons.task_rounded,color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -222,7 +222,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Follow Up'),
-              leading: const Icon(Icons.home),
+              leading: const Icon(Icons.follow_the_signs_rounded,color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -233,7 +233,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Alerts'),
-              leading: const Icon(Icons.home),
+              leading: const Icon(Icons.add_alert,color: Color(0xff0D0F2F)),
               onTap: () {
                 // Handle item 1 tap Intent Passing
                 // Remove Navigation Drawer
@@ -244,7 +244,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: const Text('Logout'),
-              leading: const Icon(Icons.logout_rounded),
+              leading: const Icon(Icons.logout_rounded,color: Color(0xff0D0F2F)),
               onTap: () {
                 // // Removing Navigation Drawer
                 // Navigator.pop(context);
