@@ -102,8 +102,11 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.blueGrey, //Colors.blueGrey[900]
         title: const Text('PCMC Staff'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.logout_rounded, color: Colors.white),
+          RawMaterialButton(
+            elevation: 1.0,
+            fillColor: const Color(0xFFF5F6F9),
+            padding: const EdgeInsets.all(5.0),
+            shape: const CircleBorder(),
             onPressed: () {
               QuickAlert.show(
                   context: context,
@@ -128,7 +131,38 @@ class _HomeState extends State<Home> {
                     // Navigator.pop(context);
                   });
             },
-          )
+            child: const Icon(
+              Icons.logout,
+              color: Colors.blue,
+            ),
+          ),
+          // IconButton(
+          //   icon: const Icon(Icons.logout_rounded, color: Colors.white),
+          //   onPressed: () {
+          //     QuickAlert.show(
+          //         context: context,
+          //         type: QuickAlertType.confirm,
+          //         text: 'Do you want to logout',
+          //         confirmBtnText: 'Yes',
+          //         cancelBtnText: 'No',
+          //         confirmBtnColor: Colors.redAccent,
+          //         onCancelBtnTap: () {
+          //           Navigator.pop(context);
+          //         },
+          //         onConfirmBtnTap: () {
+          //           // signOut();
+          //           // Navigator.pop(context);
+          //           // Passing Intent to home screen
+          //           // signOut();
+          //           Navigator.pushReplacement(context,
+          //               MaterialPageRoute(builder: (context) {
+          //             return const SignIn();
+          //             // Navigator.pop(context);
+          //           }));
+          //           // Navigator.pop(context);
+          //         });
+          //   },
+          // )
         ],
       ),
       drawer: Drawer(
@@ -259,7 +293,7 @@ class _HomeState extends State<Home> {
                 // Navigator.pushNamed(context, '/tasks_list', arguments: {});
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) {
-                  return TaskList('$designation');
+                  return TaskList();
                   // Navigator.pop(context);
                 }));
               },
@@ -428,27 +462,47 @@ class _HomeState extends State<Home> {
                                     ),
                                     child: InkWell(
                                       onTap: () {
+                                        // Function to be called when container is tapped
                                         Navigator.pushNamed(
                                             context, '/attendance_dashboard',
                                             arguments: {});
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(16),
-                                        child: const Column(
+                                        child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Icon(
-                                              Icons.add,
-                                              color: Colors.white,
+                                            RawMaterialButton(
+                                              elevation: 1.0,
+                                              fillColor:
+                                                  const Color(0xFFF5F6F9),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              shape: const CircleBorder(),
+                                              onPressed: () {
+                                                Navigator.pushNamed(context,
+                                                    '/attendance_dashboard',
+                                                    arguments: {});
+                                              },
+                                              child: const Icon(
+                                                Icons
+                                                    .dashboard_customize_rounded,
+                                                color: Colors.blue,
+                                              ),
                                             ),
-                                            Text('Attendance\nDashboard',
-                                                style: TextStyle(
+
+                                            //HERE
+                                            const Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: Text('Attendance',
+                                                  style: TextStyle(
                                                     color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
+                                                    fontWeight: FontWeight.bold,
+                                                  )),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -477,21 +531,35 @@ class _HomeState extends State<Home> {
                                     ),
                                     child: InkWell(
                                       onTap: () {
-                                        Navigator.pushNamed(
-                                            context, '/tasks_list',
+                                        Navigator.pushNamed(context, '/alerts',
                                             arguments: {});
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(16),
-                                        child: const Column(
+                                        child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.list,
-                                                color: Colors.white),
-                                            Text('Tasks List',
+                                            RawMaterialButton(
+                                              elevation: 1.0,
+                                              fillColor:
+                                                  const Color(0xFFF5F6F9),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              shape: const CircleBorder(),
+                                              onPressed: () {
+                                                Navigator.pushNamed(
+                                                    context, '/alerts',
+                                                    arguments: {});
+                                              },
+                                              child: const Icon(
+                                                Icons.taxi_alert,
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                            const Text('Alerts',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:
@@ -506,106 +574,6 @@ class _HomeState extends State<Home> {
                             ),
                             const SizedBox(
                               height: 30,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Card(
-                                  elevation: 8.0,
-                                  child: Ink(
-                                    width: 150,
-                                    height: 100,
-                                    // color: Colors.blue,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      gradient: const LinearGradient(
-                                          colors: [
-                                            Colors.blueGrey,
-                                            Colors.lightBlue
-                                          ],
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        // Function to be called when container is tapped
-                                        // Navigator.push(context,
-                                        //     MaterialPageRoute(builder: (context) {
-                                        //   return const GarbageCollectionStatusScreen();
-                                        // }));
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(16),
-                                        child: const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.pin_drop_rounded,
-                                                color: Colors.white),
-                                            Text('Garbage Collection Status',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 20.00,
-                                ),
-                                Card(
-                                  elevation: 8.0,
-                                  child: Ink(
-                                    width: 150,
-                                    height: 100,
-                                    // color: Colors.blue,
-                                    decoration: BoxDecoration(
-                                      gradient: const LinearGradient(
-                                          colors: [
-                                            Colors.lightBlue,
-                                            Colors.blueGrey
-                                          ],
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        // Function to be called when container is tapped
-                                        // Navigator.push(context,
-                                        //     MaterialPageRoute(builder: (context) {
-                                        //   return const HelplineScreen();
-                                        // }));
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(16),
-                                        child: const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.call,
-                                                color: Colors.white),
-                                            Text('Helpline',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
                           ],
                         ),
@@ -726,21 +694,35 @@ class _HomeState extends State<Home> {
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(16),
-                                        child: const Column(
+                                        child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Icon(
-                                              Icons.add,
-                                              color: Colors.white,
+                                            RawMaterialButton(
+                                              elevation: 1.0,
+                                              fillColor:
+                                                  const Color(0xFFF5F6F9),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              shape: const CircleBorder(),
+                                              onPressed: () {
+                                                Navigator.pushNamed(context,
+                                                    '/attendance_dashboard',
+                                                    arguments: {});
+                                              },
+                                              child: const Icon(
+                                                Icons
+                                                    .dashboard_customize_rounded,
+                                                color: Colors.blue,
+                                              ),
                                             ),
+
                                             //HERE
-                                            Align(
+                                            const Align(
                                               alignment: Alignment.bottomCenter,
-                                              child: Text(
-                                                  'Attendance\nDashboard',
+                                              child: Text('Attendance',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
@@ -775,20 +757,35 @@ class _HomeState extends State<Home> {
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.pushNamed(
-                                            context, '/bin_dashboard',
+                                            context, '/new_task',
                                             arguments: {});
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(16),
-                                        child: const Column(
+                                        child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.list,
-                                                color: Colors.white),
-                                            Text('Bin Dashboard',
+                                            RawMaterialButton(
+                                              elevation: 1.0,
+                                              fillColor:
+                                                  const Color(0xFFF5F6F9),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              shape: const CircleBorder(),
+                                              onPressed: () {
+                                                Navigator.pushNamed(
+                                                    context, '/new_task',
+                                                    arguments: {});
+                                              },
+                                              child: const Icon(
+                                                Icons.add,
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                            const Text('Add New Task',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:
@@ -833,15 +830,30 @@ class _HomeState extends State<Home> {
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(16),
-                                        child: const Column(
+                                        child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.pin_drop_rounded,
-                                                color: Colors.white),
-                                            Text('Live Dashboard',
+                                            RawMaterialButton(
+                                              elevation: 1.0,
+                                              fillColor:
+                                                  const Color(0xFFF5F6F9),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              shape: const CircleBorder(),
+                                              onPressed: () {
+                                                Navigator.pushNamed(
+                                                    context, '/live_dashboard',
+                                                    arguments: {});
+                                              },
+                                              child: const Icon(
+                                                Icons.dataset_linked_sharp,
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                            const Text('Live Dashboard',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:
@@ -872,18 +884,37 @@ class _HomeState extends State<Home> {
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     child: InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/bin_dashboard',
+                                            arguments: {});
+                                      },
                                       child: Container(
                                         padding: const EdgeInsets.all(16),
-                                        child: const Column(
+                                        child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.call,
-                                                color: Colors.white),
-                                            Text('Add Task',
+                                            RawMaterialButton(
+                                              elevation: 1.0,
+                                              fillColor:
+                                                  const Color(0xFFF5F6F9),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              shape: const CircleBorder(),
+                                              onPressed: () {
+                                                Navigator.pushNamed(
+                                                    context, '/bin_dashboard',
+                                                    arguments: {});
+                                              },
+                                              child: const Icon(
+                                                Icons.gas_meter_rounded,
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                            const Text('Bin Dashboard',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:

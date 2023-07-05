@@ -9,17 +9,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
 
 class TaskList extends StatefulWidget {
-  final String designation;
-  const TaskList(this.designation, {super.key});
+  const TaskList({super.key});
 
   @override
-  State<TaskList> createState() => _TaskListState(this.designation);
+  State<TaskList> createState() => _TaskListState();
 }
 
 class _TaskListState extends State<TaskList> {
-  final String designation;
-  _TaskListState(this.designation);
-
+  // Create an instance variable.
+  late final Future myFuture;
   final TextEditingController _remarkController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
 
@@ -28,9 +26,13 @@ class _TaskListState extends State<TaskList> {
 
   List<String> statusList = <String>['New', 'Open', 'Close'];
   String? selectedStatus = 'New';
+
+  late String? userDesignation;
+
   Future<List<TasksListModel>> getTasksListDataFromAPI() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
+    userDesignation = prefs.getString('designation');
 
     Response response = await get(
       Uri.parse(
@@ -84,7 +86,10 @@ class _TaskListState extends State<TaskList> {
   @override
   void initState() {
     taskID = '';
-    print('designation: $designation');
+    userDesignation = '';
+    // Assign that variable your Future.
+    myFuture = getTasksListDataFromAPI();
+
     super.initState();
   }
 
@@ -102,16 +107,22 @@ class _TaskListState extends State<TaskList> {
         ),
         title: const Text("Task List"),
         actions: [
-          // designation == 'Supervisor'
-          //     ? IconButton(
-          //         icon: const Icon(Icons.add_box, color: Colors.blueGrey),
-          //         onPressed: () {
-          //           // TODO: Add Alerts popup functionality
-          //
-          //           Navigator.pushNamed(context, '/new_alert', arguments: {});
-          //         },
-          //       )
-          //     : Text('')
+          userDesignation == 'Supervisor'
+              ? RawMaterialButton(
+                  onPressed: () {
+                    print('clicked');
+                    //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
+                  },
+                  elevation: 1.0,
+                  fillColor: const Color(0xFFF5F6F9),
+                  padding: const EdgeInsets.all(5.0),
+                  shape: const CircleBorder(),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.blue,
+                  ),
+                )
+              : Container()
         ],
       ),
       body: FutureBuilder(
@@ -326,6 +337,15 @@ class _TaskListState extends State<TaskList> {
             ),
           );
         });
+  }
+
+  void getUserDesignation() async {
+    final prefs = await SharedPreferences.getInstance();
+    var designation = prefs.getString('designation');
+    print('designation: $designation');
+    setState(() {
+      userDesignation = prefs.getString('designation');
+    });
   }
 }
 

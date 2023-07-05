@@ -103,6 +103,7 @@ class _SignInScreenState extends State<SignIn> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
                       controller: _mobileNumberController,
+                      keyboardType: TextInputType.phone,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter your mobile number';
@@ -260,6 +261,8 @@ class _SignInScreenState extends State<SignIn> {
                                     var data =
                                         jsonDecode(response.body.toString());
                                     if (data[0]['msg'] == 'success') {
+                                      print(
+                                          'Designation: ${data[0]['designation']}');
                                       _saveLogindata(
                                           data[0]['staffID'],
                                           data[0]['WardID'],

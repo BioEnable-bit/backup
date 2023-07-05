@@ -10,6 +10,7 @@ import 'package:pcmc_staff/screens/forgot_password.dart';
 import 'package:pcmc_staff/screens/home.dart';
 import 'package:pcmc_staff/screens/live_dashboard.dart';
 import 'package:pcmc_staff/screens/monthly_timecard.dart';
+import 'package:pcmc_staff/screens/new_task.dart';
 import 'package:pcmc_staff/screens/profile.dart';
 import 'package:pcmc_staff/screens/route_map.dart';
 import 'package:pcmc_staff/screens/sign_in.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
         '/route_map': (context) => RouteMap(),
         '/profile': (context) =>
             const Profile(), // from profile when user clicks on edit/update - he/she can update profile with profileUpdate Alert Dialog
-        '/tasks_list': (context) => const TaskList(''),
+        '/tasks_list': (context) => const TaskList(),
+        '/new_task': (context) => const NewTask(),
         '/follow_up': (context) => const FollowUpList(),
         '/alerts': (context) => const Alerts(),
         '/live_dashboard': (context) => LiveDashBoard(),
