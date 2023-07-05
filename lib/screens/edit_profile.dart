@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pcmc_staff/screens/profile.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/ProfileDataModel.dart';
@@ -15,6 +18,45 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  //step 3
+  Uint8List? _image;
+  // step 1
+  pickImage(ImageSource source) async {
+    final ImagePicker _imagePicker = ImagePicker();
+    XFile? _file = await _imagePicker.pickImage(source: source);
+    if (_file != null) {
+      return await _file.readAsBytes();
+    }
+    print('No Image Selected');
+  }
+
+  // step 2
+  void selectImage() async {
+    //
+    Uint8List image = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  //
+  getFromGallery(context) async {
+    try {
+      XFile? pickedFile = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1800,
+        maxHeight: 1800,
+      );
+    } catch (e) {
+      var status = await Permission.photos.status;
+      if (status.isDenied) {
+        showAlertDialog(context);
+      } else {
+        print('exception: ${e.toString()}');
+      }
+    }
+  }
+
   Future<List<ProfileDataModel>> getUserDataFromAPI() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
@@ -138,19 +180,27 @@ class _EditProfileState extends State<EditProfile> {
                     clipBehavior: Clip.none,
                     fit: StackFit.expand,
                     children: [
-                      const CircleAvatar(
-                        radius: 20.0,
-                        backgroundImage: NetworkImage(
-                          'http://www.bbk.ac.uk/mce/wp-content/uploads/2015/03/8327142885_9b447935ff.jpg',
-                        ),
-                        backgroundColor: Colors.transparent,
-                      ),
+                      _image != null
+                          ? CircleAvatar(
+                              radius: 20.0,
+                              backgroundImage: MemoryImage(
+                                _image!,
+                              ),
+                              backgroundColor: Colors.transparent,
+                            )
+                          : CircleAvatar(
+                              radius: 20.0,
+                              backgroundImage: NetworkImage(
+                                'http://www.bbk.ac.uk/mce/wp-content/uploads/2015/03/8327142885_9b447935ff.jpg',
+                              ),
+                              backgroundColor: Colors.transparent,
+                            ),
                       Positioned(
                           bottom: 0,
                           right: 0,
                           child: RawMaterialButton(
                             onPressed: () {
-                              print('clicked');
+                              selectImage();
                               //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
                             },
                             elevation: 2.0,
@@ -351,4 +401,8 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   FlatButton({required Text child, required Null Function() onPressed}) {}
+
+  void showAlertDialog(context) {
+    print('access denied');
+  }
 }
