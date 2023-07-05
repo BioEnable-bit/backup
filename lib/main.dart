@@ -16,7 +16,6 @@ import 'package:pcmc_staff/screens/sign_in.dart';
 import 'package:pcmc_staff/screens/splash.dart';
 import 'package:pcmc_staff/screens/task_list.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -41,11 +40,11 @@ class MyApp extends StatelessWidget {
         '/route_map': (context) => RouteMap(),
         '/profile': (context) =>
             const Profile(), // from profile when user clicks on edit/update - he/she can update profile with profileUpdate Alert Dialog
-        '/tasks_list': (context) => const TaskList(),
+        '/tasks_list': (context) => const TaskList(''),
         '/follow_up': (context) => const FollowUpList(),
         '/alerts': (context) => const Alerts(),
-        '/live_dashboard': (context) =>  LiveDashBoard(),
-        '/bin_dashboard': (context) =>  BinDashboard(),
+        '/live_dashboard': (context) => LiveDashBoard(),
+        '/bin_dashboard': (context) => BinDashboard(),
         '/edit_profile': (context) => const EditProfile(),
         '/new_alert': (context) => const AddNewAlert(),
       },

@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:pcmc_staff/screens/sign_in.dart';
+import 'package:pcmc_staff/screens/task_list.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +19,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  static String? designation;
+  String? getDesignation() => designation;
   late String profileImage;
   late String userName;
   late String userDesignation;
@@ -40,6 +43,8 @@ class _HomeState extends State<Home> {
       profileImage = data[0]['photo'];
       userName = data[0]['staffname'];
       userDesignation = data[0]['designation'];
+      designation = data[0][
+          'designation']; //using designation variable value to decide whether to show add task option in tasks list screen app bar or not
       print(data[0]['mobile']);
       userMobile = data[0]['mobile'];
       print(userDesignation);
@@ -251,7 +256,12 @@ class _HomeState extends State<Home> {
                 // Remove Navigation Drawer
                 Navigator.pop(context);
                 // Intent passing
-                Navigator.pushNamed(context, '/tasks_list', arguments: {});
+                // Navigator.pushNamed(context, '/tasks_list', arguments: {});
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) {
+                  return TaskList('$designation');
+                  // Navigator.pop(context);
+                }));
               },
             ),
             ListTile(

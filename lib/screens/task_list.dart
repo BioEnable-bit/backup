@@ -9,13 +9,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
 
 class TaskList extends StatefulWidget {
-  const TaskList({super.key});
+  final String designation;
+  const TaskList(this.designation, {super.key});
 
   @override
-  State<TaskList> createState() => _TaskListState();
+  State<TaskList> createState() => _TaskListState(this.designation);
 }
 
 class _TaskListState extends State<TaskList> {
+  final String designation;
+  _TaskListState(this.designation);
+
   final TextEditingController _remarkController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
 
@@ -27,7 +31,7 @@ class _TaskListState extends State<TaskList> {
   Future<List<TasksListModel>> getTasksListDataFromAPI() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
-    print(staffID);
+
     Response response = await get(
       Uri.parse(
           'https://pcmc.bioenabletech.com/api/service.php?q=task_list&auth_key=PCMCS56ADDGPIL&staff_id=$staffID'),
@@ -35,7 +39,6 @@ class _TaskListState extends State<TaskList> {
     final data = jsonDecode(response.body.toString()) as List<dynamic>;
     setState(() {
       taskID = data[0]['taskid'];
-      print(taskID);
     });
 
     return data.map((e) => TasksListModel.fromJson(e)).toList();
@@ -81,6 +84,7 @@ class _TaskListState extends State<TaskList> {
   @override
   void initState() {
     taskID = '';
+    print('designation: $designation');
     super.initState();
   }
 
@@ -97,6 +101,18 @@ class _TaskListState extends State<TaskList> {
           })),
         ),
         title: const Text("Task List"),
+        actions: [
+          // designation == 'Supervisor'
+          //     ? IconButton(
+          //         icon: const Icon(Icons.add_box, color: Colors.blueGrey),
+          //         onPressed: () {
+          //           // TODO: Add Alerts popup functionality
+          //
+          //           Navigator.pushNamed(context, '/new_alert', arguments: {});
+          //         },
+          //       )
+          //     : Text('')
+        ],
       ),
       body: FutureBuilder(
         future: getTasksListDataFromAPI(),
@@ -312,3 +328,57 @@ class _TaskListState extends State<TaskList> {
         });
   }
 }
+
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
+//
+// class AppPage extends StatefulWidget {
+//   final String _appTitle;
+//   final String _connectionString;
+//   AppPage(this._appTitle, this._connectionString);
+//   @override
+//   _AppPageState createState() =>
+//       _AppPageState(this._appTitle, this._connectionString);
+// }
+
+// class _AppPageState extends State<AppPage> {
+//   final String _appTitle;
+//   final String _connectionString;
+//   num _stackToView = 1;
+//   final _key = GlobalKey();
+//   _AppPageState(this._appTitle, this._connectionString);
+//   @override
+//   Widget build(BuildContext context) {
+//     return CupertinoPageScaffold(
+//       navigationBar: CupertinoNavigationBar(middle: Text(_appTitle)),
+//       child: Container(
+//         child: SafeArea(
+//           child: IndexedStack(
+//             index: _stackToView,
+//             children: <Widget>[
+//               WebView(
+//                 key: _key,
+//                 javascriptMode: JavascriptMode.unrestricted,
+//                 initialUrl: this._connectionString,
+//                 onPageStarted: (value) => setState(() {
+//                   _stackToView = 1;
+//                 }),
+//                 onPageFinished: (value) => setState(() {
+//                   _stackToView = 0;
+//                 }),
+//               ),
+//               Container(
+//                 color: Color.fromRGBO(250, 250, 250, 1),
+//                 child: Center(
+//                   child: CircularProgressIndicator(),
+//                 ),
+//               )
+//             ],
+//           ),
+//           top: true,
+//         ),
+//       ),
+//     );
+//   }
+// }
