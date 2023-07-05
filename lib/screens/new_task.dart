@@ -8,8 +8,6 @@ import 'package:pcmc_staff/models/LocationModel.dart';
 import 'package:pcmc_staff/screens/task_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'home.dart';
-
 class NewTask extends StatefulWidget {
   const NewTask({super.key});
 
@@ -93,10 +91,10 @@ class _NewTaskState extends State<NewTask> {
       appBar: AppBar(
         title: const Text("New Task"),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-            return const Home();
+            return const TaskList();
             // Navigator.pop(context);
           })),
         ),
@@ -245,7 +243,7 @@ class _NewTaskState extends State<NewTask> {
                     if (value.isNotEmpty) {
                       setState(() {
                         _selectedDate = value;
-                        print(_selectedDate);
+                        // print(_selectedDate);
                       });
                     }
                   },

@@ -103,6 +103,14 @@ class _AddNewAlertState extends State<AddNewAlert> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Alert"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) {
+            return const Alerts();
+            // Navigator.pop(context);
+          })),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

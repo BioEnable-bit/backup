@@ -98,7 +98,7 @@ class _TaskListState extends State<TaskList> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return const Home();
@@ -107,22 +107,19 @@ class _TaskListState extends State<TaskList> {
         ),
         title: const Text("Task List"),
         actions: [
-          userDesignation == 'Supervisor'
-              ? RawMaterialButton(
-                  onPressed: () {
-                    print('clicked');
-                    //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
-                  },
-                  elevation: 1.0,
-                  fillColor: const Color(0xFFF5F6F9),
-                  padding: const EdgeInsets.all(5.0),
-                  shape: const CircleBorder(),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.blue,
-                  ),
-                )
-              : Container()
+          RawMaterialButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/new_task', arguments: {});
+            },
+            elevation: 1.0,
+            fillColor: const Color(0xFFF5F6F9),
+            padding: const EdgeInsets.all(5.0),
+            shape: const CircleBorder(),
+            child: const Icon(
+              Icons.add,
+              color: Colors.blue,
+            ),
+          )
         ],
       ),
       body: FutureBuilder(
