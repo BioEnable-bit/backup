@@ -927,6 +927,135 @@ class _HomeState extends State<Home> {
                                 ),
                               ],
                             ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Card(
+                                  elevation: 8.0,
+                                  child: Ink(
+                                    width: 150,
+                                    height: 100,
+                                    // color: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.blueGrey,
+                                            Colors.lightBlue
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/assigned_vehicles',
+                                            arguments: {});
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            RawMaterialButton(
+                                              elevation: 1.0,
+                                              fillColor:
+                                                  const Color(0xFFF5F6F9),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              shape: const CircleBorder(),
+                                              onPressed: () {
+                                                Navigator.pushNamed(context,
+                                                    '/assigned_vehicles',
+                                                    arguments: {});
+                                              },
+                                              child: const Icon(
+                                                Icons.fire_truck_rounded,
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                            const Text('Vehicles',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20.00,
+                                ),
+                                Card(
+                                  elevation: 8.0,
+                                  child: Ink(
+                                    width: 150,
+                                    height: 100,
+                                    // color: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.lightBlue,
+                                            Colors.blueGrey
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/bin_dashboard',
+                                            arguments: {});
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            RawMaterialButton(
+                                              elevation: 1.0,
+                                              fillColor:
+                                                  const Color(0xFFF5F6F9),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              shape: const CircleBorder(),
+                                              onPressed: () {
+                                                Navigator.pushNamed(
+                                                    context, '/bin_dashboard',
+                                                    arguments: {});
+                                              },
+                                              child: const Icon(
+                                                Icons.gas_meter_rounded,
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                            const Text('Bin Dashboard',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                         // code for bottom nav screen

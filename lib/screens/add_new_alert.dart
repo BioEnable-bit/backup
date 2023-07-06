@@ -22,6 +22,7 @@ class _AddNewAlertState extends State<AddNewAlert> {
   //step 3
   Uint8List? _image;
   Uint8List? _image1;
+
   // step 1
   pickImage(ImageSource source) async {
     final ImagePicker _imagePicker = ImagePicker();
@@ -38,6 +39,7 @@ class _AddNewAlertState extends State<AddNewAlert> {
     Uint8List image = await pickImage(ImageSource.camera);
     setState(() {
       _image = image;
+
       print('image size: ${_image!.lengthInBytes}');
     });
   }
