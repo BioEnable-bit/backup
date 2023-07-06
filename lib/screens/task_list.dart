@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pcmc_staff/models/TasksListModel.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,12 +18,29 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
+  Uint8List? _image;
+  pickImage(ImageSource source) async {
+    final ImagePicker _imagePicker = ImagePicker();
+    XFile? _file = await _imagePicker.pickImage(source: source);
+    if (_file != null) {
+      return await _file.readAsBytes();
+    }
+    print('No Image Selected');
+  }
+
+  void selectImage() async {
+    //
+    Uint8List image = await pickImage(ImageSource.camera);
+    setState(() {
+      _image = image;
+    });
+  }
+
   // Create an instance variable.
   late final Future myFuture;
   final TextEditingController _remarkController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
 
-  var _image;
   late String taskID;
 
   List<String> statusList = <String>['New', 'Open', 'Close'];
@@ -256,40 +275,49 @@ class _TaskListState extends State<TaskList> {
                         ),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          _image == null
-                              ? Image.asset(
-                                  'assets/image_placeholder.png',
-                                  height: 100,
-                                  width: 150,
-                                )
-                              : Image.file(
-                                  _image!,
-                                  height: 100,
-                                  width: 150,
-                                ),
-                          // Image.asset('assets/pick_image.png',
-                          //     height: 150, width: 200),
-                          const SizedBox(width: 5),
-                          InkWell(
-                            child: const Icon(
-                              Icons.camera_alt,
-                              size: 30,
-                            ),
-                            onTap: () async {
+                    Row(
+                      children: [
+                        _image == null
+                            ? Image.asset(
+                                'assets/image_placeholder.png',
+                                height: 100,
+                                width: 150,
+                              )
+                            : Image.memory(
+                                _image!,
+                                height: 150,
+                                width: 200,
+                              ),
+                        const SizedBox(width: 5.0),
+                        InkWell(
+                          child: RawMaterialButton(
+                            onPressed: () async {
                               var status = await Permission.camera.status;
                               if (!status.isGranted) {
                                 await Permission.camera.request();
                               }
-                              //TODO: SELECT IMAGE FROM CAMERA
-                              // getImage();
+                              selectImage();
                             },
-                          )
-                        ],
-                      ),
+                            elevation: 1.0,
+                            fillColor: const Color(0xFFF5F6F9),
+                            padding: const EdgeInsets.all(5.0),
+                            shape: const CircleBorder(),
+                            child: const Icon(
+                              Icons.camera_alt_outlined,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          onTap: () async {
+                            var status = await Permission.camera.status;
+                            if (!status.isGranted) {
+                              await Permission.camera.request();
+                            }
+                            selectImage();
+
+                            // getImage1();
+                          },
+                        )
+                      ],
                     ),
                     Container(
                       width: double.infinity,
