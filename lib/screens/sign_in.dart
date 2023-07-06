@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -15,6 +16,58 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignIn> {
+  bool ActiveConnection = false;
+
+  Future checkUserConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        setState(() {
+          ActiveConnection = true;
+          getAlldesigNames();
+
+          print('internet');
+        });
+      }
+    } on SocketException catch (e) {
+      print(e.toString());
+      setState(() {
+        ActiveConnection = false;
+        print('no internet');
+        ShowAlertDialog(context);
+      });
+    }
+  }
+
+  ShowAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+        checkUserConnection();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("No Internet Connection"),
+      content:
+          const Text("Switch on your device internet connection to continue"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   final _formKey = GlobalKey<FormState>();
   final _mobileNumberController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -45,6 +98,7 @@ class _SignInScreenState extends State<SignIn> {
 
   @override
   void initState() {
+    checkUserConnection();
     super.initState();
     getAlldesigNames();
   }

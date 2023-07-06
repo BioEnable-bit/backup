@@ -48,6 +48,8 @@ dependencies:
 
   flutter_image_compress: ^2.0.3
 
+  connectivity_plus: ^2.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
