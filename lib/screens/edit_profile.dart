@@ -188,7 +188,7 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                               backgroundColor: Colors.transparent,
                             )
-                          : CircleAvatar(
+                          : const CircleAvatar(
                               radius: 20.0,
                               backgroundImage: NetworkImage(
                                 'http://www.bbk.ac.uk/mce/wp-content/uploads/2015/03/8327142885_9b447935ff.jpg',

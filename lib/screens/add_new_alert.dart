@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pcmc_staff/screens/alerts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +19,36 @@ class AddNewAlert extends StatefulWidget {
 }
 
 class _AddNewAlertState extends State<AddNewAlert> {
+  //step 3
+  Uint8List? _image;
+  Uint8List? _image1;
+  // step 1
+  pickImage(ImageSource source) async {
+    final ImagePicker _imagePicker = ImagePicker();
+    XFile? _file = await _imagePicker.pickImage(source: source);
+    if (_file != null) {
+      return await _file.readAsBytes();
+    }
+    print('No Image Selected');
+  }
+
+  // step 2
+  void selectImage() async {
+    //
+    Uint8List image = await pickImage(ImageSource.camera);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  void selectImage1() async {
+    //
+    Uint8List image = await pickImage(ImageSource.camera);
+    setState(() {
+      _image1 = image;
+    });
+  }
+
   final TextEditingController _descriptionController = TextEditingController();
 
   ZoneModel? selectedZone;
@@ -28,8 +60,6 @@ class _AddNewAlertState extends State<AddNewAlert> {
 
   late String? staffID;
 
-  var _image;
-  var _image1;
   // we need to populate this list so creating Future function
   Future getAllZoneNames() async {
     Response response = await post(Uri.parse(
@@ -202,10 +232,10 @@ class _AddNewAlertState extends State<AddNewAlert> {
                 ],
               ),
               Container(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: TextField(
                   controller: _descriptionController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Description',
                       labelText: 'Description'),
@@ -219,26 +249,38 @@ class _AddNewAlertState extends State<AddNewAlert> {
                           height: 150,
                           width: 200,
                         )
-                      : Image.file(
+                      : Image.memory(
                           _image!,
                           height: 150,
                           width: 200,
                         ),
-                  // Image.asset('assets/pick_image.png',
-                  //     height: 150, width: 200),
                   const SizedBox(width: 16.0),
                   InkWell(
-                    child: const Icon(
-                      Icons.camera_alt,
-                      size: 50,
+                    child: RawMaterialButton(
+                      onPressed: () async {
+                        var status = await Permission.camera.status;
+                        if (!status.isGranted) {
+                          await Permission.camera.request();
+                        }
+                        selectImage();
+                      },
+                      elevation: 2.0,
+                      fillColor: const Color(0xFFF5F6F9),
+                      padding: const EdgeInsets.all(15.0),
+                      shape: const CircleBorder(),
+                      child: const Icon(
+                        Icons.camera_alt_outlined,
+                        color: Colors.blue,
+                      ),
                     ),
                     onTap: () async {
-                      //permission handler package
                       var status = await Permission.camera.status;
                       if (!status.isGranted) {
                         await Permission.camera.request();
                       }
-                      // getImage();
+                      selectImage();
+
+                      // getImage1();
                     },
                   )
                 ],
@@ -251,22 +293,36 @@ class _AddNewAlertState extends State<AddNewAlert> {
                           height: 150,
                           width: 200,
                         )
-                      : Image.file(
+                      : Image.memory(
                           _image1!,
                           height: 150,
                           width: 200,
                         ),
                   const SizedBox(width: 16.0),
                   InkWell(
-                    child: const Icon(
-                      Icons.camera_alt,
-                      size: 50,
+                    child: RawMaterialButton(
+                      onPressed: () async {
+                        var status = await Permission.camera.status;
+                        if (!status.isGranted) {
+                          await Permission.camera.request();
+                        }
+                        selectImage1();
+                      },
+                      elevation: 2.0,
+                      fillColor: const Color(0xFFF5F6F9),
+                      padding: const EdgeInsets.all(15.0),
+                      shape: const CircleBorder(),
+                      child: const Icon(
+                        Icons.camera_alt_outlined,
+                        color: Colors.blue,
+                      ),
                     ),
                     onTap: () async {
                       var status = await Permission.camera.status;
                       if (!status.isGranted) {
                         await Permission.camera.request();
                       }
+                      selectImage1();
 
                       // getImage1();
                     },
