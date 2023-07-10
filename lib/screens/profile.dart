@@ -55,7 +55,7 @@ class _ProfileState extends State<Profile> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back_ios_sharp),
             onPressed: () => Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
               return const Home();
@@ -108,7 +108,6 @@ class _ProfileState extends State<Profile> {
                                 IconButton(
                                   // alignment: Alignment(200, 0),
                                   onPressed: () {
-                                    //TODO: OPEN EDIT PROFILE SCREEN ON ICON TAP
                                     Navigator.pushNamed(
                                         context, '/edit_profile',
                                         arguments: {});
@@ -126,6 +125,24 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       ),
+                      //TODO: START HERE ON MONDAY
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Image.memory(
+                          //   const Base64Decoder().convert(
+                          //     items[0].photo.toString(),
+                          //   ),
+                          //   width: 500,
+                          //   height: 250,
+                          // ),
+                          const SizedBox(
+                            height: 10,
+                          )
+                        ],
+                      ),
+
                       Padding(
                         padding: const EdgeInsets.all(30),
                         child: Column(

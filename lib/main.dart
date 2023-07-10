@@ -9,6 +9,7 @@ import 'package:pcmc_staff/screens/edit_profile.dart';
 import 'package:pcmc_staff/screens/follow_up_list.dart';
 import 'package:pcmc_staff/screens/forgot_password.dart';
 import 'package:pcmc_staff/screens/home.dart';
+import 'package:pcmc_staff/screens/home_supervisor.dart';
 import 'package:pcmc_staff/screens/live_dashboard.dart';
 import 'package:pcmc_staff/screens/monthly_timecard.dart';
 import 'package:pcmc_staff/screens/new_task.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         '/sign_in': (context) => const SignIn(),
         '/forgot_password': (context) => const ForgotPassword(),
         '/home': (context) => const Home(),
+        '/home_supervisor': (context) => const HomeSupervisor(),
         '/attendance_dashboard': (context) => const AttendanceDashboard(),
         '/attendance_logs': (context) => const AttendanceLogs(),
         '/time_card': (context) => const MonthlyTimeCard(),

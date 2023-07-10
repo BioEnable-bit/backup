@@ -20,13 +20,19 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   //step 3
   Uint8List? _image;
+
+  // var _selectedProfileImage;
   // step 1
   pickImage(ImageSource source) async {
     final ImagePicker _imagePicker = ImagePicker();
     XFile? _file = await _imagePicker.pickImage(source: source);
+
     if (_file != null) {
       return await _file.readAsBytes();
     }
+    // setState(() {
+    //   _selectedProfileImage = _file;
+    // });
     print('No Image Selected');
   }
 
@@ -36,6 +42,31 @@ class _EditProfileState extends State<EditProfile> {
     Uint8List image = await pickImage(ImageSource.gallery);
     setState(() {
       _image = image;
+      ImagetoBase64();
+
+      //call function to convert in base64
+      // List<int> imageBytes = _selectedProfileImage.readAsBytesSync();
+      // print('imageBytes : $imageBytes');
+      // String base64Image = base64Encode(imageBytes);
+      // print('base64Image: $base64Image');
+      // print(_selectedProfileImage);
+    });
+  }
+
+  String base64String = '';
+
+  ImagetoBase64() async {
+    // path of image
+    // _selectedProfileImage = MemoryImage(_image!);
+    // File _imageFile = File(_selectedProfileImage);
+    //
+    // // Read bytes from the file object
+    // Uint8List _bytes = await _imageFile.readAsBytes();
+
+    // base64 encode the bytes
+    String _base64String = base64.encode(_image!);
+    setState(() {
+      base64String = _base64String;
     });
   }
 
@@ -78,6 +109,8 @@ class _EditProfileState extends State<EditProfile> {
       oldEmail = data[0]['email'];
       oldMobile = data[0]['mobile'];
       oldAddress = data[0]['address'];
+      base64String = data[0]['photo'];
+      debugPrint(base64String);
     });
     return data.map((e) => ProfileDataModel.fromJson(e)).toList();
   }
@@ -156,7 +189,7 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios_sharp),
           onPressed: () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return const Profile();
@@ -201,6 +234,9 @@ class _EditProfileState extends State<EditProfile> {
                           child: RawMaterialButton(
                             onPressed: () {
                               selectImage();
+                              // _selectedProfileImage = MemoryImage(_image!);
+                              // print(
+                              //     '_selectedProfileImage : $_selectedProfileImage');
                               //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
                             },
                             elevation: 2.0,
@@ -296,6 +332,8 @@ class _EditProfileState extends State<EditProfile> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(),
                   onPressed: () {
+                    // ImagetoBase64();
+                    // print(base64String);
                     if (_fnameController.text == "") {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text('please enter first name')));
@@ -340,7 +378,7 @@ class _EditProfileState extends State<EditProfile> {
                           _mobileController.text.toString(),
                           _emailController.text.toString(),
                           _addressController.text.toString(),
-                          'https://via.placeholder.com/150');
+                          base64String);
                       //stop progress bar
                       // stop progress bar
                       Navigator.of(context).pop();

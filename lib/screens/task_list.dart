@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pcmc_staff/models/TasksListModel.dart';
@@ -34,6 +35,52 @@ class _TaskListState extends State<TaskList> {
     setState(() {
       _image = image;
     });
+  }
+
+  String base64String = '';
+
+  ImagetoBase64() async {
+    // path of image
+    // _selectedProfileImage = MemoryImage(_image!);
+    // File _imageFile = File(_selectedProfileImage);
+    //
+    // // Read bytes from the file object
+    // Uint8List _bytes = await _imageFile.readAsBytes();
+
+    // base64 encode the bytes
+    String _base64String = base64.encode(_image!);
+    setState(() {
+      base64String = _base64String;
+      compressBase64Image(base64String, 512000);
+    });
+  }
+
+  //compress img 1
+  var compressedBase64Image = '';
+  compressBase64Image(String base64Image, int targetSizeInBytes) async {
+    // Decode the Base64 image to bytes
+    var imageBytes = base64Decode(base64Image);
+
+    // Compress the image bytes
+    var compressedBytes = await FlutterImageCompress.compressWithList(
+      imageBytes,
+      minHeight:
+          1920, // Set the desired height and width of the compressed image
+      minWidth: 1080,
+      quality: 80, // Set the quality of the compressed image (0-100)
+    );
+
+    // Check if the compressed image size is already within the target size
+    if (compressedBytes.lengthInBytes <= targetSizeInBytes) {
+      // If the compressed image is smaller than or equal to the target size, return the Base64 representation
+      setState(() {
+        compressedBase64Image = base64Encode(compressedBytes);
+      });
+      // return base64Encode(compressedBytes);
+    } else {
+      // If the compressed image is larger than the target size, recursively compress it further
+      compressBase64Image(base64Encode(compressedBytes), targetSizeInBytes);
+    }
   }
 
   // Create an instance variable.
@@ -106,8 +153,6 @@ class _TaskListState extends State<TaskList> {
   void initState() {
     taskID = '';
     userDesignation = '';
-    // Assign that variable your Future.
-    myFuture = getTasksListDataFromAPI();
 
     super.initState();
   }
@@ -117,7 +162,7 @@ class _TaskListState extends State<TaskList> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios_sharp),
           onPressed: () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return const Home();
@@ -275,20 +320,21 @@ class _TaskListState extends State<TaskList> {
                         ),
                       ),
                     ),
-                    Row(
+                    Wrap(
                       children: [
-                        _image == null
-                            ? Image.asset(
-                                'assets/image_placeholder.png',
-                                height: 100,
+                        _image != null
+                            ? Image.memory(
+                                _image!,
+                                height: 150,
                                 width: 150,
                               )
-                            : Image.memory(
-                                _image!,
+                            : Image.asset(
+                                'assets/image_placeholder.png',
                                 height: 150,
                                 width: 200,
                               ),
-                        const SizedBox(width: 5.0),
+
+                        // const SizedBox(width: 5.0),
                         InkWell(
                           child: RawMaterialButton(
                             onPressed: () async {
@@ -341,7 +387,7 @@ class _TaskListState extends State<TaskList> {
                             //TODO: ADD IMAGE FILE UPLOAD FEATURE
                             addFollowUpAPICall(
                               _remarkController.text.toString(),
-                              '',
+                              compressedBase64Image,
                               _urlController.text.toString(),
                               selectedStatus.toString(),
                             );

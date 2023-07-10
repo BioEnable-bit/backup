@@ -31,7 +31,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios_sharp),
           onPressed: () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return const SignIn();

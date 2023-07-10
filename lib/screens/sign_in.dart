@@ -24,7 +24,6 @@ class _SignInScreenState extends State<SignIn> {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         setState(() {
           ActiveConnection = true;
-          getAlldesigNames();
 
           print('internet');
         });
@@ -46,6 +45,7 @@ class _SignInScreenState extends State<SignIn> {
       onPressed: () {
         Navigator.pop(context);
         checkUserConnection();
+        getAlldesigNames();
       },
     );
 
@@ -98,9 +98,9 @@ class _SignInScreenState extends State<SignIn> {
 
   @override
   void initState() {
+    getAlldesigNames();
     checkUserConnection();
     super.initState();
-    getAlldesigNames();
   }
 
   @override
@@ -332,14 +332,23 @@ class _SignInScreenState extends State<SignIn> {
                                       );
                                       // intent pass
                                       // Navigator.pop(context);
-                                      Navigator.pushReplacementNamed(
-                                          context, '/home',
-                                          arguments: {
-                                            'staffID': data[0]['staffID'],
-                                            'WardID': data[0]['WardID'],
-                                            'designation': data[0]
-                                                ['designation'],
-                                          });
+                                      data[0]['designation'] == "Driver"
+                                          ? Navigator.pushReplacementNamed(
+                                              context, '/home', arguments: {
+                                              'staffID': data[0]['staffID'],
+                                              'WardID': data[0]['WardID'],
+                                              'designation': data[0]
+                                                  ['designation'],
+                                            })
+                                          : Navigator.pushReplacementNamed(
+                                              context, '/home_supervisor',
+                                              arguments: {
+                                                  'staffID': data[0]['staffID'],
+                                                  'WardID': data[0]['WardID'],
+                                                  'designation': data[0]
+                                                      ['designation'],
+                                                });
+
                                       // Navigator.push(context,
                                       //     MaterialPageRoute(builder: (context) {
                                       //       return const Home();

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pcmc_staff/screens/alerts.dart';
@@ -39,6 +40,7 @@ class _AddNewAlertState extends State<AddNewAlert> {
     Uint8List image = await pickImage(ImageSource.camera);
     setState(() {
       _image = image;
+      ImagetoBase64();
 
       print('image size: ${_image!.lengthInBytes}');
     });
@@ -49,7 +51,100 @@ class _AddNewAlertState extends State<AddNewAlert> {
     Uint8List image = await pickImage(ImageSource.camera);
     setState(() {
       _image1 = image;
+      ImagetoBase641();
     });
+  }
+
+  String base64String = '';
+
+  ImagetoBase64() async {
+    // path of image
+    // _selectedProfileImage = MemoryImage(_image!);
+    // File _imageFile = File(_selectedProfileImage);
+    //
+    // // Read bytes from the file object
+    // Uint8List _bytes = await _imageFile.readAsBytes();
+
+    // base64 encode the bytes
+    String _base64String = base64.encode(_image!);
+    setState(() {
+      base64String = _base64String;
+      compressBase64Image(base64String, 512000);
+    });
+  }
+
+  String base64String1 = '';
+
+  ImagetoBase641() async {
+    // path of image
+    // _selectedProfileImage = MemoryImage(_image!);
+    // File _imageFile = File(_selectedProfileImage);
+    //
+    // // Read bytes from the file object
+    // Uint8List _bytes = await _imageFile.readAsBytes();
+
+    // base64 encode the bytes
+    String _base64String1 = base64.encode(_image1!);
+    setState(() {
+      base64String1 = _base64String1;
+      compressBase64Image1(base64String1, 512000);
+    });
+  }
+
+  //compress img 1
+  var compressedBase64Image = '';
+  compressBase64Image(String base64Image, int targetSizeInBytes) async {
+    // Decode the Base64 image to bytes
+    var imageBytes = base64Decode(base64Image);
+
+    // Compress the image bytes
+    var compressedBytes = await FlutterImageCompress.compressWithList(
+      imageBytes,
+      minHeight:
+          1920, // Set the desired height and width of the compressed image
+      minWidth: 1080,
+      quality: 80, // Set the quality of the compressed image (0-100)
+    );
+
+    // Check if the compressed image size is already within the target size
+    if (compressedBytes.lengthInBytes <= targetSizeInBytes) {
+      // If the compressed image is smaller than or equal to the target size, return the Base64 representation
+      setState(() {
+        compressedBase64Image = base64Encode(compressedBytes);
+      });
+      // return base64Encode(compressedBytes);
+    } else {
+      // If the compressed image is larger than the target size, recursively compress it further
+      compressBase64Image(base64Encode(compressedBytes), targetSizeInBytes);
+    }
+  }
+
+  //compress img 2
+  var compressedBase64Image1 = '';
+  compressBase64Image1(String base64Image, int targetSizeInBytes) async {
+    // Decode the Base64 image to bytes
+    var imageBytes = base64Decode(base64Image);
+
+    // Compress the image bytes
+    var compressedBytes = await FlutterImageCompress.compressWithList(
+      imageBytes,
+      minHeight:
+          1920, // Set the desired height and width of the compressed image
+      minWidth: 1080,
+      quality: 80, // Set the quality of the compressed image (0-100)
+    );
+
+    // Check if the compressed image size is already within the target size
+    if (compressedBytes.lengthInBytes <= targetSizeInBytes) {
+      // If the compressed image is smaller than or equal to the target size, return the Base64 representation
+      setState(() {
+        compressedBase64Image1 = base64Encode(compressedBytes);
+      });
+      // return base64Encode(compressedBytes);
+    } else {
+      // If the compressed image is larger than the target size, recursively compress it further
+      compressBase64Image(base64Encode(compressedBytes), targetSizeInBytes);
+    }
   }
 
   final TextEditingController _descriptionController = TextEditingController();
@@ -374,7 +469,14 @@ class _AddNewAlertState extends State<AddNewAlert> {
                         // print('image1: ${}');
                         // print('image2: ${}');
                         try {
-                          // show progress bar
+                          //start progress bar
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              });
 
                           // call api method
                           addIssue(
@@ -384,8 +486,8 @@ class _AddNewAlertState extends State<AddNewAlert> {
                               selectedIssue,
                               '18.51410791',
                               '73.92358895',
-                              '',
-                              '',
+                              compressedBase64Image,
+                              compressedBase64Image1,
                               selectedWard!.wards_id
                                   .toString()); //Issue and Alerts are same
                           // stop progress bar

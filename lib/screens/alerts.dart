@@ -98,7 +98,7 @@ class _AlertsState extends State<Alerts> {
       appBar: AppBar(
         title: const Text("Alerts"),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios_sharp),
           onPressed: () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return const Home();
@@ -106,13 +106,18 @@ class _AlertsState extends State<Alerts> {
           })),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add_box, color: Colors.blueGrey),
+          RawMaterialButton(
             onPressed: () {
-              // TODO: Add Alerts popup functionality
-
               Navigator.pushNamed(context, '/new_alert', arguments: {});
             },
+            elevation: 1.0,
+            fillColor: const Color(0xFFF5F6F9),
+            padding: const EdgeInsets.all(5.0),
+            shape: const CircleBorder(),
+            child: const Icon(
+              Icons.add,
+              color: Colors.blue,
+            ),
           )
         ],
       ),
@@ -131,6 +136,7 @@ class _AlertsState extends State<Alerts> {
                       setState(() {
                         alertID = items[index].issue_id.toString();
                         print(alertID);
+                        debugPrint(items[index].image1);
                       });
                       //TODO: ADD UPDATE REMARK FUNCTIONALITY ON TAP
                       updateAlert();
@@ -160,6 +166,18 @@ class _AlertsState extends State<Alerts> {
                                 Text('Remark: ${items[index].remark}'),
                                 Text('Status: ${items[index].status}'),
                                 Text('Created On: ${items[index].created_on}'),
+                                // Text('Created On: ${items[index].image1}'),
+                                items[index].image1.toString().startsWith(
+                                            'https://pcmc.bioenabletech.com') ||
+                                        items[index].image1.toString().isEmpty
+                                    ? const Text('Image not available')
+                                    : Image.memory(
+                                        const Base64Decoder().convert(
+                                          items[index].image1.toString(),
+                                        ),
+                                        width: 250,
+                                        height: 50,
+                                      )
                               ],
                             ),
                           ],
@@ -236,7 +254,7 @@ class _AlertsState extends State<Alerts> {
               style: TextStyle(fontSize: 24.0),
             ),
             content: SizedBox(
-              height: 550,
+              height: 300,
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

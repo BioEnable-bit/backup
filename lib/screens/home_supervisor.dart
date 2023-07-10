@@ -12,14 +12,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/ProfileDataModel.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomeSupervisor extends StatefulWidget {
+  const HomeSupervisor({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeSupervisor> createState() => _HomeSupervisorState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeSupervisorState extends State<HomeSupervisor> {
   static String? designation;
   String? getDesignation() => designation;
   late String profileImage;
@@ -519,7 +519,7 @@ class _HomeState extends State<Home> {
                           ),
                           child: InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, '/alerts',
+                              Navigator.pushNamed(context, '/new_task',
                                   arguments: {});
                             },
                             child: Container(
@@ -534,15 +534,15 @@ class _HomeState extends State<Home> {
                                     padding: const EdgeInsets.all(5.0),
                                     shape: const CircleBorder(),
                                     onPressed: () {
-                                      Navigator.pushNamed(context, '/alerts',
+                                      Navigator.pushNamed(context, '/new_task',
                                           arguments: {});
                                     },
                                     child: const Icon(
-                                      Icons.taxi_alert,
+                                      Icons.add,
                                       color: Colors.blue,
                                     ),
                                   ),
-                                  const Text('Alerts',
+                                  const Text('Add New Task',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold)),
@@ -557,6 +557,225 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 30,
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Card(
+                        elevation: 8.0,
+                        child: Ink(
+                          width: 150,
+                          height: 100,
+                          // color: Colors.blue,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            gradient: const LinearGradient(
+                                colors: [Colors.blueGrey, Colors.lightBlue],
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/live_dashboard',
+                                  arguments: {});
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  RawMaterialButton(
+                                    elevation: 1.0,
+                                    fillColor: const Color(0xFFF5F6F9),
+                                    padding: const EdgeInsets.all(5.0),
+                                    shape: const CircleBorder(),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/live_dashboard',
+                                          arguments: {});
+                                    },
+                                    child: const Icon(
+                                      Icons.dataset_linked_sharp,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  const Text('Live Dashboard',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20.00,
+                      ),
+                      Card(
+                        elevation: 8.0,
+                        child: Ink(
+                          width: 150,
+                          height: 100,
+                          // color: Colors.blue,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                                colors: [Colors.lightBlue, Colors.blueGrey],
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/bin_dashboard',
+                                  arguments: {});
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  RawMaterialButton(
+                                    elevation: 1.0,
+                                    fillColor: const Color(0xFFF5F6F9),
+                                    padding: const EdgeInsets.all(5.0),
+                                    shape: const CircleBorder(),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/bin_dashboard',
+                                          arguments: {});
+                                    },
+                                    child: const Icon(
+                                      Icons.gas_meter_rounded,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  const Text('Bin Dashboard',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Card(
+                        elevation: 8.0,
+                        child: Ink(
+                          width: 150,
+                          height: 100,
+                          // color: Colors.blue,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            gradient: const LinearGradient(
+                                colors: [Colors.blueGrey, Colors.lightBlue],
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/assigned_vehicles',
+                                  arguments: {});
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  RawMaterialButton(
+                                    elevation: 1.0,
+                                    fillColor: const Color(0xFFF5F6F9),
+                                    padding: const EdgeInsets.all(5.0),
+                                    shape: const CircleBorder(),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/assigned_vehicles',
+                                          arguments: {});
+                                    },
+                                    child: const Icon(
+                                      Icons.fire_truck_rounded,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  const Text('Vehicles',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20.00,
+                      ),
+                      Card(
+                        elevation: 8.0,
+                        child: Ink(
+                          width: 150,
+                          height: 100,
+                          // color: Colors.blue,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                                colors: [Colors.lightBlue, Colors.blueGrey],
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/bin_dashboard',
+                                  arguments: {});
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  RawMaterialButton(
+                                    elevation: 1.0,
+                                    fillColor: const Color(0xFFF5F6F9),
+                                    padding: const EdgeInsets.all(5.0),
+                                    shape: const CircleBorder(),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/bin_dashboard',
+                                          arguments: {});
+                                    },
+                                    child: const Icon(
+                                      Icons.gas_meter_rounded,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  const Text('Bin Dashboard',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
               // code for bottom nav screen
@@ -567,22 +786,22 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // showLoaderDialog(BuildContext context) {
-  //   AlertDialog alert = AlertDialog(
-  //     content: new Row(
-  //       children: [
-  //         CircularProgressIndicator(),
-  //         Container(
-  //             margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
-  //       ],
-  //     ),
-  //   );
-  //   showDialog(
-  //     barrierDismissible: false,
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return alert;
-  //     },
-  //   );
-  // }
+// showLoaderDialog(BuildContext context) {
+//   AlertDialog alert = AlertDialog(
+//     content: new Row(
+//       children: [
+//         CircularProgressIndicator(),
+//         Container(
+//             margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
+//       ],
+//     ),
+//   );
+//   showDialog(
+//     barrierDismissible: false,
+//     context: context,
+//     builder: (BuildContext context) {
+//       return alert;
+//     },
+//   );
+// }
 }
