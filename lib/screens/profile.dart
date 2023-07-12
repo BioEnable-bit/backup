@@ -63,6 +63,21 @@ class _ProfileState extends State<Profile> {
             })),
           ),
           title: const Text("Profile"),
+          actions: [
+            RawMaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/edit_profile', arguments: {});
+              },
+              elevation: 1.0,
+              fillColor: const Color(0xFFF5F6F9),
+              padding: const EdgeInsets.all(5.0),
+              shape: const CircleBorder(),
+              child: const Icon(
+                Icons.edit,
+                color: Colors.blue,
+              ),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: FutureBuilder(
@@ -74,69 +89,69 @@ class _ProfileState extends State<Profile> {
                 var items = data.data as List<ProfileDataModel>;
                 return Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Card for Profile Image and Text
-                      Card(
-                        margin: const EdgeInsets.only(
-                            left: 20.0, right: 20.0, top: 20.0),
-                        child: Container(
-                          height: 300,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.0),
-                              image: const DecorationImage(
-                                  fit: BoxFit.cover,
-                                  //TODO: Set Image Received from profile api
-                                  // items[0].photo.toString()
-                                  image: AssetImage(
-                                      'assets/image_placeholder.png'))),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(items[0].staffname.toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24)),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                IconButton(
-                                  // alignment: Alignment(200, 0),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, '/edit_profile',
-                                        arguments: {});
-                                  },
-                                  icon: const Icon(
-                                    // creating the first icon.
-                                    Icons.edit,
-                                    // size: size.width * .06,
-                                    size: 25,
-                                    color: Colors.blueGrey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Card(
+                      //   margin: const EdgeInsets.only(
+                      //       left: 20.0, right: 20.0, top: 20.0),
+                      //   child: Container(
+                      //     height: 300,
+                      //     width: double.infinity,
+                      //     decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(15.0),
+                      //         image: const DecorationImage(
+                      //             fit: BoxFit.cover,
+                      //             //TODO: Set Image Received from profile api
+                      //             // items[0].photo.toString()
+                      //             image: AssetImage(
+                      //                 'assets/image_placeholder.png'))),
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.all(10.0),
+                      //       child: Row(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         mainAxisAlignment: MainAxisAlignment.start,
+                      //         children: [
+                      //           Text(items[0].staffname.toString(),
+                      //               style: const TextStyle(
+                      //                   color: Colors.white,
+                      //                   fontWeight: FontWeight.bold,
+                      //                   fontSize: 24)),
+                      //           const SizedBox(
+                      //             width: 20,
+                      //           ),
+                      //           IconButton(
+                      //             // alignment: Alignment(200, 0),
+                      //             onPressed: () {
+                      //               Navigator.pushNamed(
+                      //                   context, '/edit_profile',
+                      //                   arguments: {});
+                      //             },
+                      //             icon: const Icon(
+                      //               // creating the first icon.
+                      //               Icons.edit,
+                      //               // size: size.width * .06,
+                      //               size: 25,
+                      //               color: Colors.blueGrey,
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       //TODO: START HERE ON MONDAY
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Image.memory(
-                          //   const Base64Decoder().convert(
-                          //     items[0].photo.toString(),
-                          //   ),
-                          //   width: 500,
-                          //   height: 250,
-                          // ),
+                          Image.memory(
+                            const Base64Decoder().convert(
+                              items[0].photo.toString(),
+                            ),
+                            width: 300,
+                            height: 250,
+                          ),
                           const SizedBox(
                             height: 10,
                           )
@@ -147,6 +162,25 @@ class _ProfileState extends State<Profile> {
                         padding: const EdgeInsets.all(30),
                         child: Column(
                           children: [
+                            Row(
+                              children: [
+                                //
+                                const Icon(
+                                  // creating the first icon.
+                                  Icons.person,
+                                  // size: size.width * .06,
+                                  size: 20,
+                                  color: Colors.blueGrey,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(items[0].staffname.toString()),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Row(
                               children: [
                                 //
