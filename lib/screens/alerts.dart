@@ -167,17 +167,17 @@ class _AlertsState extends State<Alerts> {
                                 Text('Status: ${items[index].status}'),
                                 Text('Created On: ${items[index].created_on}'),
                                 // Text('Created On: ${items[index].image1}'),
-                                items[index].image1.toString().startsWith(
-                                            'https://pcmc.bioenabletech.com') ||
-                                        items[index].image1.toString().isEmpty
-                                    ? const Text('Image not available')
-                                    : Image.memory(
-                                        const Base64Decoder().convert(
-                                          items[index].image1.toString(),
-                                        ),
-                                        width: 250,
-                                        height: 50,
-                                      )
+                                // items[index].image1.toString().startsWith(
+                                //             'https://pcmc.bioenabletech.com') ||
+                                //         items[index].image1.toString().isEmpty
+                                //     ? const Text('Image not available')
+                                //     : Image.memory(
+                                //         const Base64Decoder().convert(
+                                //           items[index].image1.toString(),
+                                //         ),
+                                //         width: 250,
+                                //         height: 50,
+                                //       )
                               ],
                             ),
                           ],
