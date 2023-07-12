@@ -740,7 +740,7 @@ class _HomeSupervisorState extends State<HomeSupervisor> {
                           ),
                           child: InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, '/bin_dashboard',
+                              Navigator.pushNamed(context, '/tasks_list',
                                   arguments: {});
                             },
                             child: Container(
@@ -756,15 +756,15 @@ class _HomeSupervisorState extends State<HomeSupervisor> {
                                     shape: const CircleBorder(),
                                     onPressed: () {
                                       Navigator.pushNamed(
-                                          context, '/bin_dashboard',
+                                          context, '/tasks_list',
                                           arguments: {});
                                     },
                                     child: const Icon(
-                                      Icons.gas_meter_rounded,
+                                      Icons.task,
                                       color: Colors.blue,
                                     ),
                                   ),
-                                  const Text('Bin Dashboard',
+                                  const Text('Tasks',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold)),

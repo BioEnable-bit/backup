@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
+import 'home_supervisor.dart';
 
 class TaskList extends StatefulWidget {
   const TaskList({super.key});
@@ -163,11 +164,17 @@ class _TaskListState extends State<TaskList> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_sharp),
-          onPressed: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return const Home();
-            // Navigator.pop(context);
-          })),
+          onPressed: () => userDesignation == 'Driver'
+              ? Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                  return const Home();
+                  // Navigator.pop(context);
+                }))
+              : Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                  return const HomeSupervisor();
+                  // Navigator.pop(context);
+                })),
         ),
         title: const Text("Task List"),
         actions: [

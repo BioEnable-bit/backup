@@ -6,6 +6,7 @@ import 'package:pcmc_staff/models/ProfileDataModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
+import 'home_supervisor.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -16,9 +17,12 @@ class Profile extends StatefulWidget {
 
 // Update profile will be an alert box
 class _ProfileState extends State<Profile> {
+  late String? userDesignation;
+
   Future<List<ProfileDataModel>> getUserDataFromAPI() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
+    userDesignation = prefs.getString('designation');
     print(staffID);
     // final prefs = await SharedPreferences.getInstance();
     // var customerID = prefs.getString('customerID');
@@ -33,6 +37,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
+    userDesignation = '';
     super.initState();
   }
 
@@ -56,11 +61,17 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_sharp),
-            onPressed: () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) {
-              return const Home();
-              // Navigator.pop(context);
-            })),
+            onPressed: () => userDesignation == 'Driver'
+                ? Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) {
+                    return const Home();
+                    // Navigator.pop(context);
+                  }))
+                : Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) {
+                    return const HomeSupervisor();
+                    // Navigator.pop(context);
+                  })),
           ),
           title: const Text("Profile"),
           actions: [

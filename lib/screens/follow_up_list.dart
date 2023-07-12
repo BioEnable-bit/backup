@@ -6,6 +6,7 @@ import 'package:pcmc_staff/models/FollowUpListModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
+import 'home_supervisor.dart';
 
 class FollowUpList extends StatefulWidget {
   const FollowUpList({super.key});
@@ -16,6 +17,8 @@ class FollowUpList extends StatefulWidget {
 
 // raise alert will be an alert dialog
 class _FollowUpListState extends State<FollowUpList> {
+  late String? userDesignation;
+
   Future<List<FollowUpListModel>> getTasksListDataFromAPI() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
@@ -30,16 +33,39 @@ class _FollowUpListState extends State<FollowUpList> {
   }
 
   @override
+  void initState() {
+    userDesignation = '';
+    getUserDetails();
+    super.initState();
+  }
+
+  void getUserDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      // staffID = prefs.getString('staffID');
+      userDesignation = prefs.getString('designation');
+      // print('staffID: $staffID');
+      // print('User Designation: $userDesignation');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_sharp),
-          onPressed: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return const Home();
-            // Navigator.pop(context);
-          })),
+          onPressed: () => userDesignation == 'Driver'
+              ? Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                  return const Home();
+                  // Navigator.pop(context);
+                }))
+              : Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                  return const HomeSupervisor();
+                  // Navigator.pop(context);
+                })),
         ),
         title: const Text("Follow Up List"),
       ),

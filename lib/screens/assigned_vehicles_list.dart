@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pcmc_staff/models/VehicleModel.dart';
+import 'package:pcmc_staff/screens/home_supervisor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/AssignedVehiclesModel.dart';
 import '../models/RoutesNameModel.dart';
 import '../models/VehicalCategoryModel.dart';
-import 'home.dart';
 
 class AssignedVehiclesList extends StatefulWidget {
   const AssignedVehiclesList({super.key});
@@ -203,7 +203,7 @@ class _AssignedVehiclesListState extends State<AssignedVehiclesList> {
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-            return const Home();
+            return const HomeSupervisor();
             // Navigator.pop(context);
           })),
         ),

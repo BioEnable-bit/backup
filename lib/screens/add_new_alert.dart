@@ -157,6 +157,7 @@ class _AddNewAlertState extends State<AddNewAlert> {
   List<WardModel> wards = <WardModel>[];
 
   late String? staffID;
+  late String? userDesignation;
 
   // we need to populate this list so creating Future function
   Future getAllZoneNames() async {
@@ -182,9 +183,10 @@ class _AddNewAlertState extends State<AddNewAlert> {
   void initState() {
     super.initState();
     staffID = '';
+    userDesignation = '';
 
     getAllZoneNames();
-    getStaffID();
+    getUserDetails();
   }
 
   Future getAllWardNames(zoneid) async {
@@ -551,11 +553,13 @@ class _AddNewAlertState extends State<AddNewAlert> {
     }
   }
 
-  void getStaffID() async {
+  void getUserDetails() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       staffID = prefs.getString('staffID');
-      print('staffID: $staffID');
+      userDesignation = prefs.getString('designation');
+      // print('staffID: $staffID');
+      // print('User Designation: $userDesignation');
     });
   }
 }
