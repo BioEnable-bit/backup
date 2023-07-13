@@ -300,65 +300,8 @@ class _TeamDashboardState extends State<TeamDashboard> {
                             ]),
                           ],
                         );
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.start,
-                        //   children: [
-                        //     Column(
-                        //       children: [
-                        //         Text(items[index].name.toString()),
-                        //       ],
-                        //     ),
-                        //     const SizedBox(
-                        //       width: 20,
-                        //     ),
-                        //     Column(
-                        //       children: [
-                        //         Text(items[index].rdate.toString()),
-                        //       ],
-                        //     ),
-                        //     const SizedBox(
-                        //       width: 20,
-                        //     ),
-                        //     Column(
-                        //       children: [
-                        //         Text(items[index].in_punch.toString()),
-                        //       ],
-                        //     ),
-                        //     const SizedBox(
-                        //       width: 20,
-                        //     ),
-                        //     Column(
-                        //       children: [
-                        //         Text(items[index].out_punch.toString()),
-                        //       ],
-                        //     ),
-                        //   ],
-                        // );
                       }),
                 );
-                //   Center(
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.start,
-                //         // crossAxisAlignment: ,
-                //         children: [
-                //           Text(items[index].name.toString()),
-                //           SizedBox(
-                //             width: 10,
-                //           ),
-                //           Text('2'),
-                //           SizedBox(
-                //             width: 10,
-                //           ),
-                //           Text('3'),
-                //         ],
-                //       )
-                //     ],
-                //   ),
-                // );
               } else {
                 return const Center(
                   child: CircularProgressIndicator(),

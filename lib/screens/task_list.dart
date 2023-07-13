@@ -89,8 +89,6 @@ class _TaskListState extends State<TaskList> {
   final TextEditingController _remarkController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
 
-  late String taskID;
-
   List<String> statusList = <String>['New', 'Open', 'Close'];
   String? selectedStatus = 'New';
 
@@ -100,25 +98,24 @@ class _TaskListState extends State<TaskList> {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
     userDesignation = prefs.getString('designation');
+    print('userDesignation: $userDesignation');
 
     Response response = await get(
       Uri.parse(
           'https://pcmc.bioenabletech.com/api/service.php?q=task_list&auth_key=PCMCS56ADDGPIL&staff_id=$staffID'),
     );
     final data = jsonDecode(response.body.toString()) as List<dynamic>;
-    setState(() {
-      taskID = data[0]['taskid'];
-    });
 
     return data.map((e) => TasksListModel.fromJson(e)).toList();
   }
 
-  void addFollowUpAPICall(remark, snapshot, url, task_status) async {
+  void addFollowUpAPICall(
+      remark, snapshot, url, task_status, selectedTaskID) async {
     Response response = await post(
         Uri.parse(
             'https://pcmc.bioenabletech.com/api/service.php?q=add_followup&auth_key=PCMCS56ADDGPIL'),
         body: {
-          'task_id': taskID,
+          'task_id': selectedTaskID,
           'remark': remark,
           'snapshot': snapshot,
           'url': url,
@@ -152,7 +149,6 @@ class _TaskListState extends State<TaskList> {
 
   @override
   void initState() {
-    taskID = '';
     userDesignation = '';
 
     super.initState();
@@ -177,21 +173,23 @@ class _TaskListState extends State<TaskList> {
                 })),
         ),
         title: const Text("Task List"),
-        actions: [
-          RawMaterialButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/new_task', arguments: {});
-            },
-            elevation: 1.0,
-            fillColor: const Color(0xFFF5F6F9),
-            padding: const EdgeInsets.all(5.0),
-            shape: const CircleBorder(),
-            child: const Icon(
-              Icons.add,
-              color: Colors.blue,
-            ),
-          )
-        ],
+        // actions: [
+        //   userDesignation == '6'
+        //       ? Container()
+        //       : RawMaterialButton(
+        //           onPressed: () {
+        //             print('Supervisor');
+        //           },
+        //           elevation: 1.0,
+        //           fillColor: const Color(0xFFF5F6F9),
+        //           padding: const EdgeInsets.all(5.0),
+        //           shape: const CircleBorder(),
+        //           child: const Icon(
+        //             Icons.add,
+        //             color: Colors.blue,
+        //           ),
+        //         )
+        // ],
       ),
       body: FutureBuilder(
         future: getTasksListDataFromAPI(),
@@ -205,7 +203,9 @@ class _TaskListState extends State<TaskList> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      addFollowUpAlert();
+                      // addFollowUpAlert();
+                      Navigator.pushNamed(context, '/add_follow_up',
+                          arguments: items[index].taskid);
                     },
                     child: Card(
                       margin: const EdgeInsets.all(10.0),
@@ -340,6 +340,7 @@ class _TaskListState extends State<TaskList> {
                                 height: 150,
                                 width: 200,
                               ),
+
                         // const SizedBox(width: 5.0),
                         InkWell(
                           child: RawMaterialButton(
@@ -350,13 +351,25 @@ class _TaskListState extends State<TaskList> {
                               }
                               selectImage();
                             },
-                            elevation: 2.0,
-                            fillColor: Theme.of(context).primaryColorLight,
-                            child: const Icon(Icons.camera_alt_outlined),
-                            padding: const EdgeInsets.all(15.0),
+                            elevation: 1.0,
+                            fillColor: const Color(0xFFF5F6F9),
+                            padding: const EdgeInsets.all(5.0),
                             shape: const CircleBorder(),
+                            child: const Icon(
+                              Icons.camera_alt_outlined,
+                              color: Colors.blue,
+                            ),
                           ),
-                        ),
+                          onTap: () async {
+                            var status = await Permission.camera.status;
+                            if (!status.isGranted) {
+                              await Permission.camera.request();
+                            }
+                            selectImage();
+
+                            // getImage1();
+                          },
+                        )
                       ],
                     ),
                     Container(
@@ -380,11 +393,11 @@ class _TaskListState extends State<TaskList> {
                                 });
                             //TODO: ADD IMAGE FILE UPLOAD FEATURE
                             addFollowUpAPICall(
-                              _remarkController.text.toString(),
-                              compressedBase64Image,
-                              _urlController.text.toString(),
-                              selectedStatus.toString(),
-                            );
+                                _remarkController.text.toString(),
+                                compressedBase64Image,
+                                _urlController.text.toString(),
+                                selectedStatus.toString(),
+                                '');
                           } catch (e) {
                             String err = e.toString();
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -403,97 +416,6 @@ class _TaskListState extends State<TaskList> {
           );
         });
   }
-
-  // addFollowUpAlert() {
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return AlertDialog(
-  //           shape: const RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.all(
-  //               Radius.circular(
-  //                 20.0,
-  //               ),
-  //             ),
-  //           ),
-  //           contentPadding: const EdgeInsets.only(
-  //             top: 10.0,
-  //           ),
-  //           title: const Text(
-  //             "Add Follow Up",
-  //             style: TextStyle(fontSize: 24.0),
-  //           ),
-  //           content: SizedBox(
-  //             height: 550,
-  //             child: SingleChildScrollView(
-  //               padding: const EdgeInsets.all(8.0),
-  //               child: Column(
-  //                 children: <Widget>[
-  //                   const Padding(
-  //                     padding: EdgeInsets.all(8.0),
-  //                     child: Text(
-  //                       "Add Follow up",
-  //                     ),
-  //                   ),
-  //                   Wrap(
-  //                     children: [
-  //                       _image != null
-  //                           ? Image.memory(
-  //                         _image!,
-  //                         height: 150,
-  //                         width: 150,
-  //                       )
-  //                           : Image.asset(
-  //                         'assets/image_placeholder.png',
-  //                         height: 150,
-  //                         width: 200,
-  //                       ),
-  //                       // const SizedBox(width: 5.0),
-  //                       InkWell(
-  //                         child: RawMaterialButton(
-  //                           onPressed: () async {
-  //                             var status = await Permission.camera.status;
-  //                             if (!status.isGranted) {
-  //                               await Permission.camera.request();
-  //                             }
-  //                             selectImage();
-  //                           },
-  //                           elevation: 2.0,
-  //                           fillColor:
-  //                           Theme.of(context).primaryColorLight,
-  //                           child:
-  //                           const Icon(Icons.camera_alt_outlined),
-  //                           padding:
-  //                           const EdgeInsets.all(15.0),
-  //                           shape:
-  //                           const CircleBorder(),
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //           actionsPadding:
-  //           const EdgeInsets.symmetric(horizontal: 16.0),
-  //           actions: <Widget>[
-  //             TextButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //               child: const Text('Cancel'),
-  //             ),
-  //             TextButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //               child: const Text('Save'),
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
 
   void getUserDesignation() async {
     final prefs = await SharedPreferences.getInstance();

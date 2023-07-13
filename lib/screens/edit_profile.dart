@@ -219,50 +219,82 @@ class _EditProfileState extends State<EditProfile> {
                     children: [
                       // image api -> show
                       _image == null
-                          ? Image.memory(
-                              const Base64Decoder().convert(oldPhotoBase64),
-                              width: 400,
-                              height: 300,
+                          ? Align(
+                              alignment: Alignment.center,
+                              child: Stack(
+                                children: [
+                                  SizedBox(
+                                    width: 150,
+                                    height: 200,
+                                    child: ClipOval(
+                                      child: oldPhotoBase64 != ''
+                                          ? Image.memory(
+                                              const Base64Decoder().convert(
+                                                oldPhotoBase64,
+                                              ),
+                                            )
+                                          : Image.asset('assets/profile.png'),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: RawMaterialButton(
+                                      onPressed: () {
+                                        selectImage();
+                                        // _selectedProfileImage = MemoryImage(_image!);
+                                        // print(
+                                        //     '_selectedProfileImage : $_selectedProfileImage');
+                                        //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
+                                      },
+                                      elevation: 2.0,
+                                      fillColor: const Color(0xFFF5F6F9),
+                                      padding: const EdgeInsets.all(5.0),
+                                      shape: const CircleBorder(),
+                                      child: const Icon(
+                                        Icons.camera_alt_outlined,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             )
-                          : Image.memory(
-                              _image!,
+                          : Align(
+                              alignment: Alignment.center,
+                              child: Stack(
+                                children: [
+                                  ClipOval(
+                                    child: Image.memory(
+                                      _image!,
+                                      width: 150,
+                                      height: 150,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: RawMaterialButton(
+                                      onPressed: () {
+                                        selectImage();
+                                        // _selectedProfileImage = MemoryImage(_image!);
+                                        // print(
+                                        //     '_selectedProfileImage : $_selectedProfileImage');
+                                        //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
+                                      },
+                                      elevation: 2.0,
+                                      fillColor: const Color(0xFFF5F6F9),
+                                      padding: const EdgeInsets.all(5.0),
+                                      shape: const CircleBorder(),
+                                      child: const Icon(
+                                        Icons.camera_alt_outlined,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-
-                      // _image != null
-                      //     ? CircleAvatar(
-                      //         radius: 20.0,
-                      //         backgroundImage: MemoryImage(
-                      //           _image!,
-                      //         ),
-                      //         backgroundColor: Colors.transparent,
-                      //       )
-                      //     : const CircleAvatar(
-                      //         radius: 30.0,
-                      //         backgroundImage: AssetImage(
-                      //           'assets/profile.png',
-                      //         ),
-                      //         backgroundColor: Colors.transparent,
-                      //       ),
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: RawMaterialButton(
-                            onPressed: () {
-                              selectImage();
-                              // _selectedProfileImage = MemoryImage(_image!);
-                              // print(
-                              //     '_selectedProfileImage : $_selectedProfileImage');
-                              //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
-                            },
-                            elevation: 2.0,
-                            fillColor: const Color(0xFFF5F6F9),
-                            padding: const EdgeInsets.all(15.0),
-                            shape: const CircleBorder(),
-                            child: const Icon(
-                              Icons.camera_alt_outlined,
-                              color: Colors.blue,
-                            ),
-                          )),
                     ],
                   ),
                 ),

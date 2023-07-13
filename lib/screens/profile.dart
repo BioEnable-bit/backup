@@ -156,12 +156,21 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image.memory(
-                            const Base64Decoder().convert(
-                              items[0].photo.toString(),
-                            ),
-                            width: 300,
-                            height: 250,
+                          Align(
+                            alignment: Alignment.center,
+                            child: items[0].photo.toString() != ''
+                                ? SizedBox(
+                                    width: 200,
+                                    height: 200,
+                                    child: ClipOval(
+                                      child: Image.memory(
+                                        const Base64Decoder().convert(
+                                          items[0].photo.toString().toString(),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Image.asset('assets/profile.png'),
                           ),
                           const SizedBox(
                             height: 10,

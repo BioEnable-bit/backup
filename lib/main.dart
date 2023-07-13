@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pcmc_staff/screens/add_Follow_up.dart';
 import 'package:pcmc_staff/screens/add_new_alert.dart';
 import 'package:pcmc_staff/screens/alerts.dart';
 import 'package:pcmc_staff/screens/assigned_vehicles_list.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         '/edit_profile': (context) => const EditProfile(),
         '/new_alert': (context) => const AddNewAlert(),
         '/assigned_vehicles': (context) => const AssignedVehiclesList(),
+        '/add_follow_up': (context) => const AddFollowUp(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),

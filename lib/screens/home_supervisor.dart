@@ -175,14 +175,21 @@ class _HomeSupervisorState extends State<HomeSupervisor> {
               ),
               child: Stack(
                 children: <Widget>[
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
-                    child: CircleAvatar(
-                      //TODO: INSERT profileImage Here
-                      backgroundImage: NetworkImage(
-                          'http://www.bbk.ac.uk/mce/wp-content/uploads/2015/03/8327142885_9b447935ff.jpg'),
-                      radius: 50.0,
-                    ),
+                    child: profileImage != ''
+                        ? SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: ClipOval(
+                              child: Image.memory(
+                                const Base64Decoder().convert(
+                                  profileImage.toString(),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Image.asset('assets/profile.png'),
                   ),
                   Align(
                     alignment: Alignment.centerRight,
