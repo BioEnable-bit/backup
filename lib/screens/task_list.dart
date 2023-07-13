@@ -340,7 +340,6 @@ class _TaskListState extends State<TaskList> {
                                 height: 150,
                                 width: 200,
                               ),
-
                         // const SizedBox(width: 5.0),
                         InkWell(
                           child: RawMaterialButton(
@@ -351,25 +350,13 @@ class _TaskListState extends State<TaskList> {
                               }
                               selectImage();
                             },
-                            elevation: 1.0,
-                            fillColor: const Color(0xFFF5F6F9),
-                            padding: const EdgeInsets.all(5.0),
+                            elevation: 2.0,
+                            fillColor: Theme.of(context).primaryColorLight,
+                            child: const Icon(Icons.camera_alt_outlined),
+                            padding: const EdgeInsets.all(15.0),
                             shape: const CircleBorder(),
-                            child: const Icon(
-                              Icons.camera_alt_outlined,
-                              color: Colors.blue,
-                            ),
                           ),
-                          onTap: () async {
-                            var status = await Permission.camera.status;
-                            if (!status.isGranted) {
-                              await Permission.camera.request();
-                            }
-                            selectImage();
-
-                            // getImage1();
-                          },
-                        )
+                        ),
                       ],
                     ),
                     Container(
@@ -416,6 +403,97 @@ class _TaskListState extends State<TaskList> {
           );
         });
   }
+
+  // addFollowUpAlert() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           shape: const RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.all(
+  //               Radius.circular(
+  //                 20.0,
+  //               ),
+  //             ),
+  //           ),
+  //           contentPadding: const EdgeInsets.only(
+  //             top: 10.0,
+  //           ),
+  //           title: const Text(
+  //             "Add Follow Up",
+  //             style: TextStyle(fontSize: 24.0),
+  //           ),
+  //           content: SizedBox(
+  //             height: 550,
+  //             child: SingleChildScrollView(
+  //               padding: const EdgeInsets.all(8.0),
+  //               child: Column(
+  //                 children: <Widget>[
+  //                   const Padding(
+  //                     padding: EdgeInsets.all(8.0),
+  //                     child: Text(
+  //                       "Add Follow up",
+  //                     ),
+  //                   ),
+  //                   Wrap(
+  //                     children: [
+  //                       _image != null
+  //                           ? Image.memory(
+  //                         _image!,
+  //                         height: 150,
+  //                         width: 150,
+  //                       )
+  //                           : Image.asset(
+  //                         'assets/image_placeholder.png',
+  //                         height: 150,
+  //                         width: 200,
+  //                       ),
+  //                       // const SizedBox(width: 5.0),
+  //                       InkWell(
+  //                         child: RawMaterialButton(
+  //                           onPressed: () async {
+  //                             var status = await Permission.camera.status;
+  //                             if (!status.isGranted) {
+  //                               await Permission.camera.request();
+  //                             }
+  //                             selectImage();
+  //                           },
+  //                           elevation: 2.0,
+  //                           fillColor:
+  //                           Theme.of(context).primaryColorLight,
+  //                           child:
+  //                           const Icon(Icons.camera_alt_outlined),
+  //                           padding:
+  //                           const EdgeInsets.all(15.0),
+  //                           shape:
+  //                           const CircleBorder(),
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //           actionsPadding:
+  //           const EdgeInsets.symmetric(horizontal: 16.0),
+  //           actions: <Widget>[
+  //             TextButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: const Text('Cancel'),
+  //             ),
+  //             TextButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: const Text('Save'),
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
 
   void getUserDesignation() async {
     final prefs = await SharedPreferences.getInstance();

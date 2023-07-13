@@ -156,7 +156,7 @@ class _AlertsState extends State<Alerts> {
                     onTap: () {
                       setState(() {
                         alertID = items[index].issue_id.toString();
-                        print(alertID);
+                        // print(alertID);
                         debugPrint(items[index].image1);
                       });
                       //TODO: ADD UPDATE REMARK FUNCTIONALITY ON TAP

@@ -71,7 +71,6 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
                 color: Colors.blueGrey, size: 34.89),
             onPressed: () {
               // TODO: Add Alerts popup functionality
-              print('clicked');
             },
           )
         ],
