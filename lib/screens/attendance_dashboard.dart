@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pcmc_staff/screens/Homedash.dart';
+import 'package:pcmc_staff/screens/attendance.dart';
 
 import 'attendance_logs.dart';
 import 'home.dart';
@@ -15,7 +15,8 @@ class AttendanceDashboard extends StatefulWidget {
 class _AttendanceDashboardState extends State<AttendanceDashboard> {
   int _currentindex = 0;
   final List<Widget> _children = [
-    Homedash(),
+    //Screen(),
+    Attendance(),
     AttendanceLogs(),
     MonthlyTimeCard()
   ];
