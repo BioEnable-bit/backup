@@ -95,247 +95,22 @@ class _HomeState extends State<Home> {
     // print(designation);
     // print(staffID);
 
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        titleTextStyle: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),
-        backgroundColor: Colors.blueGrey, //Colors.blueGrey[900]
-        title: const Text('PCMC Staff'),
-        actions: [
-          RawMaterialButton(
-            elevation: 1.0,
-            fillColor: const Color(0xFFF5F6F9),
-            padding: const EdgeInsets.all(5.0),
-            shape: const CircleBorder(),
-            onPressed: () {
-              QuickAlert.show(
-                  context: context,
-                  type: QuickAlertType.confirm,
-                  text: 'Do you want to logout',
-                  confirmBtnText: 'Yes',
-                  cancelBtnText: 'No',
-                  confirmBtnColor: Colors.redAccent,
-                  onCancelBtnTap: () {
-                    Navigator.pop(context);
-                  },
-                  onConfirmBtnTap: () {
-                    // signOut();
-                    // Navigator.pop(context);
-                    // Passing Intent to home screen
-                    // signOut();
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const SignIn();
-                      // Navigator.pop(context);
-                    }));
-                    // Navigator.pop(context);
-                  });
-            },
-            child: const Icon(
-              Icons.logout,
-              color: Colors.blue,
-            ),
-          ),
-          // IconButton(
-          //   icon: const Icon(Icons.logout_rounded, color: Colors.white),
-          //   onPressed: () {
-          //     QuickAlert.show(
-          //         context: context,
-          //         type: QuickAlertType.confirm,
-          //         text: 'Do you want to logout',
-          //         confirmBtnText: 'Yes',
-          //         cancelBtnText: 'No',
-          //         confirmBtnColor: Colors.redAccent,
-          //         onCancelBtnTap: () {
-          //           Navigator.pop(context);
-          //         },
-          //         onConfirmBtnTap: () {
-          //           // signOut();
-          //           // Navigator.pop(context);
-          //           // Passing Intent to home screen
-          //           // signOut();
-          //           Navigator.pushReplacement(context,
-          //               MaterialPageRoute(builder: (context) {
-          //             return const SignIn();
-          //             // Navigator.pop(context);
-          //           }));
-          //           // Navigator.pop(context);
-          //         });
-          //   },
-          // )
-        ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.blueGrey,
-              ),
-              child: Stack(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: profileImage != ''
-                        ? SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: ClipOval(
-                              child: Image.memory(
-                                const Base64Decoder().convert(
-                                  profileImage.toString(),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Image.asset('assets/profile.png'),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      userName,
-                      style:
-                          const TextStyle(color: Colors.white, fontSize: 20.0),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight + const Alignment(0, .4),
-                    child: Text(
-                      userMobile,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight + Alignment(0, 1.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white),
-                        gradient: const LinearGradient(
-                            colors: [Colors.green, Colors.lightGreen],
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft),
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          userDesignation,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              title: const Text('Attendance Dashboard'),
-              leading: const Icon(Icons.perm_identity_rounded,
-                  color: Color(0xff0D0F2F)),
-              onTap: () {
-                // Handle item 1 tap Intent Passing
-                // Remove Navigation Drawer
-                Navigator.pop(context);
-                // Intent passing
-                // Intent passing with pushName -> you can also pass a string value (just like put extra in android intent passing)
-                Navigator.pushNamed(context, '/attendance_dashboard',
-                    arguments: {});
-              },
-            ),
-            // ListTile(
-            //   title: const Text('Attendance Logs'),
-            //   leading: const Icon(Icons.add_alert),
-            //   onTap: () {
-            //     // Handle item 1 tap
-            //     // Removing Navigation Drawer
-            //     Navigator.pop(context);
-            //     // Intent passing
-            //     Navigator.pushNamed(context, '/attendance_logs', arguments: {});
-            //   },
-            // ),
-            // ListTile(
-            //   title: const Text('Monthly Time Card'),
-            //   leading: const Icon(Icons.home),
-            //   onTap: () {
-            //     // Handle item 1 tap Intent Passing
-            //     // Remove Navigation Drawer
-            //     Navigator.pop(context);
-            //     // Intent passing
-            //     Navigator.pushNamed(context, '/time_card', arguments: {});
-            //   },
-            // ),
-            ListTile(
-              title: const Text('Fixed Route Map'),
-              leading: const Icon(Icons.location_on, color: Color(0xff0D0F2F)),
-              onTap: () {
-                // Handle item 1 tap Intent Passing
-                // Remove Navigation Drawer
-                Navigator.pop(context);
-                // Intent passing
-                Navigator.pushNamed(context, '/route_map', arguments: {});
-              },
-            ),
-            ListTile(
-              title: const Text('Profile'),
-              leading:
-                  const Icon(Icons.account_circle, color: Color(0xff0D0F2F)),
-              onTap: () {
-                // Handle item 1 tap Intent Passing
-                // Remove Navigation Drawer
-                Navigator.pop(context);
-                // Intent passing
-                Navigator.pushNamed(context, '/profile', arguments: {});
-              },
-            ),
-            ListTile(
-              title: const Text('Tasks List'),
-              leading: const Icon(Icons.task_rounded, color: Color(0xff0D0F2F)),
-              onTap: () {
-                // Handle item 1 tap Intent Passing
-                // Remove Navigation Drawer
-                Navigator.pop(context);
-                // Intent passing
-                // Navigator.pushNamed(context, '/tasks_list', arguments: {});
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) {
-                  return TaskList();
-                  // Navigator.pop(context);
-                }));
-              },
-            ),
-            ListTile(
-              title: const Text('Follow Up'),
-              leading: const Icon(Icons.follow_the_signs_rounded,
-                  color: Color(0xff0D0F2F)),
-              onTap: () {
-                // Handle item 1 tap Intent Passing
-                // Remove Navigation Drawer
-                Navigator.pop(context);
-                // Intent passing
-                Navigator.pushNamed(context, '/follow_up', arguments: {});
-              },
-            ),
-            ListTile(
-              title: const Text('Alerts'),
-              leading: const Icon(Icons.add_alert, color: Color(0xff0D0F2F)),
-              onTap: () {
-                // Handle item 1 tap Intent Passing
-                // Remove Navigation Drawer
-                Navigator.pop(context);
-                // Intent passing
-                Navigator.pushNamed(context, '/alerts', arguments: {});
-              },
-            ),
-            ListTile(
-              title: const Text('Logout'),
-              leading:
-                  const Icon(Icons.logout_rounded, color: Color(0xff0D0F2F)),
-              onTap: () {
-                // Removing Navigation Drawer
-                Navigator.pop(context);
+    return WillPopScope(
+      onWillPop: () => onBackButtonPress(context),
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
+          titleTextStyle: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),
+          backgroundColor: Colors.blueGrey, //Colors.blueGrey[900]
+          title: const Text('PCMC Staff'),
+          actions: [
+            RawMaterialButton(
+              elevation: 1.0,
+              fillColor: const Color(0xFFF5F6F9),
+              padding: const EdgeInsets.all(5.0),
+              shape: const CircleBorder(),
+              onPressed: () {
                 QuickAlert.show(
                     context: context,
                     type: QuickAlertType.confirm,
@@ -351,6 +126,8 @@ class _HomeState extends State<Home> {
                       // Navigator.pop(context);
                       // Passing Intent to home screen
                       // signOut();
+                      Navigator.popUntil(context, ModalRoute.withName('/home'));
+
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
                         return const SignIn();
@@ -359,222 +136,473 @@ class _HomeState extends State<Home> {
                       // Navigator.pop(context);
                     });
               },
+              child: const Icon(
+                Icons.logout,
+                color: Colors.blue,
+              ),
             ),
+            // IconButton(
+            //   icon: const Icon(Icons.logout_rounded, color: Colors.white),
+            //   onPressed: () {
+            //     QuickAlert.show(
+            //         context: context,
+            //         type: QuickAlertType.confirm,
+            //         text: 'Do you want to logout',
+            //         confirmBtnText: 'Yes',
+            //         cancelBtnText: 'No',
+            //         confirmBtnColor: Colors.redAccent,
+            //         onCancelBtnTap: () {
+            //           Navigator.pop(context);
+            //         },
+            //         onConfirmBtnTap: () {
+            //           // signOut();
+            //           // Navigator.pop(context);
+            //           // Passing Intent to home screen
+            //           // signOut();
+            //           Navigator.pushReplacement(context,
+            //               MaterialPageRoute(builder: (context) {
+            //             return const SignIn();
+            //             // Navigator.pop(context);
+            //           }));
+            //           // Navigator.pop(context);
+            //         });
+            //   },
+            // )
           ],
         ),
-      ),
-      body: SingleChildScrollView(
-          child: Stack(
-        children: [
-          Column(
-            //carousal step 5
-            children: [
-              // for image slider
-              Stack(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      // This is a function to handle image tap
-                      // migrateToSelectedImageScreen(currentIndex); -> if need to add this feature function code from citizen app
-                      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //     content: Text('image clicked at $currentIndex')));
-                      return;
-                    },
-                    child: CarouselSlider(
-                        //carousal step 6 -> sliding effect
-                        items: imageList
-                            .map(
-                              (item) => Image.asset(
-                                item['image_path'],
-                                fit: BoxFit.cover,
-                                width: double.infinity,
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Colors.blueGrey,
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: profileImage != ''
+                          ? SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: ClipOval(
+                                child: Image.memory(
+                                  const Base64Decoder().convert(
+                                    profileImage.toString(),
+                                  ),
+                                ),
                               ),
                             )
-                            .toList(),
-                        options: CarouselOptions(
-                            scrollPhysics: const BouncingScrollPhysics(),
-                            autoPlay: true,
-                            aspectRatio: 2,
-                            viewportFraction: 1,
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                currentIndex = index;
-                              });
-                            })),
-                  ),
-                  // Positioned(
-                  //   bottom: 10,
-                  //   left: 0,
-                  //   right: 0,
-                  //   child: Row(
-                  //     //carousal step 7 sliding dots
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children:
-                  //         imageList.asMap().entries.map((entry) {
-                  //       // Moving Dot
-                  //       return GestureDetector(
-                  //         onTap: () => carouselController
-                  //             .animateToPage(entry.key),
-                  //         child: Container(
-                  //           width: currentIndex == entry.key ? 17 : 7,
-                  //           height: 7.0,
-                  //           margin: const EdgeInsets.symmetric(
-                  //             horizontal: 3.0,
-                  //           ),
-                  //           decoration: BoxDecoration(
-                  //               borderRadius:
-                  //                   BorderRadius.circular(10),
-                  //               color: currentIndex == entry.key
-                  //                   ? Colors
-                  //                       .red // current image dot color
-                  //                   : Colors
-                  //                       .teal), //other image dot color
-                  //         ),
-                  //       );
-                  //     }).toList(),
-                  //     //
-                  //   ),
-                  // ),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              //Boxes with menu code
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Card(
-                        elevation: 8.0,
-                        child: Ink(
-                          width: 150,
-                          height: 100,
-                          // color: Colors.blue,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            gradient: const LinearGradient(
-                                colors: [Colors.blueGrey, Colors.lightBlue],
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              // Function to be called when container is tapped
-                              Navigator.pushNamed(
-                                  context, '/attendance_dashboard',
-                                  arguments: {});
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  RawMaterialButton(
-                                    elevation: 1.0,
-                                    fillColor: const Color(0xFFF5F6F9),
-                                    padding: const EdgeInsets.all(5.0),
-                                    shape: const CircleBorder(),
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/attendance_dashboard',
-                                          arguments: {});
-                                    },
-                                    child: const Icon(
-                                      Icons.dashboard_customize_rounded,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-
-                                  //HERE
-                                  const Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Text('Attendance',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          : Image.asset('assets/profile.png'),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        userName,
+                        style: const TextStyle(
+                            color: Colors.white, fontSize: 20.0),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight + const Alignment(0, .4),
+                      child: Text(
+                        userMobile,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight + Alignment(0, 1.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white),
+                          gradient: const LinearGradient(
+                              colors: [Colors.green, Colors.lightGreen],
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Text(
+                            userDesignation,
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 20.00,
-                      ),
-                      Card(
-                        elevation: 8.0,
-                        child: Ink(
-                          width: 150,
-                          height: 100,
-                          // color: Colors.blue,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            gradient: const LinearGradient(
-                                colors: [Colors.blueGrey, Colors.lightBlue],
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/alerts',
-                                  arguments: {});
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  RawMaterialButton(
-                                    elevation: 1.0,
-                                    fillColor: const Color(0xFFF5F6F9),
-                                    padding: const EdgeInsets.all(5.0),
-                                    shape: const CircleBorder(),
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, '/alerts',
-                                          arguments: {});
-                                    },
-                                    child: const Icon(
-                                      Icons.taxi_alert,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                  const Text('Alerts',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-              // code for bottom nav screen
+              ListTile(
+                title: const Text('Attendance Dashboard'),
+                leading: const Icon(Icons.perm_identity_rounded,
+                    color: Color(0xff0D0F2F)),
+                onTap: () {
+                  // Handle item 1 tap Intent Passing
+                  // Remove Navigation Drawer
+                  Navigator.pop(context);
+                  // Intent passing
+                  // Intent passing with pushName -> you can also pass a string value (just like put extra in android intent passing)
+                  Navigator.pushNamed(context, '/attendance_dashboard',
+                      arguments: {});
+                },
+              ),
+              // ListTile(
+              //   title: const Text('Attendance Logs'),
+              //   leading: const Icon(Icons.add_alert),
+              //   onTap: () {
+              //     // Handle item 1 tap
+              //     // Removing Navigation Drawer
+              //     Navigator.pop(context);
+              //     // Intent passing
+              //     Navigator.pushNamed(context, '/attendance_logs', arguments: {});
+              //   },
+              // ),
+              // ListTile(
+              //   title: const Text('Monthly Time Card'),
+              //   leading: const Icon(Icons.home),
+              //   onTap: () {
+              //     // Handle item 1 tap Intent Passing
+              //     // Remove Navigation Drawer
+              //     Navigator.pop(context);
+              //     // Intent passing
+              //     Navigator.pushNamed(context, '/time_card', arguments: {});
+              //   },
+              // ),
+              ListTile(
+                title: const Text('Fixed Route Map'),
+                leading:
+                    const Icon(Icons.location_on, color: Color(0xff0D0F2F)),
+                onTap: () {
+                  // Handle item 1 tap Intent Passing
+                  // Remove Navigation Drawer
+                  Navigator.pop(context);
+                  // Intent passing
+                  Navigator.pushNamed(context, '/route_map', arguments: {});
+                },
+              ),
+              ListTile(
+                title: const Text('Profile'),
+                leading:
+                    const Icon(Icons.account_circle, color: Color(0xff0D0F2F)),
+                onTap: () {
+                  // Handle item 1 tap Intent Passing
+                  // Remove Navigation Drawer
+                  Navigator.pop(context);
+                  // Intent passing
+                  Navigator.pushNamed(context, '/profile', arguments: {});
+                },
+              ),
+              ListTile(
+                title: const Text('Tasks List'),
+                leading:
+                    const Icon(Icons.task_rounded, color: Color(0xff0D0F2F)),
+                onTap: () {
+                  // Handle item 1 tap Intent Passing
+                  // Remove Navigation Drawer
+                  Navigator.pop(context);
+                  // Intent passing
+                  // Navigator.pushNamed(context, '/tasks_list', arguments: {});
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const TaskList();
+                    // Navigator.pop(context);
+                  }));
+                },
+              ),
+              ListTile(
+                title: const Text('Follow Up'),
+                leading: const Icon(Icons.follow_the_signs_rounded,
+                    color: Color(0xff0D0F2F)),
+                onTap: () {
+                  // Handle item 1 tap Intent Passing
+                  // Remove Navigation Drawer
+                  Navigator.pop(context);
+                  // Intent passing
+                  Navigator.pushNamed(context, '/follow_up', arguments: {});
+                },
+              ),
+              ListTile(
+                title: const Text('Alerts'),
+                leading: const Icon(Icons.add_alert, color: Color(0xff0D0F2F)),
+                onTap: () {
+                  // Handle item 1 tap Intent Passing
+                  // Remove Navigation Drawer
+                  Navigator.pop(context);
+                  // Intent passing
+                  Navigator.pushNamed(context, '/alerts', arguments: {});
+                },
+              ),
+              ListTile(
+                title: const Text('Logout'),
+                leading:
+                    const Icon(Icons.logout_rounded, color: Color(0xff0D0F2F)),
+                onTap: () {
+                  // Removing Navigation Drawer
+                  Navigator.pop(context);
+                  QuickAlert.show(
+                      context: context,
+                      type: QuickAlertType.confirm,
+                      text: 'Do you want to logout',
+                      confirmBtnText: 'Yes',
+                      cancelBtnText: 'No',
+                      confirmBtnColor: Colors.redAccent,
+                      onCancelBtnTap: () {
+                        Navigator.pop(context);
+                      },
+                      onConfirmBtnTap: () {
+                        // signOut();
+                        // Navigator.pop(context);
+                        // Passing Intent to home screen
+                        // signOut();
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const SignIn();
+                          // Navigator.pop(context);
+                        }));
+                        // Navigator.pop(context);
+                      });
+                },
+              ),
             ],
           ),
-        ],
-      )),
+        ),
+        body: SingleChildScrollView(
+            child: Stack(
+          children: [
+            Column(
+              //carousal step 5
+              children: [
+                // for image slider
+                Stack(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        // This is a function to handle image tap
+                        // migrateToSelectedImageScreen(currentIndex); -> if need to add this feature function code from citizen app
+                        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        //     content: Text('image clicked at $currentIndex')));
+                        return;
+                      },
+                      child: CarouselSlider(
+                          //carousal step 6 -> sliding effect
+                          items: imageList
+                              .map(
+                                (item) => Image.asset(
+                                  item['image_path'],
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                              )
+                              .toList(),
+                          options: CarouselOptions(
+                              scrollPhysics: const BouncingScrollPhysics(),
+                              autoPlay: true,
+                              aspectRatio: 2,
+                              viewportFraction: 1,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  currentIndex = index;
+                                });
+                              })),
+                    ),
+                    // Positioned(
+                    //   bottom: 10,
+                    //   left: 0,
+                    //   right: 0,
+                    //   child: Row(
+                    //     //carousal step 7 sliding dots
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children:
+                    //         imageList.asMap().entries.map((entry) {
+                    //       // Moving Dot
+                    //       return GestureDetector(
+                    //         onTap: () => carouselController
+                    //             .animateToPage(entry.key),
+                    //         child: Container(
+                    //           width: currentIndex == entry.key ? 17 : 7,
+                    //           height: 7.0,
+                    //           margin: const EdgeInsets.symmetric(
+                    //             horizontal: 3.0,
+                    //           ),
+                    //           decoration: BoxDecoration(
+                    //               borderRadius:
+                    //                   BorderRadius.circular(10),
+                    //               color: currentIndex == entry.key
+                    //                   ? Colors
+                    //                       .red // current image dot color
+                    //                   : Colors
+                    //                       .teal), //other image dot color
+                    //         ),
+                    //       );
+                    //     }).toList(),
+                    //     //
+                    //   ),
+                    // ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                //Boxes with menu code
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Card(
+                          elevation: 8.0,
+                          child: Ink(
+                            width: 150,
+                            height: 100,
+                            // color: Colors.blue,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              gradient: const LinearGradient(
+                                  colors: [Colors.blueGrey, Colors.lightBlue],
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                // Function to be called when container is tapped
+                                Navigator.pushNamed(
+                                    context, '/attendance_dashboard',
+                                    arguments: {});
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    RawMaterialButton(
+                                      elevation: 1.0,
+                                      fillColor: const Color(0xFFF5F6F9),
+                                      padding: const EdgeInsets.all(5.0),
+                                      shape: const CircleBorder(),
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, '/attendance_dashboard',
+                                            arguments: {});
+                                      },
+                                      child: const Icon(
+                                        Icons.dashboard_customize_rounded,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+
+                                    //HERE
+                                    const Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Text('Attendance',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20.00,
+                        ),
+                        Card(
+                          elevation: 8.0,
+                          child: Ink(
+                            width: 150,
+                            height: 100,
+                            // color: Colors.blue,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              gradient: const LinearGradient(
+                                  colors: [Colors.blueGrey, Colors.lightBlue],
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/alerts',
+                                    arguments: {});
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    RawMaterialButton(
+                                      elevation: 1.0,
+                                      fillColor: const Color(0xFFF5F6F9),
+                                      padding: const EdgeInsets.all(5.0),
+                                      shape: const CircleBorder(),
+                                      onPressed: () {
+                                        Navigator.pushNamed(context, '/alerts',
+                                            arguments: {});
+                                      },
+                                      child: const Icon(
+                                        Icons.taxi_alert,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    const Text('Alerts',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                  ],
+                ),
+                // code for bottom nav screen
+              ],
+            ),
+          ],
+        )),
+      ),
     );
   }
 
-  // showLoaderDialog(BuildContext context) {
+  Future<bool> onBackButtonPress(BuildContext context) async {
+    bool exitapp = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(' Warning '),
+            content: const Text('Are you sure  to exit the App?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Yes'),
+              ),
+            ],
+          );
+        });
+    return exitapp ?? true;
+  }
+
+// showLoaderDialog(BuildContext context) {
   //   AlertDialog alert = AlertDialog(
   //     content: new Row(
   //       children: [

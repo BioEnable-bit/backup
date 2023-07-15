@@ -161,8 +161,7 @@ class _TaskListState extends State<TaskList> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_sharp),
           onPressed: () => userDesignation == 'Driver'
-              ? Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) {
+              ? Navigator.pop(context, MaterialPageRoute(builder: (context) {
                   return const Home();
                   // Navigator.pop(context);
                 }))

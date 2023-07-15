@@ -120,9 +120,7 @@ class _AddFollowUpState extends State<AddFollowUp> {
         title: const Text("Add Follow Up"),
         leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.pushReplacementNamed(
-                context, '/tasks_list',
-                arguments: {})),
+            onPressed: () => Navigator.pop(context, '/tasks_list')),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -220,8 +218,7 @@ class _AddFollowUpState extends State<AddFollowUp> {
                   ElevatedButton(
                       onPressed: () {
                         //
-                        Navigator.pushReplacementNamed(context, '/tasks_list',
-                            arguments: {});
+                        Navigator.pop(context, '/tasks_list');
                       },
                       child: const Text('Cancel')),
                   const SizedBox(

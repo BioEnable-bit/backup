@@ -235,8 +235,8 @@ class _AddNewAlertState extends State<AddNewAlert> {
         title: const Text("Add Alert"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
+          onPressed: () =>
+              Navigator.pop(context, MaterialPageRoute(builder: (context) {
             return const Alerts();
             // Navigator.pop(context);
           })),
@@ -435,7 +435,10 @@ class _AddNewAlertState extends State<AddNewAlert> {
                   ElevatedButton(
                       onPressed: () {
                         //
-                        Navigator.pushNamed(context, '/alerts', arguments: {});
+                        Navigator.pop(
+                          context,
+                          '/alerts',
+                        );
                       },
                       child: const Text('Cancel')),
                   const SizedBox(
@@ -537,8 +540,7 @@ class _AddNewAlertState extends State<AddNewAlert> {
         // print('success');
         // stop progress bar
         Navigator.of(context).pop();
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
+        Navigator.pop(context, MaterialPageRoute(builder: (context) {
           return const Alerts();
           // Navigator.pop(context);
         }));
