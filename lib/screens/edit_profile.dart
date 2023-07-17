@@ -109,8 +109,9 @@ class _EditProfileState extends State<EditProfile> {
       oldEmail = data[0]['email'];
       oldMobile = data[0]['mobile'];
       oldAddress = data[0]['address'];
-      base64String = data[0]['photo'];
-      debugPrint(base64String);
+      oldPhotoBase64 = data[0]['photo'];
+
+      // debugPrint(base64String);
     });
     return data.map((e) => ProfileDataModel.fromJson(e)).toList();
   }
@@ -121,6 +122,8 @@ class _EditProfileState extends State<EditProfile> {
     employeeID = '';
 
     oldFName = '';
+
+    oldPhotoBase64 = '';
 
     oldLName = '';
 
@@ -139,6 +142,7 @@ class _EditProfileState extends State<EditProfile> {
   late String employeeID; //employeeID and staffID are same
 
   late String oldFName;
+  late String oldPhotoBase64;
   TextEditingController _fnameController = TextEditingController();
   late String oldLName;
   final TextEditingController _lnameController = TextEditingController();
@@ -213,41 +217,84 @@ class _EditProfileState extends State<EditProfile> {
                     clipBehavior: Clip.none,
                     fit: StackFit.expand,
                     children: [
-                      _image != null
-                          ? CircleAvatar(
-                              radius: 20.0,
-                              backgroundImage: MemoryImage(
-                                _image!,
+                      // image api -> show
+                      _image == null
+                          ? Align(
+                              alignment: Alignment.center,
+                              child: Stack(
+                                children: [
+                                  SizedBox(
+                                    width: 150,
+                                    height: 200,
+                                    child: ClipOval(
+                                      child: oldPhotoBase64 != ''
+                                          ? Image.memory(
+                                              const Base64Decoder().convert(
+                                                oldPhotoBase64,
+                                              ),
+                                            )
+                                          : Image.asset('assets/profile.png'),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: RawMaterialButton(
+                                      onPressed: () {
+                                        selectImage();
+                                        // _selectedProfileImage = MemoryImage(_image!);
+                                        // print(
+                                        //     '_selectedProfileImage : $_selectedProfileImage');
+                                        //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
+                                      },
+                                      elevation: 2.0,
+                                      fillColor: const Color(0xFFF5F6F9),
+                                      padding: const EdgeInsets.all(5.0),
+                                      shape: const CircleBorder(),
+                                      child: const Icon(
+                                        Icons.camera_alt_outlined,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              backgroundColor: Colors.transparent,
                             )
-                          : const CircleAvatar(
-                              radius: 20.0,
-                              backgroundImage: NetworkImage(
-                                'http://www.bbk.ac.uk/mce/wp-content/uploads/2015/03/8327142885_9b447935ff.jpg',
+                          : Align(
+                              alignment: Alignment.center,
+                              child: Stack(
+                                children: [
+                                  ClipOval(
+                                    child: Image.memory(
+                                      _image!,
+                                      width: 150,
+                                      height: 150,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: RawMaterialButton(
+                                      onPressed: () {
+                                        selectImage();
+                                        // _selectedProfileImage = MemoryImage(_image!);
+                                        // print(
+                                        //     '_selectedProfileImage : $_selectedProfileImage');
+                                        //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
+                                      },
+                                      elevation: 2.0,
+                                      fillColor: const Color(0xFFF5F6F9),
+                                      padding: const EdgeInsets.all(5.0),
+                                      shape: const CircleBorder(),
+                                      child: const Icon(
+                                        Icons.camera_alt_outlined,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              backgroundColor: Colors.transparent,
                             ),
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: RawMaterialButton(
-                            onPressed: () {
-                              selectImage();
-                              // _selectedProfileImage = MemoryImage(_image!);
-                              // print(
-                              //     '_selectedProfileImage : $_selectedProfileImage');
-                              //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
-                            },
-                            elevation: 2.0,
-                            fillColor: const Color(0xFFF5F6F9),
-                            padding: const EdgeInsets.all(15.0),
-                            shape: const CircleBorder(),
-                            child: const Icon(
-                              Icons.camera_alt_outlined,
-                              color: Colors.blue,
-                            ),
-                          )),
                     ],
                   ),
                 ),
@@ -268,7 +315,7 @@ class _EditProfileState extends State<EditProfile> {
                 //     const SizedBox(width: 16.0),
                 //     InkWell(
                 //       child: const Icon(
-                //         Icons.photo_camera_back,
+                //         Icons.photo_camera_back,sign
                 //         size: 50,
                 //       ),
                 //       onTap: () async {

@@ -5,7 +5,9 @@ class TeamMonthlyTimeCardModel {
   String? in_punch;
   String? out_punch;
   String? total_hrs;
+
   String? total_days;
+
 
   TeamMonthlyTimeCardModel(
       {this.name,
@@ -13,8 +15,10 @@ class TeamMonthlyTimeCardModel {
       this.rdate,
       this.in_punch,
       this.out_punch,
+
       this.total_hrs,
       this.total_days});
+
 
   TeamMonthlyTimeCardModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -23,8 +27,13 @@ class TeamMonthlyTimeCardModel {
     in_punch = json['in_punch'];
     out_punch = json['out_punch'];
     total_hrs = json['total_hrs'];
+
     total_days = json['total_days'];
   }
 
 // Getter
+
+  }
+
+
 }

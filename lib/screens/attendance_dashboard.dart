@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:pcmc_staff/screens/attendance.dart';
+
 
 import 'attendance_logs.dart';
 import 'home.dart';
@@ -13,6 +15,8 @@ class AttendanceDashboard extends StatefulWidget {
 }
 
 class _AttendanceDashboardState extends State<AttendanceDashboard> {
+  late String? staffID;
+  late String? userDesignation;
   int _currentindex = 0;
   final List<Widget> _children = [
     //Screen(),
@@ -27,16 +31,39 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
   }
 
   @override
+  void initState() {
+    staffID = '';
+    userDesignation = '';
+    getUserDetails();
+
+    super.initState();
+  }
+
+  void getUserDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      staffID = prefs.getString('staffID');
+      userDesignation = prefs.getString('designation');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_sharp),
-          onPressed: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return const Home();
-            // Navigator.pop(context);
-          })),
+          onPressed: () => userDesignation == 'Driver'
+              ? Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                  return const Home();
+                  // Navigator.pop(context);
+                }))
+              : Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                  return const HomeSupervisor();
+                  // Navigator.pop(context);
+                })),
         ),
         title: const Text("Attendance Dashboard"),
         actions: [
@@ -45,7 +72,6 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
                 color: Colors.blueGrey, size: 34.89),
             onPressed: () {
               // TODO: Add Alerts popup functionality
-              print('clicked');
             },
           )
         ],

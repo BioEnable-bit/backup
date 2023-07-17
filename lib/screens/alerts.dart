@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/WardModel.dart';
 import '../models/ZoneModel.dart';
+import 'home_supervisor.dart';
 
 class Alerts extends StatefulWidget {
   const Alerts({super.key});
@@ -29,6 +30,8 @@ class _AlertsState extends State<Alerts> {
   // for ward dropdown
   WardModel? selectedWard;
   List<WardModel> wards = <WardModel>[];
+
+  late String? userDesignation;
   // we need to populate this list so creating Future function
   Future getAllZoneNames() async {
     Response response = await post(Uri.parse(
@@ -56,6 +59,18 @@ class _AlertsState extends State<Alerts> {
     super.initState();
     getAllZoneNames();
     alertID = '';
+    userDesignation = '';
+    getUserDetails();
+  }
+
+  void getUserDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      // staffID = prefs.getString('staffID');
+      userDesignation = prefs.getString('designation');
+      // print('staffID: $staffID');
+      // print('User Designation: $userDesignation');
+    });
   }
 
   Future getAllWardNames(zoneid) async {
@@ -99,11 +114,17 @@ class _AlertsState extends State<Alerts> {
         title: const Text("Alerts"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_sharp),
-          onPressed: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return const Home();
-            // Navigator.pop(context);
-          })),
+          onPressed: () => userDesignation == 'Driver'
+              ? Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                  return const Home();
+                  // Navigator.pop(context);
+                }))
+              : Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                  return const HomeSupervisor();
+                  // Navigator.pop(context);
+                })),
         ),
         actions: [
           RawMaterialButton(
@@ -135,7 +156,7 @@ class _AlertsState extends State<Alerts> {
                     onTap: () {
                       setState(() {
                         alertID = items[index].issue_id.toString();
-                        print(alertID);
+                        // print(alertID);
                         debugPrint(items[index].image1);
                       });
                       //TODO: ADD UPDATE REMARK FUNCTIONALITY ON TAP
@@ -167,17 +188,17 @@ class _AlertsState extends State<Alerts> {
                                 Text('Status: ${items[index].status}'),
                                 Text('Created On: ${items[index].created_on}'),
                                 // Text('Created On: ${items[index].image1}'),
-                                items[index].image1.toString().startsWith(
-                                            'https://pcmc.bioenabletech.com') ||
-                                        items[index].image1.toString().isEmpty
-                                    ? const Text('Image not available')
-                                    : Image.memory(
-                                        const Base64Decoder().convert(
-                                          items[index].image1.toString(),
-                                        ),
-                                        width: 250,
-                                        height: 50,
-                                      )
+                                // items[index].image1.toString().startsWith(
+                                //             'https://pcmc.bioenabletech.com') ||
+                                //         items[index].image1.toString().isEmpty
+                                //     ? const Text('Image not available')
+                                //     : Image.memory(
+                                //         const Base64Decoder().convert(
+                                //           items[index].image1.toString(),
+                                //         ),
+                                //         width: 250,
+                                //         height: 50,
+                                //       )
                               ],
                             ),
                           ],
@@ -218,11 +239,12 @@ class _AlertsState extends State<Alerts> {
         // print('success');
         // stop progress bar
         Navigator.of(context).pop();
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
-          return const Alerts();
-          // Navigator.pop(context);
-        }));
+
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) {
+        //   return const Alerts();
+        //   // Navigator.pop(context);
+        // }));
       } else {
         // String resp = data[0]['msg'];
         ScaffoldMessenger.of(context).showSnackBar(
@@ -300,57 +322,75 @@ class _AlertsState extends State<Alerts> {
                       ),
                     ),
                     Container(
-                      width: double.infinity,
-                      height: 60,
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_remarkUpdateController.text.toString().isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content:
-                                        Text('please enter issue remark')));
-                            return;
-                          }
-                          if (selectedStatus!.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('please select status')));
-                            return;
-                          }
-                          try {
-                            //start progress bar
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                });
-                            //call method
-                            print(alertID);
-                            print(_remarkUpdateController.text.toString());
-                            print(selectedStatus.toString());
+                        width: double.infinity,
+                        height: 60,
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                "Cancel",
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                if (_remarkUpdateController.text
+                                    .toString()
+                                    .isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              'please enter issue remark')));
+                                  return;
+                                }
+                                if (selectedStatus!.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text('please select status')));
+                                  return;
+                                }
+                                try {
+                                  //start progress bar
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      });
+                                  //call method
+                                  print(alertID);
+                                  print(
+                                      _remarkUpdateController.text.toString());
+                                  print(selectedStatus.toString());
 
-                            updateRemark(
-                                alertID,
-                                _remarkUpdateController.text.toString(),
-                                selectedStatus.toString());
-                            //Passing dummy image foe now TODO: change with image selected from camera/gallery
+                                  updateRemark(
+                                      alertID,
+                                      _remarkUpdateController.text.toString(),
+                                      selectedStatus.toString());
+                                  //Passing dummy image foe now TODO: change with image selected from camera/gallery
 
-                            //stop progress bar
-                            // stop progress bar
-                            Navigator.of(context).pop();
-                          } catch (e) {
-                            // stop progress bar
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: const Text(
-                          "Update",
-                        ),
-                      ),
-                    ),
+                                  //stop progress bar
+                                  // stop progress bar
+                                  Navigator.of(context).pop();
+
+                                  //close alert dialog
+                                  Navigator.pop(context);
+                                } catch (e) {
+                                  // stop progress bar
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                              child: const Text(
+                                "Update",
+                              ),
+                            ),
+                          ],
+                        )),
                   ],
                 ),
               ),

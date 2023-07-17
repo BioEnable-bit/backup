@@ -6,7 +6,9 @@ import 'package:http/http.dart';
 import 'package:pcmc_staff/models/EmployeeList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 import '../models/AttendenceLogsModel.dart';
+
 
 class AttendanceLogs extends StatefulWidget {
   const AttendanceLogs({super.key});
@@ -16,7 +18,9 @@ class AttendanceLogs extends StatefulWidget {
 }
 
 class _AttendanceLogsState extends State<AttendanceLogs> {
+
   List<AttendenceLogsModel> attendanceList = <AttendenceLogsModel>[];
+
   String? _selectedFromDate;
   String? _selectedToDate;
   DateTime? startdate;
@@ -30,7 +34,9 @@ class _AttendanceLogsState extends State<AttendanceLogs> {
         initialDate: currentDate,
         firstDate: DateTime(2022),
         lastDate: DateTime(2050));
+
     print(_selectedFromDate);
+
     Enddate = pickedDate;
     if (pickedDate != null && pickedDate != currentDate)
       setState(() {
@@ -39,6 +45,7 @@ class _AttendanceLogsState extends State<AttendanceLogs> {
     print('""""""""""""""""""""""');
     print(_selectedToDate);
     print('""""""""""""""""""""""');
+
   }
 
   Future<List<AttendenceLogsModel>> getEmployeeAttendanceData() async {
@@ -96,6 +103,7 @@ class _AttendanceLogsState extends State<AttendanceLogs> {
   //   return data.map((e) => PeruserAttendence.fromJson(e)).toList();
   // }
 
+
   List<EmployeeList> employee = <EmployeeList>[];
   Future getEmployeeNames() async {
     final prefs = await SharedPreferences.getInstance();
@@ -132,6 +140,7 @@ class _AttendanceLogsState extends State<AttendanceLogs> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+
         child: Column(
           children: [
             Row(
@@ -300,8 +309,10 @@ class _AttendanceLogsState extends State<AttendanceLogs> {
               height: 40.00,
             ),
           ],
+
         ),
       ),
     );
   }
+
 }

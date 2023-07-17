@@ -114,334 +114,363 @@ class _SignInScreenState extends State<SignIn> {
       ),
       // image: DecorationImage(
       //     image: AssetImage('assets/whitebg.jpg'), fit: BoxFit.cover)),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: Container(
-                      // decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 2),shape: BoxShape.circle),
-                      //
-                      // child: const Icon(Icons.person,color: Colors.white,size: 90,),
-
-                      padding: const EdgeInsets.only(left: 35, top: 120),
-                      child: const Text(
-                        'Welcome To \n PCMC Staff',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.40,
-                    right: 35,
-                    left: 35),
-                child: Column(
+      child: WillPopScope(
+        onWillPop: () => onBackButtonPress(context),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                          //icon: Icon(Icons.mobile_friendly_rounded),
-                          fillColor: Colors.white,
-                          filled: true,
-                          hintText: 'Enter Mobile Number',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      controller: _mobileNumberController,
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your mobile number';
-                        }
-                        String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
-                        RegExp regExp = RegExp(patttern);
-                        if (value.isEmpty) {
-                          return 'Please enter mobile number';
-                        } else if (!regExp.hasMatch(value)) {
-                          return 'Please enter valid mobile number(0-9)';
-                        }
+                    Form(
+                      key: _formKey,
+                      child: Container(
+                        // decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 2),shape: BoxShape.circle),
+                        //
+                        // child: const Icon(Icons.person,color: Colors.white,size: 90,),
 
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          //icon: Icon(Icons.password_rounded),
-                          filled: true,
-                          hintText: 'Enter Your Password',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      controller: _passwordController,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-
-                          // border: OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10))),//background color of dropdown button
-                          // border: Border.all(color: Colors.black, width:0), //border of dropdown button
-                          borderRadius: BorderRadius.circular(
-                              10), //border raiuds of dropdown button
-                          boxShadow: <BoxShadow>[
-                            //apply shadow on Dropdown button
-                            BoxShadow(
-                                color: Color.fromRGBO(
-                                    0, 0, 0, 0.57), //shadow for button
-                                blurRadius: 6) //blur radius of shadow
-                          ]),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 30, right: 30),
-                        child: DropdownButton<Designation>(
-                          hint: const Text("Select a Designation"),
-                          value: selectedDesignation,
-                          onChanged: (Designation? newValue) {
-                            setState(() {
-                              selectedDesignation = newValue!;
-                              print(selectedDesignation.toString());
-
-                              // getAlldesigNames();
-                              // getAlldesigNames(selectedDesignation?.desig_id.toString());
-                            });
-                            // print(zones.indexOf(newValue!));
-                          },
-                          items: zones.map((Designation zoneModel) {
-                            return DropdownMenuItem<Designation>(
-                              value: zoneModel,
-                              child: Text(
-                                zoneModel.desig_name.toString(),
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                            );
-                          }).toList(),
+                        padding: const EdgeInsets.only(left: 35, top: 120),
+                        child: const Text(
+                          'Welcome To \n PCMC Staff',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'SignIn',
-                          style: TextStyle(
-                            fontSize: 27,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff2E5456),
-                          ),
-                        ),
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: const Color(0xff4c505b),
-                          child: IconButton(
-                            color: Colors.white,
-                            onPressed: () async {
-                              // show progress bar
-
-                              String mobile = _mobileNumberController.text;
-                              String password = _passwordController.text;
-                              String? designation =
-                                  selectedDesignation?.desig_id.toString();
-                              print('###################');
-                              print(password);
-                              print(mobile);
-                              print(designation);
-                              print(selectedDesignation?.desig_id.toString());
-                              // userAuth(mobile, password);
-                              print('OutPPUT');
-                              print(designation);
-                              if (mobile.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Enter Your Mobile Number')));
-                                return;
-                              } else if (password.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Enter Your PassWord')));
-                                return;
-                              } else if (selectedDesignation == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Select Your Designation')));
-                                return;
-                              } else if (mobile != "" && password != "") {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    });
-
-                                try {
-                                  Response response = await post(
-                                      Uri.parse(
-                                          'https://pcmc.bioenabletech.com/api/service.php?q=staff_login&auth_key=PCMCS56ADDGPIL'),
-                                      body: {
-                                        'mobile': mobile,
-                                        'password':
-                                            password, //category is complaint selected by user
-                                        'designation': designation,
-                                      });
-                                  // stop progress bar
-                                  Navigator.of(context).pop();
-
-                                  //check
-                                  if (response.statusCode == 200) {
-                                    var data =
-                                        jsonDecode(response.body.toString());
-                                    if (data[0]['msg'] == 'success') {
-                                      print(
-                                          'Designation: ${data[0]['designation']}');
-                                      _saveLogindata(
-                                          data[0]['staffID'],
-                                          data[0]['WardID'],
-                                          data[0]['designation']);
-                                      // Passing Intent to home screen
-                                      // save customer ID and Ward ID to Shared Preference
-                                      _saveDataToPrefs(
-                                        mobile,
-                                        password,
-                                        designation,
-                                        // data[0]['customerID'],
-                                        // data[0]['WardID']
-                                      );
-                                      // intent pass
-                                      // Navigator.pop(context);
-                                      data[0]['designation'] == "Driver"
-                                          ? Navigator.pushReplacementNamed(
-                                              context, '/home', arguments: {
-                                              'staffID': data[0]['staffID'],
-                                              'WardID': data[0]['WardID'],
-                                              'designation': data[0]
-                                                  ['designation'],
-                                            })
-                                          : Navigator.pushReplacementNamed(
-                                              context, '/home_supervisor',
-                                              arguments: {
-                                                  'staffID': data[0]['staffID'],
-                                                  'WardID': data[0]['WardID'],
-                                                  'designation': data[0]
-                                                      ['designation'],
-                                                });
-
-                                      // Navigator.push(context,
-                                      //     MaterialPageRoute(builder: (context) {
-                                      //       return const Home();
-                                      //     }));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                        content: Text('Successfully Login'),
-                                        backgroundColor: Color(0xFF23E06F),
-                                        duration: Duration(milliseconds: 3000),
-                                        animation: AlwaysStoppedAnimation(
-                                            BorderSide.strokeAlignCenter),
-                                      ));
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                        content: Text('Invalid Credentials'),
-                                        backgroundColor: Color(0xFFEE2E22),
-                                        duration: Duration(milliseconds: 3000),
-                                        animation: AlwaysStoppedAnimation(
-                                            BorderSide.strokeAlignCenter),
-                                      ));
-                                    }
-                                  }
-                                } catch (e) {
-                                  String err = e.toString();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(err)));
-                                  Navigator.of(context).pop();
-                                }
-                                return;
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Enter details to login')));
-                                return;
-                              }
-                            },
-                            icon: const Icon(Icons.arrow_forward),
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // TextButton(
-                        //   onPressed: () {
-                        //     Navigator.push(context,
-                        //         MaterialPageRoute(builder: (context) {
-                        //           return const SignUpScreen();
-                        //           // Navigator.pop(context);
-                        //         }));
-                        //   },
-                        //   child: const Text(
-                        //     'SignUp',
-                        //     style: TextStyle(
-                        //       color: Color(0xff4c505b),
-                        //       fontSize: 17,
-                        //       fontWeight: FontWeight.w700,
-                        //     ),
-                        //   ),
-                        // ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const ForgotPassword();
-                              // Navigator.pop(context);
-                            }));
-                          },
-                          child: const Text(
-                            'Forgot Password',
-                            style: TextStyle(
-                              color: Color(0xff4c505b),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),
-              ),
-            ],
+                Container(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.40,
+                      right: 35,
+                      left: 35),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                            //icon: Icon(Icons.mobile_friendly_rounded),
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: 'Enter Mobile Number',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        controller: _mobileNumberController,
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your mobile number';
+                          }
+                          String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+                          RegExp regExp = RegExp(patttern);
+                          if (value.isEmpty) {
+                            return 'Please enter mobile number';
+                          } else if (!regExp.hasMatch(value)) {
+                            return 'Please enter valid mobile number(0-9)';
+                          }
+
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            //icon: Icon(Icons.password_rounded),
+                            filled: true,
+                            hintText: 'Enter Your Password',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        controller: _passwordController,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+
+                            // border: OutlineInputBorder(
+                            //     borderRadius: BorderRadius.circular(10))),//background color of dropdown button
+                            // border: Border.all(color: Colors.black, width:0), //border of dropdown button
+                            borderRadius: BorderRadius.circular(
+                                10), //border raiuds of dropdown button
+                            boxShadow: <BoxShadow>[
+                              //apply shadow on Dropdown button
+                              BoxShadow(
+                                  color: Color.fromRGBO(
+                                      0, 0, 0, 0.57), //shadow for button
+                                  blurRadius: 6) //blur radius of shadow
+                            ]),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 30, right: 30),
+                          child: DropdownButton<Designation>(
+                            hint: const Text("Select a Designation"),
+                            value: selectedDesignation,
+                            onChanged: (Designation? newValue) {
+                              setState(() {
+                                selectedDesignation = newValue!;
+                                print(selectedDesignation.toString());
+
+                                // getAlldesigNames();
+                                // getAlldesigNames(selectedDesignation?.desig_id.toString());
+                              });
+                              // print(zones.indexOf(newValue!));
+                            },
+                            items: zones.map((Designation zoneModel) {
+                              return DropdownMenuItem<Designation>(
+                                value: zoneModel,
+                                child: Text(
+                                  zoneModel.desig_name.toString(),
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'SignIn',
+                            style: TextStyle(
+                              fontSize: 27,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff2E5456),
+                            ),
+                          ),
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundColor: const Color(0xff4c505b),
+                            child: IconButton(
+                              color: Colors.white,
+                              onPressed: () async {
+                                // show progress bar
+
+                                String mobile = _mobileNumberController.text;
+                                String password = _passwordController.text;
+                                String? designation =
+                                    selectedDesignation?.desig_id.toString();
+                                print('###################');
+                                print(password);
+                                print(mobile);
+                                print(designation);
+                                print(selectedDesignation?.desig_id.toString());
+                                // userAuth(mobile, password);
+                                print('OutPPUT');
+                                print(designation);
+                                if (mobile.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              'Enter Your Mobile Number')));
+                                  return;
+                                } else if (password.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text('Enter Your PassWord')));
+                                  return;
+                                } else if (selectedDesignation == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text('Select Your Designation')));
+                                  return;
+                                } else if (mobile != "" && password != "") {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      });
+
+                                  try {
+                                    Response response = await post(
+                                        Uri.parse(
+                                            'https://pcmc.bioenabletech.com/api/service.php?q=staff_login&auth_key=PCMCS56ADDGPIL'),
+                                        body: {
+                                          'mobile': mobile,
+                                          'password':
+                                              password, //category is complaint selected by user
+                                          'designation': designation,
+                                        });
+                                    // stop progress bar
+                                    Navigator.of(context).pop();
+
+                                    //check
+                                    if (response.statusCode == 200) {
+                                      var data =
+                                          jsonDecode(response.body.toString());
+                                      if (data[0]['msg'] == 'success') {
+                                        print(
+                                            'Designation: ${data[0]['designation']}');
+                                        _saveLogindata(
+                                            data[0]['staffID'],
+                                            data[0]['WardID'],
+                                            data[0]['designation']);
+                                        // Passing Intent to home screen
+                                        // save customer ID and Ward ID to Shared Preference
+                                        _saveDataToPrefs(
+                                          mobile,
+                                          password,
+                                          designation,
+                                          // data[0]['customerID'],
+                                          // data[0]['WardID']
+                                        );
+                                        // intent pass
+                                        // Navigator.pop(context);
+                                        data[0]['designation'] == "Driver"
+                                            ? Navigator.pushReplacementNamed(
+                                                context, '/home', arguments: {
+                                                'staffID': data[0]['staffID'],
+                                                'WardID': data[0]['WardID'],
+                                                'designation': data[0]
+                                                    ['designation'],
+                                              })
+                                            : Navigator.pushReplacementNamed(
+                                                context, '/home_supervisor',
+                                                arguments: {
+                                                    'staffID': data[0]
+                                                        ['staffID'],
+                                                    'WardID': data[0]['WardID'],
+                                                    'designation': data[0]
+                                                        ['designation'],
+                                                  });
+
+                                        // Navigator.push(context,
+                                        //     MaterialPageRoute(builder: (context) {
+                                        //       return const Home();
+                                        //     }));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: Text('Successfully Login'),
+                                          backgroundColor: Color(0xFF23E06F),
+                                          duration:
+                                              Duration(milliseconds: 3000),
+                                          animation: AlwaysStoppedAnimation(
+                                              BorderSide.strokeAlignCenter),
+                                        ));
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: Text('Invalid Credentials'),
+                                          backgroundColor: Color(0xFFEE2E22),
+                                          duration:
+                                              Duration(milliseconds: 3000),
+                                          animation: AlwaysStoppedAnimation(
+                                              BorderSide.strokeAlignCenter),
+                                        ));
+                                      }
+                                    }
+                                  } catch (e) {
+                                    String err = e.toString();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text(err)));
+                                    Navigator.of(context).pop();
+                                  }
+                                  return;
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text('Enter details to login')));
+                                  return;
+                                }
+                              },
+                              icon: const Icon(Icons.arrow_forward),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // TextButton(
+                          //   onPressed: () {
+                          //     Navigator.push(context,
+                          //         MaterialPageRoute(builder: (context) {
+                          //           return const SignUpScreen();
+                          //           // Navigator.pop(context);
+                          //         }));
+                          //   },
+                          //   child: const Text(
+                          //     'SignUp',
+                          //     style: TextStyle(
+                          //       color: Color(0xff4c505b),
+                          //       fontSize: 17,
+                          //       fontWeight: FontWeight.w700,
+                          //     ),
+                          //   ),
+                          // ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const ForgotPassword();
+                                // Navigator.pop(context);
+                              }));
+                            },
+                            child: const Text(
+                              'Forgot Password',
+                              style: TextStyle(
+                                color: Color(0xff4c505b),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  Future<bool> onBackButtonPress(BuildContext context) async {
+    bool exitapp = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(' Warning '),
+            content: const Text('Are you sure  to exit the App?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Yes'),
+              ),
+            ],
+          );
+        });
+    return exitapp ?? true;
   }
 }
 

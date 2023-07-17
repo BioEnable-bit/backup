@@ -72,11 +72,13 @@ class _TeamDashboardState extends State<TeamDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Column(
         children: [
           const SizedBox(
             height: 20,
           ),
+
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -300,6 +302,7 @@ class _TeamDashboardState extends State<TeamDashboard> {
                             ]),
                           ],
                         );
+
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.start,
                         //   children: [
@@ -359,6 +362,7 @@ class _TeamDashboardState extends State<TeamDashboard> {
                 //     ],
                 //   ),
                 // );
+
               } else {
                 return const Center(
                   child: CircularProgressIndicator(),

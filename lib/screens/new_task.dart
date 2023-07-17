@@ -66,7 +66,6 @@ class _NewTaskState extends State<NewTask> {
       // print(jsonDataZones[0]['ward_name']);
       setState(() {
         for (int i = 0; i < jsonDataZones.length; i++) {
-          // ZoneModel(ward_id: jsonDataZones[i]['ward_id'].toString(), ward_name: jsonDataZones[i]['ward_name'].toString());
           locationList.add(LocationModel(
               id: jsonDataZones[i]['id'].toString(),
               location: jsonDataZones[i]['location'].toString()));

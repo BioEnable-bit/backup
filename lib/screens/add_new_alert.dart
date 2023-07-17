@@ -157,6 +157,7 @@ class _AddNewAlertState extends State<AddNewAlert> {
   List<WardModel> wards = <WardModel>[];
 
   late String? staffID;
+  late String? userDesignation;
 
   // we need to populate this list so creating Future function
   Future getAllZoneNames() async {
@@ -182,9 +183,10 @@ class _AddNewAlertState extends State<AddNewAlert> {
   void initState() {
     super.initState();
     staffID = '';
+    userDesignation = '';
 
     getAllZoneNames();
-    getStaffID();
+    getUserDetails();
   }
 
   Future getAllWardNames(zoneid) async {
@@ -233,8 +235,8 @@ class _AddNewAlertState extends State<AddNewAlert> {
         title: const Text("Add Alert"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
+          onPressed: () =>
+              Navigator.pop(context, MaterialPageRoute(builder: (context) {
             return const Alerts();
             // Navigator.pop(context);
           })),
@@ -433,7 +435,10 @@ class _AddNewAlertState extends State<AddNewAlert> {
                   ElevatedButton(
                       onPressed: () {
                         //
-                        Navigator.pushNamed(context, '/alerts', arguments: {});
+                        Navigator.pop(
+                          context,
+                          '/alerts',
+                        );
                       },
                       child: const Text('Cancel')),
                   const SizedBox(
@@ -535,8 +540,7 @@ class _AddNewAlertState extends State<AddNewAlert> {
         // print('success');
         // stop progress bar
         Navigator.of(context).pop();
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
+        Navigator.pop(context, MaterialPageRoute(builder: (context) {
           return const Alerts();
           // Navigator.pop(context);
         }));
@@ -551,11 +555,13 @@ class _AddNewAlertState extends State<AddNewAlert> {
     }
   }
 
-  void getStaffID() async {
+  void getUserDetails() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       staffID = prefs.getString('staffID');
-      print('staffID: $staffID');
+      userDesignation = prefs.getString('designation');
+      // print('staffID: $staffID');
+      // print('User Designation: $userDesignation');
     });
   }
 }
