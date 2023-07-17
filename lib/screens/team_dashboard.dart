@@ -21,7 +21,7 @@ class _TeamDashboardState extends State<TeamDashboard> {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
     // userDesignation = prefs.getString('designation');
-    print(staffID);
+    // print(staffID);
     // final prefs = await SharedPreferences.getInstance();
     // var customerID = prefs.getString('customerID');
 
@@ -30,7 +30,7 @@ class _TeamDashboardState extends State<TeamDashboard> {
           'https://pcmc.bioenabletech.com/api/service.php?q=team_monthly_timecard&auth_key=PCMCS56ADDGPIL&staff_id=1&from_date=2022-12-01&to_date=2022-12-30'),
     );
     final data = jsonDecode(response.body.toString()) as List<dynamic>;
-    print('month data: $data');
+    // print('month data: $data');
     return data.map((e) => TeamMonthlyTimeCardModel.fromJson(e)).toList();
   }
 
@@ -48,7 +48,7 @@ class _TeamDashboardState extends State<TeamDashboard> {
           'https://pcmc.bioenabletech.com/api/service.php?q=monthly_present_details_by_super&auth_key=PCMCS56ADDGPIL&staff_id=1'),
     );
     final data = jsonDecode(response.body.toString());
-    print(data['month']);
+    // print(data['month']);
     setState(() {
       totalPresent = data['present'];
       totalAbsent = data['emp_absent'];

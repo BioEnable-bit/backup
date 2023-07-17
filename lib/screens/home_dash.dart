@@ -29,13 +29,13 @@ class _HomeDashboardState extends State<Homedash> {
     //print(staffID);
     // final prefs = await SharedPreferences.getInstance();
     // var customerID = prefs.getString('customerID');
-    print(formattedDate);
+    // print(formattedDate);
     Response response = await get(
       Uri.parse(
           'https://pcmc.bioenabletech.com/api/service.php?q=attendanceLogs&auth_key=PCMCS56ADDGPIL&staff_id=8908&from_date=2023-01-01&to_date=$formattedDate'),
     );
     final data = jsonDecode(response.body.toString()) as List<dynamic>;
-    print('month data: $data');
+    // print('month data: $data');
     return data.map((e) => UserAttendence.fromJson(e)).toList();
   }
 
@@ -84,7 +84,7 @@ class _HomeDashboardState extends State<Homedash> {
       // ),
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Column(
@@ -199,7 +199,7 @@ class _HomeDashboardState extends State<Homedash> {
                       itemBuilder: (context, index) {
                         return DataTable(
                           // datatable widget
-                          columns: [
+                          columns: const [
                             // column to set the name
                             DataColumn(
                               label: Text(''),
@@ -308,7 +308,7 @@ class _HomeDashboardState extends State<Homedash> {
           'https://pcmc.bioenabletech.com/api/service.php?q=monthly_present_details&auth_key=PCMCS56ADDGPIL&staff_id=12345'),
     );
     final data = jsonDecode(response.body.toString());
-    print(data['month']);
+    // print(data['month']);
     setState(() {
       totalPresent = data['present'];
       totalAbsent = data['emp_absent'];

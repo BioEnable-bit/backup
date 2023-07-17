@@ -27,47 +27,35 @@ class _AttendanceState extends State<Attendance> {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-              backgroundColor: Colors.white,
-              toolbarHeight: 0,
-              bottom: userDesignation == 'Driver'
-                  ? TabBar(
-                      indicatorColor: Colors.blueGrey,
-                      tabs: [
-                        Tab(
-                          // text: "My Dashboard",
-                          child: Text(
-                            'My Dashboard',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ],
+            appBar: AppBar(
+                backgroundColor: Colors.white,
+                toolbarHeight: 0,
+                bottom: const TabBar(
+                  indicatorColor: Colors.blueGrey,
+                  tabs: [
+                    Tab(
+                      // text: "My Dashboard",
+                      child: Text(
+                        'My Dashboard',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        'Team Dashboard',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     )
-                  : TabBar(
-                      indicatorColor: Colors.blueGrey,
-                      tabs: [
-                        Tab(
-                          // text: "My Dashboard",
-                          child: Text(
-                            'My Dashboard',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'Team Dashboard',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        )
-                      ],
-                    )),
-          body: const TabBarView(
-            children: [
-              Homedash(),
-              TeamDashboard(),
-            ],
-          ),
-        ),
+                  ],
+                )),
+            body: userDesignation == 'Driver'
+                ? const Homedash()
+                : const TabBarView(
+                    children: [
+                      Homedash(),
+                      TeamDashboard(),
+                    ],
+                  )),
       ),
     );
   }

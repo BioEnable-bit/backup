@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
   Future<List<ProfileDataModel>> getUserDataFromAPI() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
-    print(staffID);
+    // print(staffID);
 
     // final prefs = await SharedPreferences.getInstance();
     // var customerID = prefs.getString('customerID');
@@ -39,17 +39,17 @@ class _HomeState extends State<Home> {
           'https://pcmc.bioenabletech.com/api/service.php?q=show_profile&auth_key=PCMCS56ADDGPIL&staff_id=$staffID'),
     );
     final data = jsonDecode(response.body.toString()) as List<dynamic>;
-    print(data);
+    // print(data);
     setState(() {
       profileImage = data[0]['photo'];
       userName = data[0]['staffname'];
       userDesignation = data[0]['designation'];
       designation = data[0][
           'designation']; //using designation variable value to decide whether to show add task option in tasks list screen app bar or not
-      print(data[0]['mobile']);
+      // print(data[0]['mobile']);
       userMobile = data[0]['mobile'];
-      print(userDesignation);
-      print(userMobile);
+      // print(userDesignation);
+      // print(userMobile);
     });
     return data.map((e) => ProfileDataModel.fromJson(e)).toList();
   }
