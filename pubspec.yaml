@@ -50,6 +50,8 @@ dependencies:
 
   connectivity_plus: ^2.0.2
 
+  local_auth: ^2.1.6
+
 
 dev_dependencies:
   flutter_test:

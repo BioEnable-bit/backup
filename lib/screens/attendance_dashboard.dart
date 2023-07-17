@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:local_auth/local_auth.dart';
 import 'package:pcmc_staff/screens/attendance.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'attendance_logs.dart';
 import 'home.dart';
+import 'home_supervisor.dart';
 import 'monthly_timecard.dart';
 
 class AttendanceDashboard extends StatefulWidget {
@@ -15,6 +16,24 @@ class AttendanceDashboard extends StatefulWidget {
 }
 
 class _AttendanceDashboardState extends State<AttendanceDashboard> {
+  final LocalAuthentication _localAuthentication = LocalAuthentication();
+  Future<void> _authenticate() async {
+    bool authenticated = false;
+    try {
+      authenticated = await _localAuthentication.authenticate(
+        localizedReason: 'Please authenticate to open the app',
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    if (!mounted) return;
+
+    if (authenticated) {
+      // Navigate to home screen
+    }
+  }
+
   late String? staffID;
   late String? userDesignation;
   int _currentindex = 0;
@@ -71,6 +90,8 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
             icon: const Icon(Icons.fingerprint_sharp,
                 color: Colors.blueGrey, size: 34.89),
             onPressed: () {
+              print('clicked');
+              _authenticate();
               // TODO: Add Alerts popup functionality
             },
           )
@@ -82,7 +103,7 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
         currentIndex: _currentindex,
         type: BottomNavigationBarType.fixed,
         iconSize: 30,
-        items: [
+        items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',

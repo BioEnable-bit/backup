@@ -8,17 +8,14 @@ class TeamMonthlyTimeCardModel {
 
   String? total_days;
 
-
   TeamMonthlyTimeCardModel(
       {this.name,
       this.Recorddate,
       this.rdate,
       this.in_punch,
       this.out_punch,
-
       this.total_hrs,
       this.total_days});
-
 
   TeamMonthlyTimeCardModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -32,8 +29,4 @@ class TeamMonthlyTimeCardModel {
   }
 
 // Getter
-
-  }
-
-
 }
