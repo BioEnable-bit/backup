@@ -21,7 +21,7 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
     bool authenticated = false;
     try {
       authenticated = await _localAuthentication.authenticate(
-        localizedReason: 'Please authenticate to open the app',
+        localizedReason: 'Please authenticate to mark attendance the app',
       );
     } catch (e) {
       print(e);
@@ -30,7 +30,8 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
     if (!mounted) return;
 
     if (authenticated) {
-      // Navigate to home screen
+      print('authenticated');
+      // TODO: MARK ATTENDANCE
     }
   }
 
@@ -90,9 +91,7 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
             icon: const Icon(Icons.fingerprint_sharp,
                 color: Colors.blueGrey, size: 34.89),
             onPressed: () {
-              print('clicked');
               _authenticate();
-              // TODO: Add Alerts popup functionality
             },
           )
         ],
