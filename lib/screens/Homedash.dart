@@ -1,251 +1,317 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-import 'home.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:intl/intl.dart';
+import 'package:pcmc_staff/models/UserAttendence.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Homedash extends StatefulWidget {
   const Homedash({super.key});
 
   @override
-  State<Homedash> createState() => _Homedash();
+  State<Homedash> createState() => _HomeDashboardState();
 }
 
-class _Homedash extends State<Homedash> {
+class _HomeDashboardState extends State<Homedash> {
+  late String? totalPresent;
+  late String? totalAbsent;
+  late String? taskCompleted;
+  late String? taskPending;
+  late var now = DateTime.now();
+  late String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+
+  Future<List<UserAttendence>> getTeamMonthlygetData() async {
+    final prefs = await SharedPreferences.getInstance();
+    var staffID = prefs.getString('staffID');
+    // userDesignation = prefs.getString('designation');
+    //print(staffID);
+    // final prefs = await SharedPreferences.getInstance();
+    // var customerID = prefs.getString('customerID');
+    print(formattedDate);
+    Response response = await get(
+      Uri.parse(
+          'https://pcmc.bioenabletech.com/api/service.php?q=attendanceLogs&auth_key=PCMCS56ADDGPIL&staff_id=8908&from_date=2023-01-01&to_date=$formattedDate'),
+    );
+    final data = jsonDecode(response.body.toString()) as List<dynamic>;
+    print('month data: $data');
+    return data.map((e) => UserAttendence.fromJson(e)).toList();
+  }
+
+  // getMonthlyPresentData() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   var staffID = prefs.getString('staffID');
+  //   //TODO: Pass staffID
+  //   // userDesignation = prefs.getString('designation');
+  //   // print(staffID);
+  //   // final prefs = await SharedPreferences.getInstance();
+  //   // var customerID = prefs.getString('customerID');
+  //
+  //   Response response = await get(
+  //     Uri.parse(
+  //         'https://pcmc.bioenabletech.com/api/service.php?q=monthly_present_details_by_super&auth_key=PCMCS56ADDGPIL&staff_id=1'),
+  //   );
+  //   final data = jsonDecode(response.body.toString());
+  //   print(data['month']);
+  //   setState(() {
+  //     totalPresent = data['present'];
+  //     totalAbsent = data['emp_absent'];
+  //     taskCompleted = data['completed_task'];
+  //     taskPending = data['pending_task'];
+  //   });
+  //
+  //   // return data.map((e) => MonthlyDetailsModel.fromJson(e));
+  // }
+
+  @override
+  void initState() {
+    totalAbsent = '';
+    totalPresent = '';
+    taskCompleted = '';
+    taskPending = '';
+    //  getMonthlyPresentData();
+
+    getAttendenceCount();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body:SingleChildScrollView(
-
-        child: Container(
-
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Card(
-                      elevation: 8.0,
-                      child: Ink(
-                        width: 150,
-                        height: 70,
-                        // color: Colors.blue,
-                        decoration: BoxDecoration(
-                          color: Color(0xff3AB09E),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            // Function to be called when container is tapped
-                            // Navigator.pushNamed(
-                            //     context, '/complaint_list',
-                            //     arguments: _customerID);
-
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.center,
-                              children: [
-                                // Icon(
-                                //   // Icons.add,
-                                //   color: Colors.white,
-                                // ),
-                                Text('Present Count',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
+    return Scaffold(
+      // appBar: AppBar(
+      //   title: Text("Attendance Dashboard"),
+      // ),
+      body: Column(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Card(
+                    elevation: 8.0,
+                    child: Ink(
+                      width: 150,
+                      height: 100,
+                      // color: Colors.blue,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        gradient: const LinearGradient(
+                            colors: [Colors.greenAccent, Colors.teal],
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text('$totalPresent',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20)),
+                              const Text('Present Count',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 20.00,
-                    ),
-                    Card(
-                      elevation: 8.0,
-                      child: Ink(
-                        width: 150,
-                        height: 70,
-                        // color: Colors.blue,
-                        decoration: BoxDecoration(
-                          color: Color(0xffDD9999),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            // get customer idurn ComplaintListScreen();
-                            // }));
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.center,
-                              children: [
-                               //Icon(Icons.list, color: Colors.white),
-                                Text('Absent Count',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                            Text('My Attendence',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                          ],
-                    ),
-                const SizedBox(
-                  height: 30,
-                ),
-
-
-
-
-                SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-
-                  child:           DataTable(
-                    // Datatable widget that have the property columns and rows.
-                    //   columns: [
-                    //                     //     // Set the name of the column
-                    //                     //     DataColumn(label: Text(''),),
-                    //                     //     DataColumn(label: Text(''),),
-                    //                     //     DataColumn(label: Text(''),),
-                    //                     //     // DataColumn(label: Text('Avg'),),
-                    //                     //   ],
-
-                      columns: const [
-                        DataColumn(label: Text('Date',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
-                      DataColumn(label: Text('In',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
-                      DataColumn(label: Text('out',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
-                      DataColumn(label: Text('Avg',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),],
-//
-                      rows:[
-                        // Set the values to the columns
-                        DataRow(cells: [
-                          DataCell(Text("1 jan 2022")),
-                          DataCell(Text("8.29")),
-                          DataCell(Text("5.09")),
-                          DataCell(Text("9")),
-
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("2 jan 2022")),
-                          DataCell(Text("8.43")),
-                          DataCell(Text("4.49")),
-                          DataCell(Text("8.54")),
-
-                        ]),
-
-
-                      ]
                   ),
-
-                ),
-
-
-
-
-
-
-
-
-//                   Column(
-//
-//
-//
-//
-//                     mainAxisAlignment: MainAxisAlignment.start,
-//
-//
-//
-//                     child: FittedBox(
-//
-//                       child: DataTable(
-// columns: const [
-//  DataColumn(label: Text('Date',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),)),
-//  DataColumn(label: Text('In',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),)),
-//  DataColumn(label: Text('out',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),)),
-//  DataColumn(label: Text('Avg',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),)),
-//
-//
-// ],
-//                         rows: [
-//
-//
-//
-//
-//
-//
-//
-//                         ],
-//
-//
-//
-//                       ),
-//
-//
-//
-//
-//                     ),
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//                   ),
-            // code for bottom nav screen
+                  const SizedBox(
+                    width: 20.00,
+                  ),
+                  Card(
+                    elevation: 8.0,
+                    child: Ink(
+                      width: 150,
+                      height: 100,
+                      // color: Colors.blue,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                            colors: [Colors.redAccent, Colors.deepOrangeAccent],
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text('$totalAbsent',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20)),
+                              const Text('Absent Count',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
-
               ),
+              const SizedBox(
+                height: 20,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              const Text(
+                'Team Time Card',
+                style: TextStyle(fontSize: 20),
+              )
+            ],
+          ),
+          FutureBuilder(
+            future: getTeamMonthlygetData(),
+            builder: (context, data) {
+              if (data.hasError) {
+                return Text('${data.error}');
+              } else if (data.hasData) {
+                var items = data.data as List<UserAttendence>;
+                return Expanded(
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        return DataTable(
+                          // datatable widget
+                          columns: [
+                            // column to set the name
+                            DataColumn(
+                              label: Text(''),
+                            ),
+                            DataColumn(
+                              label: Text(''),
+                            ),
+                            DataColumn(
+                              label: Text(''),
+                            ),
+                          ],
 
-
-
-
-    ),
-    ),
+                          rows: [
+                            // row to set the values
+                            DataRow(cells: [
+                              DataCell(Text(items[index].rdate.toString())),
+                              DataCell(
+                                  Text(items[index].Recordtime.toString())),
+                              DataCell(
+                                  Text(items[index].punch_type.toString())),
+                            ]),
+                          ],
+                        );
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.start,
+                        //   children: [
+                        //     Column(
+                        //       children: [
+                        //         Text(items[index].name.toString()),
+                        //       ],
+                        //     ),
+                        //     const SizedBox(
+                        //       width: 20,
+                        //     ),
+                        //     Column(
+                        //       children: [
+                        //         Text(items[index].rdate.toString()),
+                        //       ],
+                        //     ),
+                        //     const SizedBox(
+                        //       width: 20,
+                        //     ),
+                        //     Column(
+                        //       children: [
+                        //         Text(items[index].in_punch.toString()),
+                        //       ],
+                        //     ),
+                        //     const SizedBox(
+                        //       width: 20,
+                        //     ),
+                        //     Column(
+                        //       children: [
+                        //         Text(items[index].out_punch.toString()),
+                        //       ],
+                        //     ),
+                        //   ],
+                        // );
+                      }),
+                );
+                //   Center(
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.start,
+                //         // crossAxisAlignment: ,
+                //         children: [
+                //           Text(items[index].name.toString()),
+                //           SizedBox(
+                //             width: 10,
+                //           ),
+                //           Text('2'),
+                //           SizedBox(
+                //             width: 10,
+                //           ),
+                //           Text('3'),
+                //         ],
+                //       )
+                //     ],
+                //   ),
+                // );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
+  }
+
+  void getAttendenceCount() async {
+    final prefs = await SharedPreferences.getInstance();
+    var staffID = prefs.getString('staffID');
+    //TODO: Pass staffID
+    // userDesignation = prefs.getString('designation');
+    // print(staffID);
+    // final prefs = await SharedPreferences.getInstance();
+    // var customerID = prefs.getString('customerID');
+
+    Response response = await get(
+      Uri.parse(
+          'https://pcmc.bioenabletech.com/api/service.php?q=monthly_present_details&auth_key=PCMCS56ADDGPIL&staff_id=12345'),
+    );
+    final data = jsonDecode(response.body.toString());
+    print(data['month']);
+    setState(() {
+      totalPresent = data['present'];
+      totalAbsent = data['emp_absent'];
+      taskCompleted = data['completed_task'];
+      taskPending = data['pending_task'];
+    });
+
+    // return data.map((e) => MonthlyDetailsModel.fromJson(e));
   }
 }

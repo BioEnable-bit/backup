@@ -6,7 +6,9 @@ import 'package:http/http.dart';
 import 'package:pcmc_staff/models/EmployeeList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/AttendanceDataModel.dart';
+
+import '../models/AttendenceLogsModel.dart';
+
 
 class AttendanceLogs extends StatefulWidget {
   const AttendanceLogs({super.key});
@@ -16,7 +18,8 @@ class AttendanceLogs extends StatefulWidget {
 }
 
 class _AttendanceLogsState extends State<AttendanceLogs> {
-  List<AttendanceDataModel> attendanceList = <AttendanceDataModel>[];
+
+  List<AttendenceLogsModel> attendanceList = <AttendenceLogsModel>[];
 
   String? _selectedFromDate;
   String? _selectedToDate;
@@ -31,16 +34,75 @@ class _AttendanceLogsState extends State<AttendanceLogs> {
         initialDate: currentDate,
         firstDate: DateTime(2022),
         lastDate: DateTime(2050));
-    print(currentDate);
+
+    print(_selectedFromDate);
+
     Enddate = pickedDate;
     if (pickedDate != null && pickedDate != currentDate)
       setState(() {
         currentDate = pickedDate;
       });
     print('""""""""""""""""""""""');
-    print(Enddate);
+    print(_selectedToDate);
     print('""""""""""""""""""""""');
+
   }
+
+  Future<List<AttendenceLogsModel>> getEmployeeAttendanceData() async {
+    final prefs = await SharedPreferences.getInstance();
+    var staffID = prefs.getString('staffID');
+    print(staffID);
+    // final prefs = await SharedPreferences.getInstance();
+    // var customerID = prefs.getString('customerID');
+    print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+    print(_selectedFromDate);
+    print(_selectedToDate);
+    Response response = await get(
+      Uri.parse(
+          'https://pcmc.bioenabletech.com/api/service.php?q=attendanceLogs&auth_key=PCMCS56ADDGPIL&staff_id=$staffID&from_date=$_selectedFromDate&to_date=$_selectedToDate'),
+    );
+    final data = jsonDecode(response.body.toString()) as List<dynamic>;
+    if (data == []) {
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(bottom: 100.0),
+        content: Text("Hello World!"),
+      );
+    }
+    print("data $data");
+    // setState(() {
+    //   for (int i = 0; i < data.length; i++) {
+    //     // ZoneModel(ward_id: jsonDataZones[i]['ward_id'].toString(), ward_name: jsonDataZones[i]['ward_name'].toString());
+    //     attendanceList.add(AttendenceLogsModel(
+    //       rdate: data[i]['rdate'],
+    //       Recordtime: data[i]['Recordtime'].toString(),
+    //       punch_type: data[i]['punch_type'].toString(),
+    //     ));
+    //     // zoneNamesList.add(
+    //     //     {jsonDataZones[i]['ward_id'], jsonDataZones[i]['ward_name']});
+    //   }
+    //
+    // });
+    return data.map((e) => AttendenceLogsModel.fromJson(e)).toList();
+  }
+
+  // Future<List<PeruserAttendence>> getTeamMonthlygetData() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   var staffID = prefs.getString('staffID');
+  //   // userDesignation = prefs.getString('designation');
+  //   //print(staffID);
+  //   // final prefs = await SharedPreferences.getInstance();
+  //   // var customerID = prefs.getString('customerID');
+  //   print(formattedDate);
+  //   Response response = await get(
+  //     Uri.parse(
+  //         'https://pcmc.bioenabletech.com/api/service.php?q=attendanceLogs&auth_key=PCMCS56ADDGPIL&staff_id=8908&from_date=2023-01-01&to_date=$formattedDate'),
+  //   );
+  //   final data = jsonDecode(response.body.toString()) as List<dynamic>;
+  //   print('month data: $data');
+  //   return data.map((e) => PeruserAttendence.fromJson(e)).toList();
+  // }
+
 
   List<EmployeeList> employee = <EmployeeList>[];
   Future getEmployeeNames() async {
@@ -70,261 +132,187 @@ class _AttendanceLogsState extends State<AttendanceLogs> {
   void initState() {
     super.initState();
     getEmployeeNames();
+    getEmployeeAttendanceData();
   }
 
+  bool _isButtonClicked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Text(
-                    'Select Employee :',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  DropdownButton<EmployeeList>(
-                    hint: const Text("Employee List"),
-                    value: selectedemployee,
-                    onChanged: (EmployeeList? newValue) {
-                      setState(() {
-                        selectedemployee = newValue!;
-                        print(selectedemployee.toString());
 
-                        // getAlldesigNames();
-                        // getAlldesigNames(selectedDesignation?.desig_id.toString());
-                      });
-                      // print(zones.indexOf(newValue!));
-                    },
-                    items: employee.map((EmployeeList employeeModel) {
-                      return DropdownMenuItem<EmployeeList>(
-                        value: employeeModel,
-                        child: Text(
-                          employeeModel.name.toString(),
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      );
-                    }).toList(),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Text(
+                  'Select Employee :',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: 10.00,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: DateTimePicker(
-                  initialValue:
-                      '', // initialValue or controller.text can be null, empty or a DateTime string otherwise it will throw an error.
-                  type: DateTimePickerType.date,
-                  dateLabelText: 'Select From Date',
-                  firstDate: DateTime(1995),
-                  lastDate: DateTime.now().add(const Duration(
-                      days: 365)), // This will add one year from current date
-                  validator: (value) {
-                    return null;
-                  },
-                  onChanged: (value) {
-                    if (value.isNotEmpty) {
-                      setState(() {
-                        _selectedFromDate = value;
-                        print(_selectedFromDate);
-                      });
-                    }
-                  },
-                  // We can also use onSaved
-                  onSaved: (value) {
-                    if (value!.isNotEmpty) {
-                      _selectedFromDate = value;
-                    }
-                  },
                 ),
-              ),
-              const SizedBox(
-                height: 10.00,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: DateTimePicker(
-                  initialValue:
-                      '', // initialValue or controller.text can be null, empty or a DateTime string otherwise it will throw an error.
-                  type: DateTimePickerType.date,
-                  dateLabelText: 'Select To Date',
-                  firstDate: DateTime(1995),
-                  lastDate: DateTime.now().add(const Duration(
-                      days: 365)), // This will add one year from current date
-                  validator: (value) {
-                    return null;
+                DropdownButton<EmployeeList>(
+                  hint: const Text("Employee List"),
+                  value: selectedemployee,
+                  onChanged: (EmployeeList? newValue) {
+                    setState(() {
+                      selectedemployee = newValue!;
+                      print(selectedemployee.toString());
+
+                      // getAlldesigNames();
+                      // getAlldesigNames(selectedDesignation?.desig_id.toString());
+                    });
+                    // print(zones.indexOf(newValue!));
                   },
-                  onChanged: (value) {
-                    if (value.isNotEmpty) {
-                      setState(() {
-                        _selectedToDate = value;
-                        print(_selectedToDate);
-                      });
-                    }
-                  },
-                  // We can also use onSaved
-                  onSaved: (value) {
-                    if (value!.isNotEmpty) {
-                      _selectedToDate = value;
-                    }
-                  },
+                  items: employee.map((EmployeeList employeeModel) {
+                    return DropdownMenuItem<EmployeeList>(
+                      value: employeeModel,
+                      child: Text(
+                        employeeModel.name.toString(),
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                    );
+                  }).toList(),
                 ),
+              ],
+            ),
+            const SizedBox(
+              height: 10.00,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: DateTimePicker(
+                initialValue:
+                    '', // initialValue or controller.text can be null, empty or a DateTime string otherwise it will throw an error.
+                type: DateTimePickerType.date,
+                dateLabelText: 'Select From Date',
+                firstDate: DateTime(1995),
+                lastDate: DateTime.now().add(const Duration(
+                    days: 365)), // This will add one year from current date
+                validator: (value) {
+                  return null;
+                },
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    setState(() {
+                      _selectedFromDate = value as String?;
+                      print(_selectedFromDate);
+                    });
+                  }
+                },
+                // We can also use onSaved
+                onSaved: (value) {
+                  if (value!.isNotEmpty) {
+                    _selectedFromDate = value as String?;
+                  }
+                },
               ),
-              const SizedBox(
-                height: 30.00,
+            ),
+            const SizedBox(
+              height: 10.00,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: DateTimePicker(
+                initialValue:
+                    '', // initialValue or controller.text can be null, empty or a DateTime string otherwise it will throw an error.
+                type: DateTimePickerType.date,
+                dateLabelText: 'Select To Date',
+                firstDate: DateTime(1995),
+                lastDate: DateTime.now().add(const Duration(
+                    days: 365)), // This will add one year from current date
+                validator: (value) {
+                  return null;
+                },
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    setState(() {
+                      _selectedToDate = value as String?;
+                      print(_selectedToDate);
+                    });
+                  }
+                },
+                // We can also use onSaved
+                onSaved: (value) {
+                  if (value!.isNotEmpty) {
+                    _selectedToDate = value as String?;
+                  }
+                },
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    try {
-                      //start progress bar
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          });
-                      //call method
-                      //Passing dummy image foe now TODO: change with image selected from camera/gallery
-                      getEmployeeAttendanceData();
-                      //stop progress bar
-                      // stop progress bar
-                      Navigator.of(context).pop();
-                      print('attendanceList ${attendanceList.toString()}');
-                      // attendanceList != []
-                      //     ? Expanded(
-                      //         child: ListView.builder(
-                      //           itemCount: attendanceList.length,
-                      //           itemBuilder: (BuildContext context, int index) {
-                      //             return SingleChildScrollView(
-                      //               scrollDirection: Axis.vertical,
-                      //               child: DataTable(
-                      //                   // Datatable widget that have the property columns and rows.
-                      //                   columns: const [
-                      //                     // Set the name of the column
-                      //                     DataColumn(
-                      //                       label: Text(''),
-                      //                     ),
-                      //                     DataColumn(
-                      //                       label: Text(''),
-                      //                     ),
-                      //                     DataColumn(
-                      //                       label: Text(''),
-                      //                     ),
-                      //                     // DataColumn(label: Text('Avg'),),
-                      //                   ],
-                      //                   rows: const [
-                      //                     // Set the values to the columns
-                      //                     DataRow(cells: [
-                      //                       DataCell(Text("1 jan 2022")),
-                      //                       DataCell(Text("8.29")),
-                      //                       DataCell(Text("In")),
-                      //                     ]),
-                      //                     DataRow(cells: [
-                      //                       DataCell(Text("2 jan 2022")),
-                      //                       DataCell(Text("5.43")),
-                      //                       DataCell(Text("out")),
-                      //                     ]),
-                      //                   ]),
-                      //             );
-                      //           },
-                      //         ),
-                      //       )
-                      //     : const Text('No Data Found');
-                    } catch (e) {
-                      // stop progress bar
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: const Text(' Search ')),
-              const SizedBox(
-                height: 40.00,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: attendanceList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: DataTable(
-                          // Datatable widget that have the property columns and rows.
-                          columns: const [
-                            // Set the name of the column
-                            DataColumn(
-                              label: Text(''),
-                            ),
-                            DataColumn(
-                              label: Text(''),
-                            ),
-                            DataColumn(
-                              label: Text(''),
-                            ),
-                            // DataColumn(label: Text('Avg'),),
-                          ],
-                          rows: attendanceList
-                              .map((user) => DataRow(cells: [
-                                    DataCell(Text('user.rdate.toString()')),
-                                    DataCell(Text('user.Recordtime.toString()')),
-                                    DataCell(Text('user.punch_type.toString()')),
-                                  ]))
-                              .toList(),
-                          // const [
-                          //   // Set the values to the columns
-                          //   DataRow(cells: [
-                          //     DataCell(Text("1 jan 2022")),
-                          //     DataCell(Text("8.29")),
-                          //     DataCell(Text("In")),
-                          //   ]),
-                          //   DataRow(cells: [
-                          //     DataCell(Text("2 jan 2022")),
-                          //     DataCell(Text("5.43")),
-                          //     DataCell(Text("out")),
-                          //   ]),
-                          // ]),
-                        ));
-                  },
-                ),
-              )
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 30.00,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _isButtonClicked = true;
+                  });
+                },
+                child: const Text('Search')),
+            _isButtonClicked
+                ? FutureBuilder(
+                    future: getEmployeeAttendanceData(),
+                    builder: (context, data) {
+                      if (data.hasError) {
+                        return Text('${data.error}');
+                      } else if (data == []) {
+                        return Text(" No Data Found");
+                      } else if (data.hasData) {
+                        var items = data.data as List<AttendenceLogsModel>;
+                        return Expanded(
+                          child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: items.length,
+                              itemBuilder: (context, index) {
+                                return DataTable(
+                                  // datatable widget
+                                  columns: [
+                                    // column to set the name
+                                    DataColumn(
+                                      label: Text(''),
+                                    ),
+                                    DataColumn(
+                                      label: Text(''),
+                                    ),
+                                    DataColumn(
+                                      label: Text(''),
+                                    ),
+                                  ],
+
+                                  rows: [
+                                    // row to set the values
+                                    DataRow(cells: [
+                                      DataCell(
+                                          Text(items[index].rdate.toString())),
+                                      DataCell(Text(
+                                          items[index].Recordtime.toString())),
+                                      DataCell(Text(
+                                          items[index].punch_type.toString())),
+                                    ]),
+                                  ],
+                                );
+                              }),
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  )
+                : Text(''),
+            const SizedBox(
+              height: 40.00,
+            ),
+          ],
+
         ),
       ),
     );
   }
 
-  Future<List<AttendanceDataModel>> getEmployeeAttendanceData() async {
-    final prefs = await SharedPreferences.getInstance();
-    var staffID = prefs.getString('staffID');
-    print(staffID);
-    // final prefs = await SharedPreferences.getInstance();
-    // var customerID = prefs.getString('customerID');
-
-    Response response = await get(
-      Uri.parse(
-          'https://pcmc.bioenabletech.com/api/service.php?q=attendanceLogs&auth_key=PCMCS56ADDGPIL&staff_id=8908&from_date=2023-01-01&to_date=2023-07-01'),
-    );
-    final data = jsonDecode(response.body.toString()) as List<dynamic>;
-    print("data $data");
-    setState(() {
-      for (int i = 0; i < data.length; i++) {
-        // ZoneModel(ward_id: jsonDataZones[i]['ward_id'].toString(), ward_name: jsonDataZones[i]['ward_name'].toString());
-        attendanceList.add(AttendanceDataModel(
-          rdate: data[i]['rdate'].toString(),
-          Recordtime: data[i]['Recordtime'].toString(),
-          punch_type: data[i]['punch_type'].toString(),
-        ));
-        // zoneNamesList.add(
-        //     {jsonDataZones[i]['ward_id'], jsonDataZones[i]['ward_name']});
-      }
-    });
-    return data.map((e) => AttendanceDataModel.fromJson(e)).toList();
-  }
 }

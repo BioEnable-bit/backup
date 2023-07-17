@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pcmc_staff/screens/Homedash.dart';
-import 'package:pcmc_staff/screens/home_supervisor.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:pcmc_staff/screens/attendance.dart';
+
 
 import 'attendance_logs.dart';
 import 'home.dart';
@@ -19,7 +19,8 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
   late String? userDesignation;
   int _currentindex = 0;
   final List<Widget> _children = [
-    Homedash(),
+    //Screen(),
+    Attendance(),
     AttendanceLogs(),
     MonthlyTimeCard()
   ];

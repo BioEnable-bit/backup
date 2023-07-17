@@ -2,62 +2,67 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:pcmc_staff/models/TeamMonthlyTimeCardModel.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TeamDashboard extends StatefulWidget {
-  const TeamDashboard({super.key});
+import '../models/UserAttendence.dart';
+
+class Homedash extends StatefulWidget {
+  const Homedash({super.key});
 
   @override
-  State<TeamDashboard> createState() => _TeamDashboardState();
+  State<Homedash> createState() => _HomeDashboardState();
 }
 
-class _TeamDashboardState extends State<TeamDashboard> {
+class _HomeDashboardState extends State<Homedash> {
   late String? totalPresent;
   late String? totalAbsent;
   late String? taskCompleted;
   late String? taskPending;
-  Future<List<TeamMonthlyTimeCardModel>> getTeamMonthlyData() async {
+  late var now = DateTime.now();
+  late String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+
+  Future<List<UserAttendence>> getTeamMonthlygetData() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
     // userDesignation = prefs.getString('designation');
-    // print(staffID);
+    //print(staffID);
     // final prefs = await SharedPreferences.getInstance();
     // var customerID = prefs.getString('customerID');
-
+    // print(formattedDate);
     Response response = await get(
       Uri.parse(
-          'https://pcmc.bioenabletech.com/api/service.php?q=team_monthly_timecard&auth_key=PCMCS56ADDGPIL&staff_id=1&from_date=2022-12-01&to_date=2022-12-30'),
+          'https://pcmc.bioenabletech.com/api/service.php?q=attendanceLogs&auth_key=PCMCS56ADDGPIL&staff_id=8908&from_date=2023-01-01&to_date=$formattedDate'),
     );
     final data = jsonDecode(response.body.toString()) as List<dynamic>;
     // print('month data: $data');
-    return data.map((e) => TeamMonthlyTimeCardModel.fromJson(e)).toList();
+    return data.map((e) => UserAttendence.fromJson(e)).toList();
   }
 
-  getMonthlyPresentData() async {
-    final prefs = await SharedPreferences.getInstance();
-    var staffID = prefs.getString('staffID');
-    //TODO: Pass staffID
-    // userDesignation = prefs.getString('designation');
-    // print(staffID);
-    // final prefs = await SharedPreferences.getInstance();
-    // var customerID = prefs.getString('customerID');
-
-    Response response = await get(
-      Uri.parse(
-          'https://pcmc.bioenabletech.com/api/service.php?q=monthly_present_details_by_super&auth_key=PCMCS56ADDGPIL&staff_id=1'),
-    );
-    final data = jsonDecode(response.body.toString());
-    // print(data['month']);
-    setState(() {
-      totalPresent = data['present'];
-      totalAbsent = data['emp_absent'];
-      taskCompleted = data['completed_task'];
-      taskPending = data['pending_task'];
-    });
-
-    // return data.map((e) => MonthlyDetailsModel.fromJson(e));
-  }
+  // getMonthlyPresentData() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   var staffID = prefs.getString('staffID');
+  //   //TODO: Pass staffID
+  //   // userDesignation = prefs.getString('designation');
+  //   // print(staffID);
+  //   // final prefs = await SharedPreferences.getInstance();
+  //   // var customerID = prefs.getString('customerID');
+  //
+  //   Response response = await get(
+  //     Uri.parse(
+  //         'https://pcmc.bioenabletech.com/api/service.php?q=monthly_present_details_by_super&auth_key=PCMCS56ADDGPIL&staff_id=1'),
+  //   );
+  //   final data = jsonDecode(response.body.toString());
+  //   print(data['month']);
+  //   setState(() {
+  //     totalPresent = data['present'];
+  //     totalAbsent = data['emp_absent'];
+  //     taskCompleted = data['completed_task'];
+  //     taskPending = data['pending_task'];
+  //   });
+  //
+  //   // return data.map((e) => MonthlyDetailsModel.fromJson(e));
+  // }
 
   @override
   void initState() {
@@ -65,20 +70,23 @@ class _TeamDashboardState extends State<TeamDashboard> {
     totalPresent = '';
     taskCompleted = '';
     taskPending = '';
-    getMonthlyPresentData();
+    //  getMonthlyPresentData();
+
+    getAttendenceCount();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      // appBar: AppBar(
+      //   title: Text("Attendance Dashboard"),
+      // ),
       body: Column(
         children: [
           const SizedBox(
             height: 20,
           ),
-
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -95,7 +103,7 @@ class _TeamDashboardState extends State<TeamDashboard> {
                       decoration: BoxDecoration(
                         color: Colors.blue,
                         gradient: const LinearGradient(
-                            colors: [Colors.blueGrey, Colors.lightBlue],
+                            colors: [Colors.greenAccent, Colors.teal],
                             begin: Alignment.topRight,
                             end: Alignment.bottomLeft),
                         borderRadius: BorderRadius.circular(10.0),
@@ -113,7 +121,7 @@ class _TeamDashboardState extends State<TeamDashboard> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20)),
-                              const Text('Total Present',
+                              const Text('Present Count',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold)),
@@ -134,7 +142,7 @@ class _TeamDashboardState extends State<TeamDashboard> {
                       // color: Colors.blue,
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                            colors: [Colors.lightBlue, Colors.blueGrey],
+                            colors: [Colors.redAccent, Colors.deepOrangeAccent],
                             begin: Alignment.topRight,
                             end: Alignment.bottomLeft),
                         borderRadius: BorderRadius.circular(10.0),
@@ -152,7 +160,7 @@ class _TeamDashboardState extends State<TeamDashboard> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20)),
-                              const Text('Total Absent',
+                              const Text('Absent Count',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold)),
@@ -167,91 +175,6 @@ class _TeamDashboardState extends State<TeamDashboard> {
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Card(
-                    elevation: 8.0,
-                    child: Ink(
-                      width: 150,
-                      height: 100,
-                      // color: Colors.blue,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        gradient: const LinearGradient(
-                            colors: [Colors.blueGrey, Colors.lightBlue],
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text('$taskCompleted',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20)),
-                              const Text('Task Completed',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20.00,
-                  ),
-                  Card(
-                    elevation: 8.0,
-                    child: Ink(
-                      width: 150,
-                      height: 100,
-                      // color: Colors.blue,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            colors: [Colors.lightBlue, Colors.blueGrey],
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text('$taskPending',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20)),
-                              const Text('Task Pending',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
               const SizedBox(
                 height: 30,
               ),
@@ -262,12 +185,12 @@ class _TeamDashboardState extends State<TeamDashboard> {
             ],
           ),
           FutureBuilder(
-            future: getTeamMonthlyData(),
+            future: getTeamMonthlygetData(),
             builder: (context, data) {
               if (data.hasError) {
                 return Text('${data.error}');
               } else if (data.hasData) {
-                var items = data.data as List<TeamMonthlyTimeCardModel>;
+                var items = data.data as List<UserAttendence>;
                 return Expanded(
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -276,11 +199,8 @@ class _TeamDashboardState extends State<TeamDashboard> {
                       itemBuilder: (context, index) {
                         return DataTable(
                           // datatable widget
-                          columns: [
+                          columns: const [
                             // column to set the name
-                            DataColumn(
-                              label: Text(''),
-                            ),
                             DataColumn(
                               label: Text(''),
                             ),
@@ -295,14 +215,14 @@ class _TeamDashboardState extends State<TeamDashboard> {
                           rows: [
                             // row to set the values
                             DataRow(cells: [
-                              DataCell(Text(items[index].name.toString())),
                               DataCell(Text(items[index].rdate.toString())),
-                              DataCell(Text(items[index].in_punch.toString())),
-                              DataCell(Text(items[index].out_punch.toString())),
+                              DataCell(
+                                  Text(items[index].Recordtime.toString())),
+                              DataCell(
+                                  Text(items[index].punch_type.toString())),
                             ]),
                           ],
                         );
-
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.start,
                         //   children: [
@@ -362,7 +282,6 @@ class _TeamDashboardState extends State<TeamDashboard> {
                 //     ],
                 //   ),
                 // );
-
               } else {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -373,5 +292,30 @@ class _TeamDashboardState extends State<TeamDashboard> {
         ],
       ),
     );
+  }
+
+  void getAttendenceCount() async {
+    final prefs = await SharedPreferences.getInstance();
+    var staffID = prefs.getString('staffID');
+    //TODO: Pass staffID
+    // userDesignation = prefs.getString('designation');
+    // print(staffID);
+    // final prefs = await SharedPreferences.getInstance();
+    // var customerID = prefs.getString('customerID');
+
+    Response response = await get(
+      Uri.parse(
+          'https://pcmc.bioenabletech.com/api/service.php?q=monthly_present_details&auth_key=PCMCS56ADDGPIL&staff_id=12345'),
+    );
+    final data = jsonDecode(response.body.toString());
+    // print(data['month']);
+    setState(() {
+      totalPresent = data['present'];
+      totalAbsent = data['emp_absent'];
+      taskCompleted = data['completed_task'];
+      taskPending = data['pending_task'];
+    });
+
+    // return data.map((e) => MonthlyDetailsModel.fromJson(e));
   }
 }
