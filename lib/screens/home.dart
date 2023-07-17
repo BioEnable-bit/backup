@@ -10,8 +10,6 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/ProfileDataModel.dart';
-
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -26,32 +24,30 @@ class _HomeState extends State<Home> {
   late String userName;
   late String userDesignation;
   late String userMobile;
-  Future<List<ProfileDataModel>> getUserDataFromAPI() async {
+  getUserDataFromAPI() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
-    // print(staffID);
-
-    // final prefs = await SharedPreferences.getInstance();
-    // var customerID = prefs.getString('customerID');
 
     Response response = await get(
       Uri.parse(
           'https://pcmc.bioenabletech.com/api/service.php?q=show_profile&auth_key=PCMCS56ADDGPIL&staff_id=$staffID'),
     );
     final data = jsonDecode(response.body.toString()) as List<dynamic>;
-    // print(data);
+
     setState(() {
       profileImage = data[0]['photo'];
+
+      print('name: ${data[0]['staffname']}');
       userName = data[0]['staffname'];
       userDesignation = data[0]['designation'];
       designation = data[0][
           'designation']; //using designation variable value to decide whether to show add task option in tasks list screen app bar or not
-      // print(data[0]['mobile']);
+      // // print(data[0]['mobile']);
       userMobile = data[0]['mobile'];
       // print(userDesignation);
       // print(userMobile);
     });
-    return data.map((e) => ProfileDataModel.fromJson(e)).toList();
+    // return data.map((e) => ProfileDataModel.fromJson(e)).toList();
   }
   // late String? staffID;
   // late String? designation;

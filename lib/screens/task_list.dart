@@ -220,7 +220,7 @@ class _TaskListState extends State<TaskList> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Task ID: ${items[index].taskid}'),
-                                Text('Task: ${items[index].description}'),
+                                Text('Task: ${items[index].task}'),
                                 Text(
                                     'Task Assigned to: ${items[index].assigned_to}'),
                                 Text(

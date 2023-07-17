@@ -99,7 +99,7 @@ class _FollowUpListState extends State<FollowUpList> {
                                     'Description: ${items[index].description}'),
                                 Text('Followup: ${items[index].followup}'),
                                 Text(
-                                    'Task Status: ${items[index].task_status}'),
+                                    'Task Status: ${items[index].task_status.toString()}'),
                                 Text(
                                     'Followup Date: ${items[index].followup_date}'),
 

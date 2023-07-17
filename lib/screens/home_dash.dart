@@ -297,7 +297,7 @@ class _HomeDashboardState extends State<Homedash> {
   void getAttendenceCount() async {
     final prefs = await SharedPreferences.getInstance();
     var staffID = prefs.getString('staffID');
-    //TODO: Pass staffID
+
     // userDesignation = prefs.getString('designation');
     // print(staffID);
     // final prefs = await SharedPreferences.getInstance();
@@ -305,7 +305,7 @@ class _HomeDashboardState extends State<Homedash> {
 
     Response response = await get(
       Uri.parse(
-          'https://pcmc.bioenabletech.com/api/service.php?q=monthly_present_details&auth_key=PCMCS56ADDGPIL&staff_id=12345'),
+          'https://pcmc.bioenabletech.com/api/service.php?q=monthly_present_details&auth_key=PCMCS56ADDGPIL&staff_id=$staffID'),
     );
     final data = jsonDecode(response.body.toString());
     // print(data['month']);

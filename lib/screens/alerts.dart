@@ -183,7 +183,8 @@ class _AlertsState extends State<Alerts> {
                                     'Description: ${items[index].description}'),
                                 Text('Raised By: ${items[index].raised_By}'),
                                 Text('Employee ID: ${items[index].emp_id}'),
-                                Text('Ward ID: ${items[index].ward_id}'),
+                                Text(
+                                    'Ward ID: ${items[index].ward_id.toString()}'),
                                 Text('Remark: ${items[index].remark}'),
                                 Text('Status: ${items[index].status}'),
                                 Text('Created On: ${items[index].created_on}'),
