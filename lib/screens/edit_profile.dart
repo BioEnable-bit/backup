@@ -280,7 +280,6 @@ class _EditProfileState extends State<EditProfile> {
                                         // _selectedProfileImage = MemoryImage(_image!);
                                         // print(
                                         //     '_selectedProfileImage : $_selectedProfileImage');
-                                        //TODO: ADD SELECT NEW IMAGE FUNCTIONALITY ON BUTTON TAP
                                       },
                                       elevation: 2.0,
                                       fillColor: const Color(0xFFF5F6F9),
@@ -301,7 +300,7 @@ class _EditProfileState extends State<EditProfile> {
                 // Row(
                 //   children: [
                 //     Image.asset(
-                //       //TODO: SET USER PROFILE IMAGE HERE FROM API
+                //
                 //       'assets/image_placeholder.png',
                 //       height: 150,
                 //       width: 200,
