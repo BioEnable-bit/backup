@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pcmc_staff/screens/attendance.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +34,27 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
 
     if (authenticated) {
       print('authenticated');
-      // TODO: MARK ATTENDANCE
+      // TODO:get lat long values
+      // TODO: CALL API TO MARK ATTENDANCE
+      try {
+        //start progress bar
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            });
+        //call method
+        markAttendance('18.496668', '73.941666');
+        //stop progress bar
+        // stop progress bar
+        Navigator.of(context).pop();
+      } catch (e) {
+        // stop progress bar
+        Navigator.of(context).pop();
+        print('exception: ${e.toString()}');
+      }
     }
   }
 
@@ -118,5 +141,42 @@ class _AttendanceDashboardState extends State<AttendanceDashboard> {
         ],
       ),
     );
+  }
+
+  Future<void> markAttendance(latitude, longitude) async {
+    final prefs = await SharedPreferences.getInstance();
+    var staffID = prefs.getString('staffID');
+    Response response = await post(
+        Uri.parse(
+            'https://pcmc.bioenabletech.com/api/service.php?auth_key=PCMCS56ADDGPIL&q=update_profile'),
+        body: {
+          'staff_id': staffID,
+          'latitude': latitude,
+          'longitude': longitude,
+        });
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+
+      if (data[0]['msg'] == 'success') {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Attendance Marked successfully')));
+        // print('success');
+        // stop progress bar
+        // Navigator.of(context).pop();
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) {
+        //   return const Profile();
+        // Navigator.pop(context);
+        // }));
+      } else {
+        // String resp = data[0]['msg'];
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Something went wrong')));
+        // print('Update failed');
+        // Navigator.of(context).pop();
+        return;
+      }
+    }
   }
 }
